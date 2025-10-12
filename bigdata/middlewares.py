@@ -211,6 +211,8 @@ class BotProtectionDetectionMiddleware:
                     if hasattr(spider, '_requeue_request'):
                         spider._requeue_request(request, priority=90)
 
+                    spider.logger.info(body_text)
+
                     raise IgnoreRequest("Bot protection detected")
 
         return response

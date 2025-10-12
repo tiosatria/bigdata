@@ -140,7 +140,7 @@ DOWNLOADER_MIDDLEWARES = {
     'bigdata.middlewares.RequestPriorityMiddleware': 120,
     'bigdata.middlewares.DownloadDelayMiddleware': 200,
     'bigdata.middlewares.SmartRetryMiddleware': 550,
-    'bigdata.middlewares.BotProtectionDetectionMiddleware': 560,
+    # 'bigdata.middlewares.BotProtectionDetectionMiddleware': 560,
     'bigdata.middlewares.ResponseValidationMiddleware': 570,
     'bigdata.middlewares.StatisticsMiddleware': 900,
     # Random user agent (from library)

@@ -392,7 +392,7 @@ class ArticleSpider(RedisCrawlSpider):
             self.logger.warning(f"No config found for domain: {domain}")
             return
 
-        # # Check for bot protection
+        # Check for bot protection
         # if self._detect_bot_protection(response, config):
         #     # Re-queue with delay
         #     self._requeue_request(response.request, priority=75)
