@@ -76,7 +76,7 @@ class ArticleSpider(RedisCrawlSpider):
                     Rule(
                         LinkExtractor(
                             allow_domains=[domain],
-                            restrict_xpaths=[config.pagination_xpath]
+                            restrict_xpaths=config.pagination_xpath
                         ),
                         follow=True,
                         process_request='process_pagination_request',
@@ -97,7 +97,7 @@ class ArticleSpider(RedisCrawlSpider):
                     Rule(
                         LinkExtractor(
                             allow_domains=[domain],
-                            restrict_xpaths=[config.article_links_xpath]
+                            restrict_xpaths=config.article_links_xpath
                         ),
                         callback='parse_item',
                         process_request='process_article_request',

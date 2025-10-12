@@ -20,7 +20,7 @@ WISEBREAD_COM_CONFIG = DomainConfig(
     # Content extraction
     title_xpath="//h1[@class='page-title ']/text()",
     body_xpath="//div[@class='body']",
-    tags_xpath="//a[@sl-processed='1']/text()",
+    tags_xpath="//div[@class='breadcrumb']/a/text()",
     author_xpath="//div[@class='credits']/a/text()",
     post_date_xpath="//span[@class='date']/text()",
     post_date_format=None,
