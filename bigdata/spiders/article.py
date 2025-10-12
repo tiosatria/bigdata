@@ -24,6 +24,8 @@ class ArticleSpider(RedisCrawlSpider):
     name = 'article'
     redis_key = 'article:start_urls'
 
+    redis_batch_size = 50
+
     # Track pagination depth per domain
     pagination_depth = {}
 
