@@ -45,8 +45,7 @@ RETRY_PRIORITY_ADJUST = 10
 # ============================================================================
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
-
-CONCURRENT_REQUESTS = 512
+CONCURRENT_REQUESTS = 16 
 CONCURRENT_REQUESTS_PER_DOMAIN = 2
 DOWNLOAD_DELAY = 1
 
@@ -57,7 +56,7 @@ COOKIES_ENABLED = True
 # AUTOTHROTTLE CONFIGURATION
 # ============================================================================
 
-AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = False
 AUTOTHROTTLE_START_DELAY = 3
 AUTOTHROTTLE_MAX_DELAY = 60
 AUTOTHROTTLE_TARGET_CONCURRENCY = 2.0
