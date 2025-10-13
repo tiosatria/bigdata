@@ -34,7 +34,7 @@ class TestSpider(RedisCrawlSpider):
         'RETRY_TIMES': 3,
         'RETRY_HTTP_CODES': [403, 429, 500, 502, 503, 504, 520, 524],
         'RETRY_PRIORITY_ADJUST': 10,
-        'COOKIES_ENABLED' : False
+        'COOKIES_ENABLED' : True
     }
 
     # Rules will be generated dynamically
