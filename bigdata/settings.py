@@ -4,6 +4,7 @@
 # commonly used. You can find more settings consulting the documentation:
 #
 #     https://docs.scrapy.org/en/latest/topics/settings.html
+from bigdata.middlewares import ProxyMiddleware
 from bigdata.pipelines import JSONExportPipeline
 
 BOT_NAME = "google"
@@ -19,7 +20,7 @@ NEWSPIDER_MODULE = "bigdata.spiders"
 # Enables scheduling storing requests queue in redis
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # Don't cleanup redis queues, allows to pause/resume crawls
-SCHEDULER_ORDER = 'BFO'
+SCHEDULER_ORDER = 'DFO'
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
 # Ensure all spiders share same duplicates filter through redis
@@ -38,29 +39,37 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 6
+RETRY_TIMES = 3
 RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
-RETRY_PRIORITY_ADJUST = 10
+RETRY_PRIORITY_ADJUST = -5
 
 # ============================================================================
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
-CONCURRENT_REQUESTS = 16 
-CONCURRENT_REQUESTS_PER_DOMAIN = 2
-DOWNLOAD_DELAY = 1
+CONCURRENT_REQUESTS = 1536
+CONCURRENT_REQUESTS_PER_DOMAIN = 192
+CONCURRENT_ITEMS = 1100
+DOWNLOAD_DELAY = 0
 
 # Disable cookies to reduce memory usage (enable if needed)
 COOKIES_ENABLED = True
+
+# ============================================================================
+# MEMORY TUNING
+# ============================================================================
+MEMUSAGE_ENABLED = True
+MEMUSAGE_LIMIT_MB = 0  # Disable memory limit (0 = unlimited)
+MEMUSAGE_WARNING_MB = 0  # Disable memory w
 
 # ============================================================================
 # AUTOTHROTTLE CONFIGURATION
 # ============================================================================
 
 AUTOTHROTTLE_ENABLED = False
-AUTOTHROTTLE_START_DELAY = 3
-AUTOTHROTTLE_MAX_DELAY = 60
-AUTOTHROTTLE_TARGET_CONCURRENCY = 2.0
-AUTOTHROTTLE_DEBUG = False
+# AUTOTHROTTLE_START_DELAY = 0.5
+# AUTOTHROTTLE_MAX_DELAY = 10
+# AUTOTHROTTLE_TARGET_CONCURRENCY = 24
+# AUTOTHROTTLE_DEBUG = False
 
 # ============================================================================
 # REQUEST HEADERS
@@ -91,7 +100,7 @@ PLAYWRIGHT_BROWSER_TYPE = "chromium"
 PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 60000
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
-    "headless": False,  # Set to True for production
+    "headless": True,  # Set to True for production
     "args": [
         "--disable-blink-features=AutomationControlled",
         "--disable-dev-shm-usage",
@@ -122,6 +131,8 @@ PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "s
 
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
+REACTOR_THREADPOOL_MAXSIZE = 40
+
 # ============================================================================
 # DOWNLOADER MIDDLEWARES
 # ============================================================================
@@ -129,19 +140,13 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 DOWNLOADER_MIDDLEWARES = {
     # Disable default user agent middleware
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    # Disable default retry middleware (we use custom)
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    # Custom middlewares (lower number = higher priority)
-    'bigdata.middlewares.ProxyMiddleware': 110,
-    'bigdata.middlewares.RequestPriorityMiddleware': 120,
-    'bigdata.middlewares.DownloadDelayMiddleware': 200,
-    'bigdata.middlewares.SmartRetryMiddleware': 550,
-    # 'bigdata.middlewares.BotProtectionDetectionMiddleware': 560,
-    'bigdata.middlewares.ResponseValidationMiddleware': 570,
-    'bigdata.middlewares.StatisticsMiddleware': 900,
-    # Random user agent (from library)
-    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+    # Proxy setup: custom first, then Scrapy’s built-in applies it
+    ProxyMiddleware: 350,
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 400,
+    # User agent randomization
+    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 500
 }
+
 
 
 # ============================================================================
@@ -156,46 +161,17 @@ ITEM_PIPELINES = {
     JSONExportPipeline: 300
 }
 
-# ============================================================================
-# LOGGING CONFIGURATION
-# ============================================================================
-
 LOG_ENABLED = True
 LOG_LEVEL = 'INFO'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_ENCODING = 'utf-8'
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 
-# Optionally log to file
-# LOG_FILE = 'scrapy.log'
-# LOG_FILE_APPEND = True
-
-# ============================================================================
-# MEMORY & PERFORMANCE
-# ============================================================================
-
-# Reduce memory usage
-# MEMUSAGE_ENABLED = True
-# MEMUSAGE_LIMIT_MB = 2048  # Stop spider if memory exceeds 2GB
-# MEMUSAGE_WARNING_MB = 1024  # Warning at 1GB
-# MEMUSAGE_NOTIFY_MAIL = []  # Add emails for notifications
-
-# Reduce memory by limiting response size
-# DOWNLOAD_MAXSIZE = 10485760  # 10MB max
-# DOWNLOAD_WARNSIZE = 5242880  # 5MB warning
-
-# ============================================================================
-# TIMEOUTS
-# ============================================================================
-
+HTTPCACHE_ENABLED = False
+DNSCACHE_ENABLED = True
 DOWNLOAD_TIMEOUT = 60
-DNS_TIMEOUT = 30
+DNS_TIMEOUT = 60
 
-# ============================================================================
-# CONTENT VALIDATION
-# ============================================================================
-
-MIN_CONTENT_LENGTH = 100  # Minimum content length to consider valid
 
 # ============================================================================
 # EXTENSIONS
@@ -271,7 +247,7 @@ COMPRESSION_ENABLED = True
 # ============================================================================
 
 # Disable referrer header to avoid tracking
-REFERER_ENABLED = False
+# REFERER_ENABLED = False
 
 # ============================================================================
 # MONITORING & ALERTS (Optional - Add integrations)

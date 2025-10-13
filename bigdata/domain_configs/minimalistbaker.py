@@ -5,7 +5,7 @@ Auto-generated configuration file
 Notes: use custom parser
 """
 
-from bigdata.domain_configs.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
+from bigdata.domain_configs.domain_config import DomainConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
 
 MINIMALISTBAKER_COM_CONFIG = DomainConfig(
@@ -13,8 +13,8 @@ MINIMALISTBAKER_COM_CONFIG = DomainConfig(
     render_engine=RenderEngine.SCRAPY,
 
     # Navigation
-    article_links_xpath="//article",
-    pagination_xpath="//li[@class='pagination-next']",
+    article_target_xpaths="//article",
+    navigation_xpaths="//li[@class='pagination-next']",
     max_pages=None,
     custom_parser=None,
     # Content extraction

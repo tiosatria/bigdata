@@ -221,8 +221,8 @@ def add(domain, prompt):
     config = DomainConfig(
         domain=domain,
         render_engine=RenderEngine(render_engine),
-        pagination_xpath=pagination_xpath,
-        article_links_xpath=article_links_xpath,
+        navigation_xpaths=pagination_xpath,
+        article_target_xpaths=article_links_xpath,
         max_pages=max_pages,
         title_xpath=title_xpath,
         body_xpath=body_xpath,
@@ -319,10 +319,10 @@ def validate(domain):
         click.echo(f"  Language: {config.lang}")
         click.echo(f"\n  Title XPath: {config.title_xpath}")
         click.echo(f"  Body XPath: {config.body_xpath}")
-        click.echo(f"  Article Links: {config.article_links_xpath}")
+        click.echo(f"  Article Links: {config.article_target_xpaths}")
 
-        if config.pagination_xpath:
-            click.echo(f"  Pagination: {config.pagination_xpath}")
+        if config.navigation_xpaths:
+            click.echo(f"  Pagination: {config.navigation_xpaths}")
             if config.max_pages:
                 click.echo(f"  Max Pages: {config.max_pages}")
 
@@ -748,18 +748,18 @@ def generate_config_file(domain, config):
     ],"""
 
     # Format article_links_xpath
-    if isinstance(config.article_links_xpath, Iterable):
+    if isinstance(config.article_target_xpaths, Iterable):
         article_links_str = "[\n        " + ",\n        ".join(
-            [f'"{x}"' for x in config.article_links_xpath]) + "\n    ]"
+            [f'"{x}"' for x in config.article_target_xpaths]) + "\n    ]"
     else:
-        article_links_str = f'"{config.article_links_xpath}"'
+        article_links_str = f'"{config.article_target_xpaths}"'
 
     # Format pagination_xpath
-    if config.pagination_xpath:
-        if isinstance(config.pagination_xpath, Iterable):
-            pagination_str = "[\n        " + ",\n        ".join([f'"{x}"' for x in config.pagination_xpath]) + "\n    ]"
+    if config.navigation_xpaths:
+        if isinstance(config.navigation_xpaths, Iterable):
+            pagination_str = "[\n        " + ",\n        ".join([f'"{x}"' for x in config.navigation_xpaths]) + "\n    ]"
         else:
-            pagination_str = f'"{config.pagination_xpath}"'
+            pagination_str = f'"{config.navigation_xpaths}"'
     else:
         pagination_str = 'None'
 

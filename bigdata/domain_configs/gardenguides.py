@@ -2,10 +2,9 @@
 from bigdata.domain_configs.domain_config import DomainConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
 
-CHOWHOUND_COM_CONFIG = DomainConfig(
-    domain="chowhound.com",
+GARDENGUIDES_COM_CONFIG = DomainConfig(
+    domain="gardenguides.com",
     render_engine=RenderEngine.SCRAPY,
-
     # Navigation
     article_target_xpaths="//li[@class='article-item']",
     navigation_xpaths=["//a[@id='next-page']",
@@ -17,7 +16,7 @@ CHOWHOUND_COM_CONFIG = DomainConfig(
     body_xpath="//article",
     tags_xpath="//ul[@class='breadcrumbs']/li/a/text()",
     author_xpath="//a[@class='byline-author']/text()",
-    post_date_xpath="//span[@class='byline-timestamp']//time/text()",
+    post_date_xpath="//time/text()",
     # Metadata
     lang="en",
     active=True,
@@ -25,4 +24,4 @@ CHOWHOUND_COM_CONFIG = DomainConfig(
 )
 
 # Auto-register
-DomainConfigRegistry.register(CHOWHOUND_COM_CONFIG)
+DomainConfigRegistry.register(GARDENGUIDES_COM_CONFIG)

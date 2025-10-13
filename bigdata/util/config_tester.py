@@ -98,7 +98,7 @@ class ConfigTester:
             results['article_links'] = self._test_article_links(tree, url, verbose)
 
             # Test pagination (if configured)
-            if self.config.pagination_xpath:
+            if self.config.navigation_xpaths:
                 results['pagination'] = self._test_pagination(tree, url, verbose)
 
         elif page_type == 'article':
@@ -122,7 +122,7 @@ class ConfigTester:
             # Unknown page type - test everything
             results['article_links'] = self._test_article_links(tree, url, verbose)
 
-            if self.config.pagination_xpath:
+            if self.config.navigation_xpaths:
                 results['pagination'] = self._test_pagination(tree, url, verbose)
 
             results['title'] = self._test_title(tree, verbose)
@@ -229,8 +229,8 @@ class ConfigTester:
 
         # Check for article links
         has_article_links = False
-        if self.config.article_links_xpath:
-            has_article_links = bool(tree.xpath(self.config.article_links_xpath))
+        if self.config.article_target_xpaths:
+            has_article_links = bool(tree.xpath(self.config.article_target_xpaths))
 
         # If has both title and substantial body, likely an article
         if has_title and has_body:
@@ -250,7 +250,7 @@ class ConfigTester:
         """Test article links extraction"""
         try:
             # Handle multiple XPaths
-            article_xpaths = self.config.article_links_xpath if isinstance(self.config.article_links_xpath, list) else [self.config.article_links_xpath]
+            article_xpaths = self.config.article_target_xpaths if isinstance(self.config.article_target_xpaths, list) else [self.config.article_target_xpaths]
 
             all_links = []
             xpath_results = {}
@@ -312,7 +312,7 @@ class ConfigTester:
     def _test_pagination(self, tree, base_url: str, verbose: bool) -> Dict[str, Any]:
         """Test pagination links extraction"""
         try:
-            links = tree.xpath(self.config.pagination_xpath)
+            links = tree.xpath(self.config.navigation_xpaths)
 
             if not links:
                 return {

@@ -137,7 +137,7 @@ class TestSpiderSimulator:
                 self.stats['article_links_found'] += len(data)
 
         # Test pagination
-        if self.config.pagination_xpath:
+        if self.config.navigation_xpaths:
             pagination_result = tester._test_pagination(tree, url, verbose)
             result['pagination'] = pagination_result
 
@@ -193,7 +193,7 @@ class TestSpiderSimulator:
         # Test everything
         result['article_links'] = tester._test_article_links(tree, url, verbose)
 
-        if self.config.pagination_xpath:
+        if self.config.navigation_xpaths:
             result['pagination'] = tester._test_pagination(tree, url, verbose)
 
         result['title'] = tester._test_title(tree, verbose)
