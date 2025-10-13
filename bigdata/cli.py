@@ -1,11 +1,15 @@
+from typing import Iterable
+
 import click
 import os
 import sys
 from pathlib import Path
 
-from .domain_configs import DomainConfigRegistry
-from .domain_configs.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
-from .util.config_tester import ConfigTester
+from bigdata.domain_configs import DomainConfigRegistry
+from bigdata.domain_configs.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, \
+    RenderEngine, OBVIOUS_EXCLUDES
+from bigdata.util.config_tester import ConfigTester
+from bigdata.util.test_spider import TestSpiderSimulator
 
 
 @click.group()
@@ -16,17 +20,17 @@ def cli():
 
 @cli.command()
 @click.argument('domain')
-@click.option('--prompt', '-i', is_flag=True, help='prompts generation mode')
-def add(domain, interactive):
+@click.option('--prompt', '-i', is_flag=True, help='Interactive prompts generation mode')
+def add(domain, prompt):
     """Add a new domain configuration"""
 
-    if not interactive:
+    if not prompt:
         # Quick add with template
         from bigdata.util.config_generator import generate_config_template
-        output = f"domain_configs/{domain.replace('.', '_')}.py"
+        output = f"bigdata/domain_configs/{domain.replace('.', '_')}.py"
         generate_config_template(domain, output)
         click.echo(f"✓ Template created: {output}")
-        click.echo(f"  Edit the file and run: python cli.py test {domain}")
+        click.echo(f"  Edit the file and run: python -m bigdata.cli test {domain}")
         return
 
     click.echo(f"\n{'=' * 60}")
@@ -37,14 +41,11 @@ def add(domain, interactive):
     click.echo("📋 REQUIRED FIELDS")
     click.echo("-" * 60)
 
-    article_str:str = click.prompt(
-        "Article links XPath, can specify multiple, seperated by 'comma'",
+    article_str = click.prompt(
+        "Article links XPath (comma-separated for multiple)",
         default="//article//a/@href"
     )
-
-    article_str.split(",")
-
-    article_links_xpath =
+    article_links_xpath = [x.strip() for x in article_str.split(",") if x.strip()]
 
     title_xpath = click.prompt(
         "Title XPath",
@@ -60,11 +61,15 @@ def add(domain, interactive):
     click.echo("\n📝 OPTIONAL FIELDS (press Enter to skip)")
     click.echo("-" * 60)
 
-    pagination_xpath = click.prompt(
-        "Pagination links XPath, can specify multiple, seperated by 'comma'",
+    pagination_str = click.prompt(
+        "Pagination links XPath (comma-separated for multiple)",
         default="",
         show_default=False
     ) or None
+
+    pagination_xpath = None
+    if pagination_str:
+        pagination_xpath = [x.strip() for x in pagination_str.split(",") if x.strip()]
 
     max_pages = click.prompt(
         "Max pagination depth (0 for unlimited)",
@@ -245,22 +250,22 @@ def add(domain, interactive):
         sys.exit(1)
 
     # Save configuration
-    config_dir = Path("domain_configs")
-    config_dir.mkdir(exist_ok=True)
+    config_dir = Path("bigdata/domain_configs")
+    config_dir.mkdir(parents=True, exist_ok=True)
 
     config_file = config_dir / f"{domain.replace('.', '_')}.py"
 
     # Generate Python file
     config_content = generate_config_file(domain, config)
 
-    with open(config_file, 'w') as f:
+    with open(config_file, 'w', encoding='utf-8') as f:
         f.write(config_content)
 
     click.echo(f"\n✓ Configuration saved: {config_file}")
 
     # Prompt for testing
     if click.confirm("\nTest configuration now?", default=True):
-        _run_config_test(domain, verbose=True)
+        _run_config_test(domain, None, True)
 
 
 @cli.command()
@@ -337,28 +342,27 @@ def validate(domain):
 
 @cli.command()
 @click.argument('domain')
-@click.option('--url', '-u', help='Specific URL to test (listing page or article page)')
+@click.option('--url', '-u', help='Specific URL to test')
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output')
 @click.option('--article-url', help='Test with a specific article URL')
 @click.option('--listing-url', help='Test with a specific listing URL')
-def test(domain, url, verbose, article_url, listing_url):
+@click.option('--simulate-spider', is_flag=True, help='Run full spider simulation with output file')
+@click.option('--output-dir', help='Output directory for spider simulation')
+def test(domain, url, verbose, article_url, listing_url, simulate_spider, output_dir):
     """Test configuration by fetching sample pages
 
     Examples:
-        # Test homepage (auto-detect page type)
-        python cli.py test example.com
+        # Test homepage
+        python -m bigdata.cli test example.com
 
-        # Test specific URL
-        python cli.py test example.com --url https://example.com/articles
+        # Test specific URLs
+        python -m bigdata.cli test example.com --listing-url https://example.com/articles --article-url https://example.com/article-1
 
-        # Test article page
-        python cli.py test example.com --article-url https://example.com/article-1
-
-        # Test listing page
-        python cli.py test example.com --listing-url https://example.com/articles
+        # Full spider simulation
+        python -m bigdata.cli test example.com --simulate-spider --listing-url https://example.com/articles --article-url https://example.com/article-1 -v
     """
 
-    # Determine which URL to test
+    # Determine which URLs to test
     test_urls = []
 
     if article_url:
@@ -371,32 +375,35 @@ def test(domain, url, verbose, article_url, listing_url):
         test_urls.append(('auto', url))
 
     if not test_urls:
-        # Default: test homepage
         test_urls.append(('auto', None))
 
-    # Run tests for each URL
-    all_passed = True
+    # Use spider simulator if requested
+    if simulate_spider:
+        _run_spider_simulation(domain, test_urls, verbose, output_dir)
+    else:
+        # Run standard tests
+        all_passed = True
 
-    for page_type, test_url in test_urls:
-        if len(test_urls) > 1:
-            click.echo(f"\n{'=' * 60}")
-            click.echo(f"Testing {page_type} page: {test_url or 'homepage'}")
-            click.echo(f"{'=' * 60}")
+        for page_type, test_url in test_urls:
+            if len(test_urls) > 1:
+                click.echo(f"\n{'=' * 60}")
+                click.echo(f"Testing {page_type} page: {test_url or 'homepage'}")
+                click.echo(f"{'=' * 60}")
 
-        result = _run_config_test(domain, test_url, verbose, expected_type=page_type)
+            result = _run_config_test(domain, test_url, verbose, expected_type=page_type)
 
-        if not result:
-            all_passed = False
+            if not result:
+                all_passed = False
 
-    if not all_passed:
-        sys.exit(1)
+        if not all_passed:
+            sys.exit(1)
 
 
 @cli.command()
 @click.argument('domain')
 def edit(domain):
     """Edit an existing domain configuration"""
-    config_file = Path(f"domain_configs/{domain.replace('.', '_')}.py")
+    config_file = Path(f"bigdata/domain_configs/{domain.replace('.', '_')}.py")
 
     if not config_file.exists():
         click.echo(f"❌ Configuration file not found: {config_file}")
@@ -425,7 +432,7 @@ def edit(domain):
 @click.argument('domain')
 def delete(domain):
     """Delete a domain configuration"""
-    config_file = Path(f"domain_configs/{domain.replace('.', '_')}.py")
+    config_file = Path(f"bigdata/domain_configs/{domain.replace('.', '_')}.py")
 
     if not config_file.exists():
         click.echo(f"❌ Configuration file not found: {config_file}")
@@ -456,10 +463,10 @@ def toggle(domain, active):
     config.active = active
 
     # Update the config file
-    config_file = Path(f"domain_configs/{domain.replace('.', '_')}.py")
+    config_file = Path(f"bigdata/domain_configs/{domain.replace('.', '_')}.py")
     config_content = generate_config_file(domain, config)
 
-    with open(config_file, 'w') as f:
+    with open(config_file, 'w', encoding='utf-8') as f:
         f.write(config_content)
 
     status = "enabled" if active else "disabled"
@@ -525,7 +532,7 @@ def _run_config_test(domain, test_url=None, verbose=False, expected_type='auto')
 
     if not config:
         click.echo(f"❌ No configuration found for {domain}")
-        sys.exit(1)
+        return False
 
     click.echo(f"\n{'=' * 60}")
     click.echo(f"Testing configuration for: {domain}")
@@ -565,7 +572,18 @@ def _run_config_test(domain, test_url=None, verbose=False, expected_type='auto')
         click.echo(f"{status} {test_name}: {result['message']}")
 
         if verbose and result.get('data'):
-            if isinstance(result['data'], list):
+            if isinstance(result['data'], dict):
+                # Handle dict data (like xpath_results)
+                for key, value in result['data'].items():
+                    if key == 'xpath_results':
+                        click.echo(f"   XPath results:")
+                        for xpath, count in value.items():
+                            click.echo(f"     '{xpath}': {count}")
+                    elif key == 'sample_links' and isinstance(value, Iterable):
+                        click.echo(f"   Sample links:")
+                        for link in value[:3]:
+                            click.echo(f"     - {link}")
+            elif isinstance(result['data'], Iterable):
                 click.echo(f"   Data ({len(result['data'])} items):")
                 for item in result['data'][:3]:
                     click.echo(f"     - {item}")
@@ -590,6 +608,105 @@ def _run_config_test(domain, test_url=None, verbose=False, expected_type='auto')
         if config.render_engine.value == 'scrapy':
             click.echo("  - Try switching to Playwright if content is JavaScript-rendered")
         return False
+
+
+def _run_spider_simulation(domain, test_urls, verbose, output_dir=None):
+    """Run full spider simulation with output file generation"""
+    DomainConfigRegistry.load_all_configs()
+    config = DomainConfigRegistry.get(domain)
+
+    if not config:
+        click.echo(f"❌ No configuration found for {domain}")
+        sys.exit(1)
+
+    # Validate first
+    is_valid, errors = config.validate()
+    if not is_valid:
+        click.echo("\n❌ Configuration validation failed:")
+        for error in errors:
+            click.echo(f"  - {error}")
+        sys.exit(1)
+
+    click.echo(f"\n{'=' * 60}")
+    click.echo(f"🕷️  Spider Simulation Test")
+    click.echo(f"{'=' * 60}")
+    click.echo(f"Domain: {domain}")
+    click.echo(f"Render engine: {config.render_engine.value}")
+    click.echo(f"Test URLs: {len(test_urls)}")
+
+    # Prepare test URLs
+    test_specs = []
+    for page_type, test_url in test_urls:
+        if not test_url:
+            test_url = f"https://{domain}"
+        test_specs.append({
+            'type': page_type,
+            'url': test_url
+        })
+
+    # Run simulation
+    simulator = TestSpiderSimulator(config, output_dir=output_dir)
+
+    try:
+        summary = simulator.run_test(test_specs, verbose=verbose)
+
+        # Display summary
+        click.echo(f"\n{'=' * 60}")
+        click.echo("📊 Test Summary")
+        click.echo(f"{'=' * 60}")
+        click.echo(f"URLs tested: {summary['stats']['urls_tested']}")
+        click.echo(f"Articles extracted: {summary['stats']['articles_extracted']}")
+        click.echo(f"Article links found: {summary['stats']['article_links_found']}")
+        click.echo(f"Pagination links found: {summary['stats']['pagination_found']}")
+
+        if summary['stats']['errors']:
+            click.echo(f"\n⚠️  Errors: {len(summary['stats']['errors'])}")
+            for error in summary['stats']['errors']:
+                click.echo(f"  - {error}")
+
+        # Display assertions
+        click.echo(f"\n{'=' * 60}")
+        if summary['assertions']['passed']:
+            click.echo("✅ All Assertions Passed")
+        else:
+            click.echo("❌ Some Assertions Failed")
+        click.echo(f"{'=' * 60}")
+
+        for check in summary['assertions']['checks']:
+            status = "✓" if check['passed'] else "✗"
+            click.echo(f"{status} {check['name']}")
+            click.echo(f"   Expected: {check['expected']}")
+            click.echo(f"   Actual: {check['actual']}")
+
+        # Show output file
+        if summary['stats']['articles_extracted'] > 0:
+            click.echo(f"\n📄 Output file: {summary['output_file']}")
+            click.echo(f"   Articles saved: {summary['stats']['articles_extracted']}")
+
+            # Show sample
+            articles = simulator.read_output()
+            if articles and verbose:
+                click.echo(f"\n📰 Sample article:")
+                sample = articles[0]
+                click.echo(f"   Title: {sample.get('title', 'N/A')[:100]}")
+                click.echo(f"   Body length: {sample.get('body_length', 0)} chars")
+                click.echo(f"   Author: {sample.get('author', 'N/A')}")
+                click.echo(f"   Tags: {sample.get('tags', 'N/A')}")
+
+        # Return status
+        if summary['assertions']['passed']:
+            click.echo(f"\n✅ Spider simulation completed successfully!")
+            return True
+        else:
+            click.echo(f"\n❌ Spider simulation completed with failures")
+            sys.exit(1)
+
+    except Exception as e:
+        click.echo(f"\n❌ Spider simulation failed: {e}")
+        if verbose:
+            import traceback
+            traceback.print_exc()
+        sys.exit(1)
 
 
 def generate_config_file(domain, config):
@@ -621,7 +738,7 @@ def generate_config_file(domain, config):
         use_stealth_mode={config.bot_protection.use_stealth_mode}
     ),"""
 
-    custom_excludes = [x for x in config.exclude_xpaths if x not in config.exclude_xpaths[:len(config.exclude_xpaths)]]
+    custom_excludes = [x for x in config.exclude_xpaths if x not in OBVIOUS_EXCLUDES]
     exclude_str = ""
     if custom_excludes:
         exclude_list = ",\n        ".join([f'"{x}"' for x in custom_excludes])
@@ -630,6 +747,22 @@ def generate_config_file(domain, config):
         {exclude_list}
     ],"""
 
+    # Format article_links_xpath
+    if isinstance(config.article_links_xpath, Iterable):
+        article_links_str = "[\n        " + ",\n        ".join(
+            [f'"{x}"' for x in config.article_links_xpath]) + "\n    ]"
+    else:
+        article_links_str = f'"{config.article_links_xpath}"'
+
+    # Format pagination_xpath
+    if config.pagination_xpath:
+        if isinstance(config.pagination_xpath, Iterable):
+            pagination_str = "[\n        " + ",\n        ".join([f'"{x}"' for x in config.pagination_xpath]) + "\n    ]"
+        else:
+            pagination_str = f'"{config.pagination_xpath}"'
+    else:
+        pagination_str = 'None'
+
     content = f'''"""
 Configuration for {domain}
 Auto-generated configuration file
@@ -637,7 +770,7 @@ Auto-generated configuration file
 Notes: {config.notes}
 """
 
-from bigdata.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
+from bigdata.domain_configs.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
 
 {domain.replace('.', '_').upper()}_CONFIG = DomainConfig(
@@ -645,8 +778,8 @@ from bigdata.domain_configs import DomainConfigRegistry
     render_engine=RenderEngine.{config.render_engine.name},
 
     # Navigation
-    article_links_xpath="{config.article_links_xpath}",
-    pagination_xpath={f'"{config.pagination_xpath}"' if config.pagination_xpath else 'None'},
+    article_links_xpath={article_links_str},
+    pagination_xpath={pagination_str},
     max_pages={config.max_pages if config.max_pages else 'None'},
 
     # Content extraction

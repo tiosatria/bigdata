@@ -1,15 +1,14 @@
+import json
 from datetime import datetime
 from urllib.parse import urlparse
 import random
 import logging
-
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy_redis.spiders import RedisCrawlSpider
 from scrapy.linkextractors import LinkExtractor
 from scrapy.http import Request
 from scrapy.exceptions import IgnoreRequest
 from twisted.internet.error import TimeoutError, TCPTimedOutError
-
 from bigdata.domain_configs import DomainConfigRegistry
 from bigdata.domain_configs.domain_config import RenderEngine
 from bigdata.items import ArticleItem
@@ -32,7 +31,7 @@ class ArticleSpider(RedisCrawlSpider):
 
     custom_settings = {
         'RETRY_ENABLED': True,
-        'RETRY_TIMES': 5,
+        'RETRY_TIMES': 3,
         'RETRY_HTTP_CODES': [403, 429, 500, 502, 503, 504, 520, 524],
         'RETRY_PRIORITY_ADJUST': 10,
     }
@@ -497,3 +496,43 @@ class ArticleSpider(RedisCrawlSpider):
                 exc_info=True
             )
             # Don't re-queue parsing errors - likely a config issue
+
+    def parse_bonappetit(self, response, config):
+        title = None
+        tags = []
+        author = None
+        post_date = None
+        json_obj = {}  # Initialize to avoid UnboundLocalError in the yield statement
+
+        try:
+            # The XPath should select the text content of the script tag
+            json_string = response.xpath(config.body_xpath).get()
+            json_obj = json.loads(json_string)
+
+            title = json_obj.get("headline")  # "headline" is more specific than "name" or "title"
+            tags = json_obj.get("keywords", [])  # .get() with a default value is safer
+
+            # Author is a list of objects, so we access the first item's 'name'
+            author_list = json_obj.get("author", [])
+            if author_list:
+                author = author_list[0].get("name")
+
+            post_date = json_obj.get("datePublished")
+
+        except (json.JSONDecodeError, AttributeError, IndexError) as e:
+            self.logger.error(f"Failed to parse JSON from {response.url}. Error: {e}")
+
+        self.logger.info(f"✓ Successfully scraped: {title[:50]}... from {config.domain}")
+
+        yield ArticleItem(
+            url=response.url,
+            source_domain=config.domain,
+            title=title,
+            tags=tags,
+            author=author,
+            post_date=post_date,
+            body=json_obj,
+            body_type="json",
+            lang=config.lang,
+            timestamp=datetime.now()
+        )

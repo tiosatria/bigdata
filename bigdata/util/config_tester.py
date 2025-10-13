@@ -9,6 +9,7 @@ from lxml import html, etree
 from typing import Dict, Any, Optional
 import logging
 from urllib.parse import urljoin, urlparse
+import sys
 
 class ConfigTester:
     """Test domain configurations with realistic simulation"""
@@ -248,31 +249,57 @@ class ConfigTester:
     def _test_article_links(self, tree, base_url: str, verbose: bool) -> Dict[str, Any]:
         """Test article links extraction"""
         try:
-            links = tree.xpath(self.config.article_links_xpath)
+            # Handle multiple XPaths
+            article_xpaths = self.config.article_links_xpath if isinstance(self.config.article_links_xpath, list) else [self.config.article_links_xpath]
 
-            if not links:
+            all_links = []
+            xpath_results = {}
+
+            for xpath in article_xpaths:
+                if not xpath:
+                    continue
+
+                try:
+                    links = tree.xpath(xpath)
+                    xpath_results[xpath] = len(links)
+                    all_links.extend(links)
+
+                    if verbose:
+                        print(f"  XPath '{xpath}': found {len(links)} links")
+                except Exception as e:
+                    xpath_results[xpath] = f"Error: {e}"
+                    if verbose:
+                        print(f"  XPath '{xpath}': ERROR - {e}")
+
+            if not all_links:
                 return {
                     'passed': False,
-                    'message': f'No article links found with XPath: {self.config.article_links_xpath}',
-                    'data': None
+                    'message': f'No article links found. Tried {len(article_xpaths)} XPath(s)',
+                    'data': xpath_results
                 }
 
-            # Convert to absolute URLs
+            # Convert to absolute URLs and deduplicate
             absolute_links = []
-            for link in links[:5]:  # Test first 5
+            seen = set()
+            for link in all_links:
                 absolute_url = urljoin(base_url, link)
-                absolute_links.append(absolute_url)
+                if absolute_url not in seen:
+                    absolute_links.append(absolute_url)
+                    seen.add(absolute_url)
 
             if verbose:
-                print(f"\n📰 Found {len(links)} article links")
+                print(f"\n📰 Found {len(absolute_links)} unique article links (from {len(all_links)} total)")
                 print("Sample links:")
                 for link in absolute_links[:3]:
                     print(f"  - {link}")
 
             return {
                 'passed': True,
-                'message': f'Found {len(links)} article links',
-                'data': absolute_links[:5]
+                'message': f'Found {len(absolute_links)} unique article links from {len(article_xpaths)} XPath(s)',
+                'data': {
+                    'xpath_results': xpath_results,
+                    'sample_links': absolute_links[:5]
+                }
             }
 
         except Exception as e:
