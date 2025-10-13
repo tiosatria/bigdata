@@ -91,7 +91,7 @@ PLAYWRIGHT_BROWSER_TYPE = "chromium"
 PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 60000
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
-    "headless": True,  # Set to True for production
+    "headless": False,  # Set to True for production
     "args": [
         "--disable-blink-features=AutomationControlled",
         "--disable-dev-shm-usage",

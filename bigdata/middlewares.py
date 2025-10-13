@@ -84,9 +84,9 @@ class SmartRetryMiddleware:
         if request.meta.get('dont_retry', False):
             return response
 
-        # Check if we should retry based on status code
         if response.status in self.retry_http_codes:
             return self._retry(request, response.status, spider) or response
+
 
         return response
 

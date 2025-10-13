@@ -2,27 +2,27 @@
 Configuration for bonappetit.com
 Auto-generated configuration file
 
-Notes: 
+Notes: use custom parser
 """
 
-from bigdata.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
+from bigdata.domain_configs.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
 
-BONAPPETIT_COM_CONFIG = DomainConfig(
-    domain="bonappetit.com",
+LOVEANDLEMONS_COM_CONFIG = DomainConfig(
+    domain="loveandlemons.com",
     render_engine=RenderEngine.SCRAPY,
 
     # Navigation
-    article_links_xpath="['//div[contains(@class', "'StackedRatingsCardWrapper')]"]",
-    pagination_xpath="['//a/span[contains(text()', 'Next)]']",
+    article_links_xpath="//li",
+    pagination_xpath=None,
     max_pages=None,
-
+    custom_parser=None,
     # Content extraction
-    title_xpath="//h1/text()",
-    body_xpath="//div[contains(@class,'recipe-body')]",
-    tags_xpath="//span[contains(@class,'rubric__name')]/text()",
+    title_xpath="//h1/a/text()",
+    body_xpath="//div[@class='entry-content entry-content-single']",
+    tags_xpath="//div[@class='lnl-tags']/a/text()",
     author_xpath=None,
-    post_date_xpath="//time/text()",
+    post_date_xpath=None,
     post_date_format=None,
 
     # Network settings
@@ -35,7 +35,7 @@ BONAPPETIT_COM_CONFIG = DomainConfig(
         priority_boost=10
     ),
     bot_protection=BotProtectionConfig(
-        enabled=True,
+        enabled=False,
         use_stealth_mode=True
     ),
 
@@ -46,4 +46,4 @@ BONAPPETIT_COM_CONFIG = DomainConfig(
 )
 
 # Auto-register
-DomainConfigRegistry.register(BONAPPETIT_COM_CONFIG)
+DomainConfigRegistry.register(LOVEANDLEMONS_COM_CONFIG)

@@ -15,13 +15,13 @@ from bigdata.items import ArticleItem
 from lxml import etree, html
 
 
-class ArticleSpider(RedisCrawlSpider):
+class TestSpider(RedisCrawlSpider):
     """
     Production-grade article spider with comprehensive error handling
     """
 
-    name = 'article'
-    redis_key = 'article:start_urls'
+    name = 'test'
+    redis_key = 'test:start_urls'
 
     # Track pagination depth per domain
     pagination_depth = {}
@@ -34,6 +34,7 @@ class ArticleSpider(RedisCrawlSpider):
         'RETRY_TIMES': 3,
         'RETRY_HTTP_CODES': [403, 429, 500, 502, 503, 504, 520, 524],
         'RETRY_PRIORITY_ADJUST': 10,
+        'COOKIES_ENABLED' : False
     }
 
     # Rules will be generated dynamically
@@ -98,8 +99,8 @@ class ArticleSpider(RedisCrawlSpider):
                             allow_domains=[domain],
                             restrict_xpaths=config.article_links_xpath
                         ),
-                        callback='parse_item',
                         follow=True,
+                        callback='parse_item',
                         process_request='process_article_request',
                         errback='errback_httpbin'
                     )
@@ -129,15 +130,15 @@ class ArticleSpider(RedisCrawlSpider):
 
         self.pagination_depth[depth_key] = current_depth + 1
 
+
         # Apply configuration
         request = self._apply_domain_config(request, config)
-
         request.meta['pagination_depth'] = current_depth + 1
         request.meta['is_pagination'] = True
         request.meta['domain'] = domain
         request.errback = self.errback_httpbin
 
-        self.logger.debug(f"Processing pagination: {request.url} (depth: {current_depth + 1})")
+        self.logger.info(f"Processing pagination: {request.url} (depth: {current_depth + 1})")
 
         return request
 
