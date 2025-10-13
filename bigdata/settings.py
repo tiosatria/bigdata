@@ -136,13 +136,13 @@ DOWNLOADER_MIDDLEWARES = {
     # Disable default retry middleware (we use custom)
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
     # Custom middlewares (lower number = higher priority)
-    'bigdata.middlewares.ProxyMiddleware': 110,
-    'bigdata.middlewares.RequestPriorityMiddleware': 120,
-    'bigdata.middlewares.DownloadDelayMiddleware': 200,
-    'bigdata.middlewares.SmartRetryMiddleware': 550,
+    # 'bigdata.middlewares.ProxyMiddleware': 110,
+    # 'bigdata.middlewares.RequestPriorityMiddleware': 120,
+    # 'bigdata.middlewares.DownloadDelayMiddleware': 200,
+    # 'bigdata.middlewares.SmartRetryMiddleware': 550,
     # 'bigdata.middlewares.BotProtectionDetectionMiddleware': 560,
-    'bigdata.middlewares.ResponseValidationMiddleware': 570,
-    'bigdata.middlewares.StatisticsMiddleware': 900,
+    # 'bigdata.middlewares.ResponseValidationMiddleware': 570,
+    # 'bigdata.middlewares.StatisticsMiddleware': 900,
     # Random user agent (from library)
     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
 }
