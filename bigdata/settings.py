@@ -92,7 +92,7 @@ DOWNLOAD_HANDLERS = {
 }
 
 PLAYWRIGHT_BROWSER_TYPE = "chromium"
-PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 30000
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 60000
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,  # Set to True for production
@@ -192,8 +192,8 @@ LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 # TIMEOUTS
 # ============================================================================
 
-DOWNLOAD_TIMEOUT = 30
-DNS_TIMEOUT = 10
+DOWNLOAD_TIMEOUT = 60
+DNS_TIMEOUT = 30
 
 # ============================================================================
 # CONTENT VALIDATION
@@ -247,8 +247,8 @@ FEED_EXPORT_INDENT = 2
 # DEPTH LIMIT
 # ============================================================================
 
-DEPTH_LIMIT = 10  # Maximum depth to crawl
-DEPTH_PRIORITY = 1  # Adjust priority by depth
+# DEPTH_LIMIT = 10  # Maximum depth to crawl
+# DEPTH_PRIORITY = 1  # Adjust priority by depth
 DEPTH_STATS_VERBOSE = True
 
 # ============================================================================
