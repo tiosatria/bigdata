@@ -19,17 +19,14 @@ NEWSPIDER_MODULE = "bigdata.spiders"
 # Enables scheduling storing requests queue in redis
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # Don't cleanup redis queues, allows to pause/resume crawls
+SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
+SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
 # Ensure all spiders share same duplicates filter through redis
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 # Redis Connection URL
 REDIS_URL = 'redis://100.109.89.55:6379'
-
-# Redis key TTL (Time To Live) in seconds - helps prevent memory bloat
-REDIS_START_URLS_BATCH_SIZE = 100  # Batch size for reading start URLs
-REDIS_ITEMS_KEY = '%(spider)s:items'
-REDIS_ITEMS_SERIALIZER = 'json'
 
 # ============================================================================
 # ROBOTS.TXT
@@ -136,13 +133,13 @@ DOWNLOADER_MIDDLEWARES = {
     # Disable default retry middleware (we use custom)
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
     # Custom middlewares (lower number = higher priority)
-    # 'bigdata.middlewares.ProxyMiddleware': 110,
-    # 'bigdata.middlewares.RequestPriorityMiddleware': 120,
-    # 'bigdata.middlewares.DownloadDelayMiddleware': 200,
-    # 'bigdata.middlewares.SmartRetryMiddleware': 550,
+    'bigdata.middlewares.ProxyMiddleware': 110,
+    'bigdata.middlewares.RequestPriorityMiddleware': 120,
+    'bigdata.middlewares.DownloadDelayMiddleware': 200,
+    'bigdata.middlewares.SmartRetryMiddleware': 550,
     # 'bigdata.middlewares.BotProtectionDetectionMiddleware': 560,
-    # 'bigdata.middlewares.ResponseValidationMiddleware': 570,
-    # 'bigdata.middlewares.StatisticsMiddleware': 900,
+    'bigdata.middlewares.ResponseValidationMiddleware': 570,
+    'bigdata.middlewares.StatisticsMiddleware': 900,
     # Random user agent (from library)
     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
 }
@@ -249,13 +246,13 @@ FEED_EXPORT_INDENT = 2
 
 # DEPTH_LIMIT = 10  # Maximum depth to crawl
 # DEPTH_PRIORITY = 1  # Adjust priority by depth
-DEPTH_STATS_VERBOSE = True
+# DEPTH_STATS_VERBOSE = True
 
 # ============================================================================
 # DUPLICATION FILTERING
 # ============================================================================
 
-DUPEFILTER_DEBUG = False
+# DUPEFILTER_DEBUG = False
 
 # ============================================================================
 # REDIRECT SETTINGS
@@ -297,4 +294,4 @@ REFERER_ENABLED = False
 # Add any additional custom settings here
 
 # Enable stats collection
-STATS_CLASS = 'scrapy.statscollectors.MemoryStatsCollector'
+# STATS_CLASS = 'scrapy.statscollectors.MemoryStatsCollector'
