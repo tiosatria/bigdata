@@ -81,7 +81,7 @@ class ArticleSpider(RedisCrawlSpider):
                             restrict_xpaths=config.pagination_xpath
                         ),
                         follow=True,
-                        process_request='process_pagination_request',
+                        # process_request='process_pagination_request',
                         errback='errback_httpbin'
                     )
                 )
@@ -102,7 +102,7 @@ class ArticleSpider(RedisCrawlSpider):
                             restrict_xpaths=config.article_links_xpath
                         ),
                         callback='parse_item',
-                        process_request='process_article_request',
+                        # process_request='process_article_request',
                         errback='errback_httpbin'
                     )
                 )

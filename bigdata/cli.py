@@ -37,10 +37,14 @@ def add(domain, interactive):
     click.echo("📋 REQUIRED FIELDS")
     click.echo("-" * 60)
 
-    article_links_xpath = click.prompt(
+    article_str:str = click.prompt(
         "Article links XPath, can specify multiple, seperated by 'comma'",
         default="//article//a/@href"
     )
+
+    article_str.split(",")
+
+    article_links_xpath =
 
     title_xpath = click.prompt(
         "Title XPath",
