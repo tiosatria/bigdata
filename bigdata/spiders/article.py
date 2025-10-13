@@ -96,7 +96,6 @@ class ArticleSpider(RedisCrawlSpider):
         return urlparse(url).netloc.replace('www.', '')
 
     def _process_request(self, request, response):
-        """Process pagination requests with depth tracking"""
         domain = self.get_domain(request.url)
         config = DomainConfigRegistry.get(domain)
         if not config:

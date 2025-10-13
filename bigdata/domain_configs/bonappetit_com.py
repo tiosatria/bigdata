@@ -11,11 +11,11 @@ from bigdata.domain_configs import DomainConfigRegistry
 BONAPPETIT_COM_CONFIG = DomainConfig(
     domain="bonappetit.com",
     render_engine=RenderEngine.SCRAPY,
-
     # Navigation
     article_target_xpaths="//div[contains(@class,'StackedRatingsCardWrapper')]",
     navigation_xpaths=[
         "//div[@class='PaginationButtonWrapper-dDcSxp iwYgIg']",
+        "//a[contains(@class,'NavigationInternalLink')]",
         "//li[@class='NavigationListItemWrapper-cNhNwu dDhky navigation__list-item']"
     ],
     max_pages=None,
