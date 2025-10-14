@@ -4,8 +4,15 @@
 # commonly used. You can find more settings consulting the documentation:
 #
 #     https://docs.scrapy.org/en/latest/topics/settings.html
-from bigdata.middlewares import ProxyMiddleware
+from scrapy.settings.default_settings import FEEDS, TELNETCONSOLE_PASSWORD
+
+from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
 from bigdata.pipelines import JSONExportPipeline
+import logging
+import scrapy.utils.reactor
+scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSelectorReactor")
+
+logging.getLogger("scrapy_user_agents.user_agent_picker").setLevel(logging.ERROR)
 
 BOT_NAME = "google"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -13,21 +20,26 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 SPIDER_MODULES = ["bigdata.spiders"]
 NEWSPIDER_MODULE = "bigdata.spiders"
 
+REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
+
 # ============================================================================
 # REDIS CONFIGURATION
 # ============================================================================
 
 # Enables scheduling storing requests queue in redis
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-# Don't cleanup redis queues, allows to pause/resume crawls
-SCHEDULER_ORDER = 'DFO'
+SCHEDULER_ORDER = 'BFO'
+# SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
-# Ensure all spiders share same duplicates filter through redis
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 # Redis Connection URL
-REDIS_URL = 'redis://100.109.89.55:6379'
+# REDIS_URL = 'redis://100.109.89.55:6379'
+
+REDIS_URL = 'redis://localhost:6379'
+
+
 
 # ============================================================================
 # ROBOTS.TXT
@@ -39,16 +51,17 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 3
+RETRY_TIMES = 8
 RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
 RETRY_PRIORITY_ADJUST = -5
 
 # ============================================================================
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
-CONCURRENT_REQUESTS = 1536
-CONCURRENT_REQUESTS_PER_DOMAIN = 192
-CONCURRENT_ITEMS = 1100
+# CONCURRENT_REQUESTS = 1536
+CONCURRENT_REQUESTS = 2048
+CONCURRENT_REQUESTS_PER_DOMAIN = 256
+CONCURRENT_ITEMS = 2000
 DOWNLOAD_DELAY = 0
 
 # Disable cookies to reduce memory usage (enable if needed)
@@ -119,19 +132,14 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 }
 
 # Playwright contexts for parallel processing
-# PLAYWRIGHT_MAX_CONTEXTS = 64
+PLAYWRIGHT_MAX_CONTEXTS = 64
 # PLAYWRIGHT_MAX_CONTEXTS = 4
 
 # Playwright abort unnecessary requests
 PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "stylesheet", "font", "media"]
 
-# ============================================================================
-# TWISTED REACTOR
-# ============================================================================
 
-TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-
-REACTOR_THREADPOOL_MAXSIZE = 40
+REACTOR_THREADPOOL_MAXSIZE = 128
 
 # ============================================================================
 # DOWNLOADER MIDDLEWARES
@@ -144,10 +152,9 @@ DOWNLOADER_MIDDLEWARES = {
     ProxyMiddleware: 350,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 400,
     # User agent randomization
-    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 500
+    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 500,
+    FailedRequestExportMiddleware: 543
 }
-
-
 
 # ============================================================================
 # ITEM PIPELINES
@@ -172,13 +179,14 @@ DNSCACHE_ENABLED = True
 DOWNLOAD_TIMEOUT = 60
 DNS_TIMEOUT = 60
 
+TELNETCONSOLE_PASSWORD = "gringo"
 
 # ============================================================================
 # EXTENSIONS
 # ============================================================================
 
 EXTENSIONS = {
-    'scrapy.extensions.telnet.TelnetConsole': None,  # Disable telnet
+    'scrapy.extensions.telnet.TelnetConsole': 100,  # Disable telnet
     # 'scrapy.extensions.memusage.MemoryUsage': 100,
     'scrapy.extensions.logstats.LogStats': 200,
 }
@@ -202,8 +210,21 @@ LOGSTATS_INTERVAL = 60.0
 # FEED EXPORTS
 # ============================================================================
 
-FEED_EXPORT_ENCODING = "utf-8"
-FEED_EXPORT_INDENT = 2
+# seperated domain can't handle it
+# FEEDS = {
+#     'output/%(batch_id)d-data-%(batch_time)s.jsonl': {
+#         'format': 'jsonlines',
+#         'encoding': 'utf8',
+#         'store_empty': False,
+#     },
+# }
+
+# FEED_EXPORT_BATCH_ITEM_COUNT = 500000
+
+# FEED_EXPORT_ENCODING = "utf-8"
+
+PIPELINE_BUFFER_SIZE = 10000
+PIPELINE_FLUSH_INTERVAL = 60
 
 # ============================================================================
 # CLOSESPIDER SETTINGS (Safety limits)
@@ -249,17 +270,6 @@ COMPRESSION_ENABLED = True
 # Disable referrer header to avoid tracking
 # REFERER_ENABLED = False
 
-# ============================================================================
-# MONITORING & ALERTS (Optional - Add integrations)
-# ============================================================================
-
-# Add Sentry for error tracking
-# SENTRY_DSN = 'your-sentry-dsn'
-
-# Add Slack/Discord webhook for critical alerts
-# SLACK_WEBHOOK_URL = 'your-webhook-url'
-# ALERT_ON_403 = True
-# ALERT_ON_BOT_DETECTION = True
 
 # ============================================================================
 # CUSTOM SETTINGS

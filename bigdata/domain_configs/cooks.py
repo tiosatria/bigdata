@@ -1,5 +1,5 @@
 
-from bigdata.domain_configs.domain_config import DomainConfig, ProxyConfig, RetryConfig, BotProtectionConfig, RenderEngine
+from bigdata.domain_configs.domain_config import DomainConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
 
 COOKS_COM_CONFIG = DomainConfig(

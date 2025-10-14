@@ -7,8 +7,11 @@ REFERENCE_COM_CONFIG = DomainConfig(
     render_engine=RenderEngine.SCRAPY,
 
     # Navigation
-    article_target_xpaths="//div[@class='tile-item']",
-    navigation_xpaths="//a[@id='next-page']",
+    article_target_xpaths=[
+"//*[contains(@class,'article')]",
+        "//*[contains(@id,'post')]",
+    ],
+    navigation_xpaths="//li[contains(@id,'menu-item')]",
     max_pages=None,
     custom_parser=None,
     # Content extraction

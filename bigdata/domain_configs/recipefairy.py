@@ -23,11 +23,6 @@ RECIPEFAIRY_COM_CONFIG = DomainConfig(
     tags_xpath="//div[@class='lnl-tags']/a/text()",
     author_xpath=None,
     post_date_xpath=None,
-    post_date_format=None,
-
-    # Network settings
-   
-    # Metadata
     lang="en",
     active=False,
     notes=""

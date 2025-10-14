@@ -3,6 +3,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 import random
 import logging
+from scrapy.http import Request
 from scrapy.spiders import Rule
 from scrapy_redis.spiders import RedisCrawlSpider
 from scrapy.linkextractors import LinkExtractor

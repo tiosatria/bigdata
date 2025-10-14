@@ -15,8 +15,7 @@ BONAPPETIT_COM_CONFIG = DomainConfig(
     article_target_xpaths="//div[contains(@class,'StackedRatingsCardWrapper')]",
     navigation_xpaths=[
         "//div[@class='PaginationButtonWrapper-dDcSxp iwYgIg']",
-        "//a[contains(@class,'NavigationInternalLink')]",
-        "//li[@class='NavigationListItemWrapper-cNhNwu dDhky navigation__list-item']"
+        "//a[contains(@class,'NavigationInternalLink')]"
     ],
     max_pages=None,
     custom_parser="parse_bonappetit",

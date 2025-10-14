@@ -23,22 +23,6 @@ MINIMALISTBAKER_COM_CONFIG = DomainConfig(
     tags_xpath="//a[@rel='category tag']/text()",
     author_xpath=None,
     post_date_xpath=None,
-    post_date_format=None,
-
-    # Network settings
-    download_delay=0.8,
-    concurrent_requests=4,
-    retry_config=RetryConfig(
-        max_retries=3,
-        retry_http_codes=[403, 429, 500, 502, 503, 504],
-        backoff_factor=2.0,
-        priority_boost=10
-    ),
-    bot_protection=BotProtectionConfig(
-        enabled=False,
-        use_stealth_mode=True
-    ),
-
     # Metadata
     lang="en",
     active=False,

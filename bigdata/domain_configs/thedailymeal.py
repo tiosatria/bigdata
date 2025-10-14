@@ -7,9 +7,8 @@ THEDAILYMEAL_COM_CONFIG = DomainConfig(
     render_engine=RenderEngine.SCRAPY,
 
     # Navigation
-    article_target_xpaths="//li[@class='article-item']",
-    navigation_xpaths=["//a[@id='next-page']",
-                       "//li[contains(@class,'navlink')]"],
+    article_target_xpaths="//ul[@id='article-container']",
+    navigation_xpaths=["//div[@class='page-right-side']"],
     max_pages=None,
     custom_parser=None,
     # Content extraction
