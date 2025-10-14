@@ -20,7 +20,7 @@ WISEBREAD_COM_CONFIG = DomainConfig(
     # Metadata
     lang="en",
     active=True,
-    notes="testing wisebread"
+    notes=""
 )
 
 # Auto-register

@@ -100,7 +100,6 @@ class DomainConfig:
             'tags_xpath': self.tags_xpath,
             'author_xpath': self.author_xpath,
             'post_date_xpath': self.post_date_xpath,
-            'post_date_format': self.post_date_format,
             'exclude_xpaths': [x for x in self.exclude_xpaths if x not in OBVIOUS_EXCLUDES],
             'custom_parser': self.custom_parser,
             'lang': self.lang,
