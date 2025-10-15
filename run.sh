@@ -99,7 +99,7 @@ if [ "$MULTI_SCREEN" = true ]; then
     # Run first spider in the initial pane
     tmux send-keys -t "$SESSION_NAME:spider-cluster" "scrapy crawl $SPIDER_NAME$SCRAPY_ARGS" C-m
 
-    # Create additional panes
+    # Create additional panes for spiders
     for ((i=1; i<NUM_INSTANCES; i++)); do
         # Split window - alternate between horizontal and vertical for better grid
         if [ $((i % 2)) -eq 1 ]; then
@@ -117,6 +117,12 @@ if [ "$MULTI_SCREEN" = true ]; then
     # Final layout adjustment - tiled creates a nice grid
     tmux select-layout -t "$SESSION_NAME:spider-cluster" tiled
 
+    # Create monitoring pane at the bottom (full width)
+    tmux split-window -t "$SESSION_NAME:spider-cluster" -v -l 15 "htop -d 10 --sort-key PERCENT_CPU"
+
+    # Adjust layout to keep monitoring pane at bottom with full width
+    tmux select-layout -t "$SESSION_NAME:spider-cluster" main-horizontal
+
     # Balance the panes for equal sizes
     tmux select-pane -t "$SESSION_NAME:spider-cluster.0"
 
@@ -130,6 +136,10 @@ else
         tmux new-window -t "$SESSION_NAME" -n "spider-$i"
         tmux send-keys -t "$SESSION_NAME:spider-$i" "scrapy crawl $SPIDER_NAME$SCRAPY_ARGS" C-m
     done
+
+    # Create monitoring window at the end
+    tmux new-window -t "$SESSION_NAME" -n "monitoring"
+    tmux send-keys -t "$SESSION_NAME:monitoring" "htop -d 10 --sort-key PERCENT_CPU" C-m
 fi
 
 # Calculate grid layout (try to make it roughly square)
@@ -158,9 +168,9 @@ fi
 echo ""
 echo -e "${GREEN}✓ Tmux session '$SESSION_NAME' created with $NUM_INSTANCES spider instances${NC}"
 if [ "$MULTI_SCREEN" = true ]; then
-    echo -e "${YELLOW}  Mode: Multi-screen (all panes in one window)${NC}"
+    echo -e "${YELLOW}  Mode: Multi-screen (all panes in one window + monitoring pane at bottom)${NC}"
 else
-    echo -e "${YELLOW}  Mode: Multi-window (separate windows per spider)${NC}"
+    echo -e "${YELLOW}  Mode: Multi-window (separate windows per spider + monitoring window)${NC}"
 fi
 echo ""
 echo "To attach to the session:"
@@ -175,6 +185,10 @@ if [ "$MULTI_SCREEN" = true ]; then
     echo "  Ctrl+b Space   - Cycle through layouts"
     echo "  Ctrl+b {/}     - Swap pane positions"
     echo "  Ctrl+b d       - Detach from session"
+    echo ""
+    echo "Monitoring pane (bottom):"
+    echo "  - htop showing CPU, memory, and network usage"
+    echo "  - Press 'q' in monitoring pane to exit htop"
 else
     echo "Useful tmux commands:"
     echo "  Ctrl+b n       - Next window"
@@ -183,10 +197,15 @@ else
     echo "  Ctrl+b [0-9]   - Switch to window number"
     echo "  Ctrl+b d       - Detach from session"
     echo "  Ctrl+b &       - Kill current window"
+    echo ""
+    echo "Last window 'monitoring' shows:"
+    echo "  - htop with CPU, memory, and process info"
 fi
 echo ""
 echo "To kill all spiders:"
-echo -e "  ${YELLOW}tmux kill-session -t $SESSION_NAME${NC}"
+echo -e "  ${YELLOW}./stop.sh${NC}                    # Graceful shutdown"
+echo -e "  ${YELLOW}./stop.sh --force${NC}            # Immediate kill"
+echo -e "  ${YELLOW}tmux kill-session -t $SESSION_NAME${NC}  # Manual kill"
 echo ""
 
 # Auto-attach to session
