@@ -4,7 +4,7 @@
 # commonly used. You can find more settings consulting the documentation:
 #
 #     https://docs.scrapy.org/en/latest/topics/settings.html
-from scrapy.settings.default_settings import FEEDS, TELNETCONSOLE_PASSWORD
+from scrapy.settings.default_settings import FEEDS, TELNETCONSOLE_PASSWORD, TELNETCONSOLE_USERNAME
 
 from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
 from bigdata.pipelines import JSONExportPipeline
@@ -33,6 +33,7 @@ SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+# SCHEDULER_IDLE_BEFORE_CLOSE = 60
 
 # Redis Connection URL
 # REDIS_URL = 'redis://100.109.89.55:6379'
@@ -51,7 +52,7 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 8
+RETRY_TIMES = 4
 RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
 RETRY_PRIORITY_ADJUST = -5
 
@@ -59,10 +60,11 @@ RETRY_PRIORITY_ADJUST = -5
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
 # CONCURRENT_REQUESTS = 1536
-CONCURRENT_REQUESTS = 2048
-CONCURRENT_REQUESTS_PER_DOMAIN = 256
+CONCURRENT_REQUESTS = 256
+CONCURRENT_REQUESTS_PER_DOMAIN = 48
 CONCURRENT_ITEMS = 2000
 DOWNLOAD_DELAY = 0
+RANDOMIZE_DOWNLOAD_DELAY = False
 
 # Disable cookies to reduce memory usage (enable if needed)
 COOKIES_ENABLED = True
@@ -139,7 +141,10 @@ PLAYWRIGHT_MAX_CONTEXTS = 64
 PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "stylesheet", "font", "media"]
 
 
-REACTOR_THREADPOOL_MAXSIZE = 128
+REACTOR_THREADPOOL_MAXSIZE = 256
+
+HTTP2_ENABLED = True
+
 
 # ============================================================================
 # DOWNLOADER MIDDLEWARES
@@ -178,7 +183,9 @@ HTTPCACHE_ENABLED = False
 DNSCACHE_ENABLED = True
 DOWNLOAD_TIMEOUT = 60
 DNS_TIMEOUT = 60
+HTTP2_ENABLED = True
 
+TELNETCONSOLE_USERNAME = 'gringo'
 TELNETCONSOLE_PASSWORD = "gringo"
 
 # ============================================================================

@@ -6,9 +6,8 @@ GARDENGUIDES_COM_CONFIG = DomainConfig(
     domain="gardenguides.com",
     render_engine=RenderEngine.SCRAPY,
     # Navigation
-    article_target_xpaths="//li[@class='article-item']",
-    navigation_xpaths=["//a[@id='next-page']",
-                       "//li[contains(@class,'navlink')]"],
+    article_target_xpaths="//article",
+    navigation_xpaths=["//a[@id='next-page']"],
     max_pages=None,
     custom_parser=None,
     # Content extraction

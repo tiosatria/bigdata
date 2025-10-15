@@ -51,7 +51,9 @@ class DomainConfig:
 
     # Custom parsers (for complex cases)
     custom_parser: Optional[str] = None
-    custom_pagination: Optional[str]= None
+
+    # todo : implement this
+    path_exclusion_regex : List[str] = field(default_factory=list)
 
     # Metadata
     lang: str = "en"
@@ -102,6 +104,7 @@ class DomainConfig:
             'post_date_xpath': self.post_date_xpath,
             'exclude_xpaths': [x for x in self.exclude_xpaths if x not in OBVIOUS_EXCLUDES],
             'custom_parser': self.custom_parser,
+            'path_exclusion_regex': self.path_exclusion_regex,
             'lang': self.lang,
             'active': self.active,
             'notes': self.notes,

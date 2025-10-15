@@ -3,6 +3,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 import random
 import logging
+import re
 from scrapy.http import Request
 from scrapy.spiders import Rule
 from scrapy_redis.spiders import RedisCrawlSpider
@@ -60,7 +61,8 @@ class ArticleSpider(RedisCrawlSpider):
                     Rule(
                         LinkExtractor(
                             allow_domains=[domain],
-                            restrict_xpaths=config.navigation_xpaths
+                            restrict_xpaths=config.navigation_xpaths,
+                            deny=(tuple(config.path_exclusion_regex) if config.path_exclusion_regex else ())
                         ),
                         follow=True,
                         process_request='_process_request',
@@ -80,7 +82,8 @@ class ArticleSpider(RedisCrawlSpider):
                     Rule(
                         LinkExtractor(
                             allow_domains=[domain],
-                            restrict_xpaths=config.article_target_xpaths
+                            restrict_xpaths=config.article_target_xpaths,
+                            deny=(tuple(config.path_exclusion_regex) if config.path_exclusion_regex else ())
                         ),
                         callback='parse_item',
                         follow=True,
@@ -96,12 +99,32 @@ class ArticleSpider(RedisCrawlSpider):
     def get_domain(url):
         return urlparse(url).netloc.replace('www.', '')
 
+    def _is_path_excluded(self, url: str, patterns: list[str]) -> bool:
+        """Return True if the URL path matches any exclusion regex pattern."""
+        try:
+            path = urlparse(url).path or ""
+        except Exception:
+            path = url
+        for pat in patterns or []:
+            try:
+                if re.search(pat, path):
+                    return True
+            except re.error as e:
+                logging.warning(f"Invalid path_exclusion_regex pattern '{pat}': {e}")
+        return False
+
     def _process_request(self, request, response):
         domain = self.get_domain(request.url)
         config = DomainConfigRegistry.get(domain)
         if not config:
-            self.logger.warning(f"No config for {domain}, using defaults")
-            return request
+            self.logger.warning(f"No config for {domain}, dropping")
+            return None
+
+        # Drop requests that match excluded path patterns (applies to seeds and extracted links)
+        if config.path_exclusion_regex and self._is_path_excluded(request.url, config.path_exclusion_regex):
+            self.logger.debug(f"Dropping excluded URL by path regex: {request.url}")
+            return None
+
         # Apply configuration
         request = self._apply_domain_config(request, config)
         request.meta['domain'] = domain
@@ -166,15 +189,22 @@ class ArticleSpider(RedisCrawlSpider):
 
         # Standard extraction with error handling
         try:
+
+            # check whether has matching body
+            body_html = response.xpath(config.body_xpath).get()
+            if not body_html:
+                self.logger.warning(f"Possibly Not a content. {response.url} using xpath: {config.body_xpath}")
+                return
+
             # Extract title
             title = response.xpath(config.title_xpath).get()
             if not title:
-                self.logger.warning(f"No title found for {response.url} using xpath: {config.title_xpath}")
+                self.logger.warning(f"Possibly Not a content. No title found for {response.url} using xpath: {config.title_xpath}")
                 return
             title = title.strip()
 
             if not title:
-                self.logger.warning(f"Empty title after strip for {response.url}")
+                self.logger.warning(f"Possibly Not a content. Empty title after strip for {response.url}")
                 return
 
             # Extract tags
@@ -200,12 +230,6 @@ class ArticleSpider(RedisCrawlSpider):
             post_date_str = None
             if config.post_date_xpath:
                 post_date_str = response.xpath(config.post_date_xpath).get()
-            # Extract and clean body HTML
-            body_html = response.xpath(config.body_xpath).get()
-
-            if not body_html:
-                self.logger.warning(f"No body content found for {response.url} using xpath: {config.body_xpath}")
-                return
 
             cleaned_html = self.clean_html_fragment(body_html, config.exclude_xpaths)
 
@@ -234,7 +258,6 @@ class ArticleSpider(RedisCrawlSpider):
                 f"Failed to parse {response.url}: {e}",
                 exc_info=True
             )
-            # Don't re-queue parsing errors - likely a config issue
 
     def parse_bonappetit(self, response, config):
         title = None
