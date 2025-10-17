@@ -79,20 +79,22 @@ fi
 echo -e "${YELLOW}Initiating graceful shutdown...${NC}"
 echo -e "${YELLOW}Sending Ctrl+C to all spider processes...${NC}"
 
-# Detect if it's multi-screen (single window with many panes) or multi-window mode
-if [ "$NUM_WINDOWS" -eq 1 ] && [ "$NUM_PANES" -gt 1 ]; then
-    # Multi-screen mode: send Ctrl+C to all panes
-    echo -e "${BLUE}Detected multi-screen mode (panes)${NC}"
-    tmux list-panes -t "$SESSION_NAME" -F '#{pane_index}' | while read pane; do
-        # Skip monitoring pane (last pane)
-        LAST_PANE=$((NUM_PANES - 1))
-        if [ "$pane" -ne "$LAST_PANE" ]; then
-            tmux send-keys -t "$SESSION_NAME.$pane" C-c
-            echo -e "  ${GREEN}→${NC} Sent Ctrl+C to pane $pane"
-        fi
+# Detect if it's multi-screen (check for "spider-cluster" window with many panes) or multi-window mode
+CLUSTER_WINDOW=$(tmux list-windows -t "$SESSION_NAME" -F '#{window_name}' | grep -c "spider-cluster")
+
+if [ "$CLUSTER_WINDOW" -gt 0 ]; then
+    # Multi-screen mode: spider-cluster window exists with multiple panes
+    echo -e "${BLUE}Detected multi-screen mode${NC}"
+    CLUSTER_PANES=$(tmux list-panes -t "$SESSION_NAME:spider-cluster" -F '#{pane_index}' | wc -l)
+    echo -e "${BLUE}Found $CLUSTER_PANES panes in spider-cluster window${NC}"
+
+    # Send Ctrl+C to all panes in spider-cluster window
+    tmux list-panes -t "$SESSION_NAME:spider-cluster" -F '#{pane_index}' | while read pane; do
+        tmux send-keys -t "$SESSION_NAME:spider-cluster.$pane" C-c
+        echo -e "  ${GREEN}→${NC} Sent Ctrl+C to pane $pane"
     done
 else
-    # Multi-window mode: send Ctrl+C to all windows
+    # Multi-window mode: send Ctrl+C to all windows except monitoring
     echo -e "${BLUE}Detected multi-window mode${NC}"
     tmux list-windows -t "$SESSION_NAME" -F '#{window_index}:#{window_name}' | while IFS=: read window_idx window_name; do
         # Skip monitoring window

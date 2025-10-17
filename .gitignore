@@ -1,3 +1,5 @@
 output/
 failed_request/
 logs/
+*.json
+*.jsonl

@@ -16,6 +16,9 @@ class DomainConfigRegistry:
     def register(cls, config: DomainConfig):
         """Register a domain configuration"""
         cls._configs[config.domain] = config
+        if config.site_subdomains:
+            for subdomain in config.site_subdomains:
+                cls._configs[subdomain] = config
         cls._logger.debug(f"Registered config for {config.domain}")
 
     @classmethod

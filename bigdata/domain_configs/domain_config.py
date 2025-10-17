@@ -1,11 +1,44 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Iterable
 from enum import Enum
+from abc import ABC
+
+from scrapy import Spider
+
+from post_process.cleaning_pipeline import CleaningPipeline
 
 class RenderEngine(Enum):
     """Rendering engine options"""
     SCRAPY = "scrapy"
     PLAYWRIGHT = "playwright"
+
+@dataclass
+class Seed:
+
+    url: str
+    meta: dict = None
+    render_engine :RenderEngine = field(default=RenderEngine.SCRAPY)
+    bypass_cloudflare : bool = field(default=False)
+    use_default_proxy : bool = field(default=True)
+
+    def __post_init__(self):
+        if self.meta is None:
+            self.meta = {
+                'cf-bypass': self.bypass_cloudflare,
+                'use_proxy': self.use_default_proxy,
+                'playwright': self.render_engine == RenderEngine.PLAYWRIGHT
+            }
+        else:
+            self.meta['cf-bypass'] = self.bypass_cloudflare
+            self.meta['use_proxy'] = self.use_default_proxy
+            self.meta['playwright'] = self.render_engine == RenderEngine.PLAYWRIGHT.value
+
+    def to_dict(self)-> dict:
+        return {
+            'url': self.url,
+            'meta': self.meta
+        }
+
 
 OBVIOUS_EXCLUDES = [
     "//script",
@@ -24,10 +57,24 @@ OBVIOUS_EXCLUDES = [
     "//*[contains(@class,'see-also')]",
 ]
 
+blacklist_url_regex = [
+    r'https?://auth\.[^/]+',
+    r'https?://shop\.[^/]+',
+    r'https?://product\.[^/]+',
+    r'https?://stage\.[^/]+',
+    r'https?://staging\.[^/]+',
+]
+
+class CustomParser(ABC):
+
+    def parse_item(self, response, config, spider:Spider):
+        raise NotImplementedError
+
 @dataclass
 class DomainConfig:
     """Configuration for a single domain"""
     domain: str
+    site_subdomains: list[str] = field(default_factory=list)
 
     # Rendering engine
     render_engine: RenderEngine = RenderEngine.SCRAPY
@@ -46,19 +93,32 @@ class DomainConfig:
     author_xpath: Optional[str] = None
     post_date_xpath: Optional[str] = None
 
+    use_proxy: bool = True
+
+    follow_related_content:bool = False
+
+    deny_urls_regex: Optional[Iterable[str]|str] = None
+
     # Cleaning
     exclude_xpaths: List[str] = field(default_factory=list)
 
-    # Custom parsers (for complex cases)
-    custom_parser: Optional[str] = None
+    cleaning_pipelines : CleaningPipeline = None
 
-    # todo : implement this
-    path_exclusion_regex : List[str] = field(default_factory=list)
+    # Custom parsers (for complex cases)
+    custom_parser: Optional[CustomParser] = None
 
     # Metadata
     lang: str = "en"
     active: bool = True
     notes: str = ""
+
+    seeds: list[str|dict|Seed]=field(default_factory=list)
+
+    cloudflare_proxy_bypass : bool= False
+
+    # Content classification (used for output meta.content_info)
+    domain_type: str = "general"  # e.g., news, recipe, tech, etc.
+    subdomain_type: Optional[str] = None
 
     def __post_init__(self):
         # Merge custom excludes with obvious ones
@@ -66,6 +126,11 @@ class DomainConfig:
         if self.exclude_xpaths:
             all_excludes.extend(self.exclude_xpaths)
         self.exclude_xpaths = all_excludes
+
+        all_blacklist_url_regex = blacklist_url_regex.copy()
+        if self.deny_urls_regex:
+            all_blacklist_url_regex.extend(self.deny_urls_regex)
+        self.deny_urls_regex = all_blacklist_url_regex
 
         # Convert string to enum if needed
         if isinstance(self.render_engine, str):
@@ -104,8 +169,13 @@ class DomainConfig:
             'post_date_xpath': self.post_date_xpath,
             'exclude_xpaths': [x for x in self.exclude_xpaths if x not in OBVIOUS_EXCLUDES],
             'custom_parser': self.custom_parser,
-            'path_exclusion_regex': self.path_exclusion_regex,
+            'deny_urls_regex': self.deny_urls_regex,
             'lang': self.lang,
             'active': self.active,
             'notes': self.notes,
+            'cleaning_pipeline': self.cleaning_pipelines,
+            'domain_type': self.domain_type,
+            'subdomain': self.subdomain_type,
+            'cloudflare_proxy_bypass' : self.cloudflare_proxy_bypass,
+            'use_proxy': self.use_proxy
         }

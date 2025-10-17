@@ -9,10 +9,9 @@ from scrapy.spiders import Rule
 from scrapy_redis.spiders import RedisCrawlSpider
 from scrapy.linkextractors import LinkExtractor
 from bigdata.domain_configs import DomainConfigRegistry
-from bigdata.domain_configs.domain_config import RenderEngine
+from bigdata.domain_configs.domain_config import RenderEngine, CustomParser
 from bigdata.items import ArticleItem
 from lxml import etree, html
-
 
 class ArticleSpider(RedisCrawlSpider):
     """
@@ -38,7 +37,6 @@ class ArticleSpider(RedisCrawlSpider):
         # Now self.logger is available
         self.logger.info(f"Spider initialized with {len(self.rules)} rules")
 
-
     def _generate_rules(self):
         """Generate crawling rules from all registered domain configs"""
         rules = []
@@ -48,21 +46,39 @@ class ArticleSpider(RedisCrawlSpider):
         temp_logger = logging.getLogger('article_spider')
         temp_logger.info(f"Generating rules for {len(all_domains)} domains")
 
+        def sanitize_xpaths(xpaths, domain, purpose):
+            if not xpaths:
+                return []
+            entries = xpaths if isinstance(xpaths, (list, tuple)) else [xpaths]
+            valid = []
+            for xp in entries:
+                if not xp or not isinstance(xp, str):
+                    continue
+                try:
+                    etree.XPath(xp)
+                    valid.append(xp)
+                except Exception as e:
+                    temp_logger.warning(f"Skipping invalid XPath for {domain} ({purpose}): {xp} -> {e}")
+            return valid
+
         # Create pagination rules for all domains
         for domain in all_domains:
             config = DomainConfigRegistry.get(domain)
+            subdomain = config.site_subdomains or []
+            domains = [domain, *subdomain] if subdomain else [domain]
 
             if not config.active:
                 temp_logger.info(f"Skipping inactive domain: {domain}")
                 continue
 
-            if config.navigation_xpaths:
+            nav_xps = sanitize_xpaths(config.navigation_xpaths, domain, 'navigation')
+            if nav_xps:
                 rules.append(
                     Rule(
                         LinkExtractor(
-                            allow_domains=[domain],
-                            restrict_xpaths=config.navigation_xpaths,
-                            deny=(tuple(config.path_exclusion_regex) if config.path_exclusion_regex else ())
+                            allow_domains=domains,
+                            restrict_xpaths=nav_xps,
+                            deny=config.deny_urls_regex
                         ),
                         follow=True,
                         process_request='_process_request',
@@ -73,20 +89,23 @@ class ArticleSpider(RedisCrawlSpider):
         # Create article extraction rules for all domains
         for domain in all_domains:
             config = DomainConfigRegistry.get(domain)
+            subdomain = config.site_subdomains or []
+            domains = [domain, *subdomain] if subdomain else [domain]
 
             if not config.active:
                 continue
 
-            if config.article_target_xpaths:
+            article_xps = sanitize_xpaths(config.article_target_xpaths, domain, 'article_targets')
+            if article_xps:
                 rules.append(
                     Rule(
                         LinkExtractor(
-                            allow_domains=[domain],
-                            restrict_xpaths=config.article_target_xpaths,
-                            deny=(tuple(config.path_exclusion_regex) if config.path_exclusion_regex else ())
+                            allow_domains=domains,
+                            restrict_xpaths=article_xps,
+                            deny=config.deny_urls_regex
                         ),
                         callback='parse_item',
-                        follow=True,
+                        follow=config.follow_related_content,
                         process_request='_process_request',
                     )
                 )
@@ -99,20 +118,6 @@ class ArticleSpider(RedisCrawlSpider):
     def get_domain(url):
         return urlparse(url).netloc.replace('www.', '')
 
-    def _is_path_excluded(self, url: str, patterns: list[str]) -> bool:
-        """Return True if the URL path matches any exclusion regex pattern."""
-        try:
-            path = urlparse(url).path or ""
-        except Exception:
-            path = url
-        for pat in patterns or []:
-            try:
-                if re.search(pat, path):
-                    return True
-            except re.error as e:
-                logging.warning(f"Invalid path_exclusion_regex pattern '{pat}': {e}")
-        return False
-
     def _process_request(self, request, response):
         domain = self.get_domain(request.url)
         config = DomainConfigRegistry.get(domain)
@@ -120,20 +125,21 @@ class ArticleSpider(RedisCrawlSpider):
             self.logger.warning(f"No config for {domain}, dropping")
             return None
 
-        # Drop requests that match excluded path patterns (applies to seeds and extracted links)
-        if config.path_exclusion_regex and self._is_path_excluded(request.url, config.path_exclusion_regex):
-            self.logger.debug(f"Dropping excluded URL by path regex: {request.url}")
-            return None
-
         # Apply configuration
         request = self._apply_domain_config(request, config)
         request.meta['domain'] = domain
+
         return request
 
     def _apply_domain_config(self, request, config):
         """Apply domain-specific configuration to request"""
         if config.render_engine == RenderEngine.PLAYWRIGHT:
             request.meta['playwright'] = True
+        if config.cloudflare_proxy_bypass:
+            request.meta['cf-bypass'] = True
+        if config.use_proxy:
+            request.meta['use_proxy']=True
+
         return request
 
     @staticmethod
@@ -175,26 +181,30 @@ class ArticleSpider(RedisCrawlSpider):
             return
 
         # Use custom parser if specified
-        if config.custom_parser:
-            parser_method = getattr(self, config.custom_parser, None)
-            if parser_method and callable(parser_method):
-                self.logger.debug(f"Using custom parser: {config.custom_parser}")
+        if config.custom_parser and isinstance(config.custom_parser, CustomParser):
                 try:
-                    yield from parser_method(response, config)
+                    yield from config.custom_parser.parse_item(response, config, self)
                 except Exception as e:
                     self.logger.error(f"Custom parser failed: {e}", exc_info=True)
                 return
-            else:
-                self.logger.warning(f"Custom parser '{config.custom_parser}' not found, using default")
 
         # Standard extraction with error handling
         try:
 
+            title = response.xpath(config.title_xpath).get()
+            if not title:
+                self.logger.warning(
+                    f"Possibly Not a content. No title found for {response.url} using xpath: {config.title_xpath}")
+                return
+
             # check whether has matching body
             body_html = response.xpath(config.body_xpath).get()
             if not body_html:
-                self.logger.warning(f"Possibly Not a content. {response.url} using xpath: {config.body_xpath}")
-                return
+                body_html = response.xpath('//body').get()
+                if not body_html:
+                    return
+                else:
+                    self.logger.warning(f"Using body as fallback, please check the content selector: {config.body_xpath}")
 
             # Extract title
             title = response.xpath(config.title_xpath).get()
@@ -258,43 +268,3 @@ class ArticleSpider(RedisCrawlSpider):
                 f"Failed to parse {response.url}: {e}",
                 exc_info=True
             )
-
-    def parse_bonappetit(self, response, config):
-        title = None
-        tags = []
-        author = None
-        post_date = None
-        json_obj = {}  # Initialize to avoid UnboundLocalError in the yield statement
-
-        try:
-            # The XPath should select the text content of the script tag
-            json_string = response.xpath(config.body_xpath).get()
-            json_obj = json.loads(json_string)
-
-            title = json_obj.get("headline")  # "headline" is more specific than "name" or "title"
-            tags = json_obj.get("keywords", [])  # .get() with a default value is safer
-
-            # Author is a list of objects, so we access the first item's 'name'
-            author_list = json_obj.get("author", [])
-            if author_list:
-                author = author_list[0].get("name")
-
-            post_date = json_obj.get("datePublished")
-
-        except (json.JSONDecodeError, AttributeError, IndexError) as e:
-            self.logger.error(f"Failed to parse JSON from {response.url}. Error: {e}")
-
-        self.logger.info(f"✓ Successfully scraped: {title[:50]}... from {config.domain}")
-
-        yield ArticleItem(
-            url=response.url,
-            source_domain=config.domain,
-            title=title,
-            tags=tags,
-            author=author,
-            post_date=post_date,
-            body=json_obj,
-            body_type="json",
-            lang=config.lang,
-            timestamp=datetime.now()
-        )

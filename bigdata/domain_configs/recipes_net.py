@@ -1,6 +1,7 @@
 
 from bigdata.domain_configs.domain_config import DomainConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
+from post_process.cleaning_pipeline import CleaningPipeline, HtmlCleaner
 
 RECIPES_NET_CONFIG = DomainConfig(
     domain="recipes.net",
@@ -32,8 +33,9 @@ RECIPES_NET_CONFIG = DomainConfig(
     # Metadata
     lang="en",
     active=True,
-    notes="",
-    path_exclusion_regex=[r'/about/', r'/write-for-us/', r'/mergers', r'/affiliate-disclosure/', r'/forum/', r'/login/', r'/register/']
+    notes="",cleaning_pipelines=CleaningPipeline(
+        text_cleaners=[HtmlCleaner(include_image=True)]
+    )
 )
 
 # Auto-register

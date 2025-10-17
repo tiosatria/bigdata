@@ -28,8 +28,8 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 
 # Enables scheduling storing requests queue in redis
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# SCHEDULER_ORDER = 'DFO'
 SCHEDULER_ORDER = 'BFO'
-# SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
@@ -38,9 +38,7 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # Redis Connection URL
 # REDIS_URL = 'redis://100.109.89.55:6379'
 
-REDIS_URL = 'redis://localhost:6379'
-
-
+REDIS_URL = 'redis://127.0.0.1:6379'
 
 # ============================================================================
 # ROBOTS.TXT
@@ -61,7 +59,7 @@ RETRY_PRIORITY_ADJUST = -5
 # ============================================================================
 # CONCURRENT_REQUESTS = 1536
 CONCURRENT_REQUESTS = 256
-CONCURRENT_REQUESTS_PER_DOMAIN = 48
+CONCURRENT_REQUESTS_PER_DOMAIN = 12
 CONCURRENT_ITEMS = 2000
 DOWNLOAD_DELAY = 0
 RANDOMIZE_DOWNLOAD_DELAY = False
@@ -145,7 +143,6 @@ REACTOR_THREADPOOL_MAXSIZE = 256
 
 HTTP2_ENABLED = True
 
-
 # ============================================================================
 # DOWNLOADER MIDDLEWARES
 # ============================================================================
@@ -183,7 +180,6 @@ HTTPCACHE_ENABLED = False
 DNSCACHE_ENABLED = True
 DOWNLOAD_TIMEOUT = 60
 DNS_TIMEOUT = 60
-HTTP2_ENABLED = True
 
 TELNETCONSOLE_USERNAME = 'gringo'
 TELNETCONSOLE_PASSWORD = "gringo"

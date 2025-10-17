@@ -1,6 +1,7 @@
 
 from bigdata.domain_configs.domain_config import DomainConfig, RenderEngine
 from bigdata.domain_configs import DomainConfigRegistry
+from post_process.cleaning_pipeline import CleaningPipeline, HtmlCleaner, TagCleaner, HtmlTagCleaner
 
 BESTLIFEONLINE_COM_CONFIG = DomainConfig(
     domain="bestlifeonline.com",
@@ -13,7 +14,10 @@ BESTLIFEONLINE_COM_CONFIG = DomainConfig(
     navigation_xpaths=[
         "//a[@class='gnp-page-nav__button']",
     ],
-
+    cleaning_pipelines=CleaningPipeline(
+        text_cleaners=[HtmlCleaner(include_image=True)],
+        tags_cleaners=[HtmlTagCleaner()]
+    ),
     max_pages=None,
     custom_parser=None,
     # Content extraction
@@ -25,7 +29,9 @@ BESTLIFEONLINE_COM_CONFIG = DomainConfig(
     # Metadata
     lang="en",
     active=True,
-    notes=""
+    notes="",
+    domain_type="life-related",
+    subdomain_type='living'
 )
 
 # Auto-register

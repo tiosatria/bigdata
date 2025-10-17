@@ -96,34 +96,29 @@ tmux new-session -d -s "$SESSION_NAME" -n "spider-cluster"
 if [ "$MULTI_SCREEN" = true ]; then
     echo -e "${GREEN}Creating multi-screen layout (all panes in one window)${NC}"
 
-    # Run first spider in the initial pane
+    # Calculate grid dimensions
+    COLS=$(echo "sqrt($NUM_INSTANCES)" | bc)
+    [ "$COLS" -lt 1 ] && COLS=1
+    ROWS=$(echo "($NUM_INSTANCES + $COLS - 1) / $COLS" | bc)
+
+    echo -e "${BLUE}Creating ${ROWS}x${COLS} grid for $NUM_INSTANCES spiders${NC}"
+
+    # Start first spider
     tmux send-keys -t "$SESSION_NAME:spider-cluster" "scrapy crawl $SPIDER_NAME$SCRAPY_ARGS" C-m
 
-    # Create additional panes for spiders
+    # Build perfect grid by creating all panes and using tiled layout
     for ((i=1; i<NUM_INSTANCES; i++)); do
-        # Split window - alternate between horizontal and vertical for better grid
-        if [ $((i % 2)) -eq 1 ]; then
-            tmux split-window -t "$SESSION_NAME:spider-cluster" -h "scrapy crawl $SPIDER_NAME$SCRAPY_ARGS"
-        else
-            tmux split-window -t "$SESSION_NAME:spider-cluster" -v "scrapy crawl $SPIDER_NAME$SCRAPY_ARGS"
-        fi
-
-        # Apply tiled layout after every few panes to keep it organized
-        if [ $((i % 4)) -eq 0 ]; then
-            tmux select-layout -t "$SESSION_NAME:spider-cluster" tiled
-        fi
+        tmux split-window -t "$SESSION_NAME:spider-cluster" "scrapy crawl $SPIDER_NAME$SCRAPY_ARGS"
+        # Apply tiled after each pane to maintain grid
+        tmux select-layout -t "$SESSION_NAME:spider-cluster" tiled
     done
 
-    # Final layout adjustment - tiled creates a nice grid
-    tmux select-layout -t "$SESSION_NAME:spider-cluster" tiled
+    # Create monitoring window separately (easier and more flexible)
+    tmux new-window -t "$SESSION_NAME" -n "monitoring"
+    tmux send-keys -t "$SESSION_NAME:monitoring" "htop -d 10 --sort-key PERCENT_CPU" C-m
 
-    # Create monitoring pane at the bottom (full width)
-    tmux split-window -t "$SESSION_NAME:spider-cluster" -v -l 15 "htop -d 10 --sort-key PERCENT_CPU"
-
-    # Adjust layout to keep monitoring pane at bottom with full width
-    tmux select-layout -t "$SESSION_NAME:spider-cluster" main-horizontal
-
-    # Balance the panes for equal sizes
+    # Go back to spider cluster window
+    tmux select-window -t "$SESSION_NAME:spider-cluster"
     tmux select-pane -t "$SESSION_NAME:spider-cluster.0"
 
 else

@@ -10,8 +10,7 @@ from bigdata.domain_configs import DomainConfigRegistry
 
 THEEVERYGIRL_COM_CONFIG = DomainConfig(
     domain="theeverygirl.com",
-    render_engine=RenderEngine.PLAYWRIGHT,
-
+    render_engine=RenderEngine.SCRAPY,
     # Navigation
     article_target_xpaths=[
         "//div[@class='grid-item']"
@@ -20,14 +19,12 @@ THEEVERYGIRL_COM_CONFIG = DomainConfig(
         "//div[@class='more']"
     ],
     max_pages=None,
-
     # Content extraction
     title_xpath="//h1/text()",
     body_xpath="//article",
     tags_xpath="//div[@class='post-intro__category meta']/a/text()",
     author_xpath="//div[@class='post-intro__writer']//a/text()",
-    post_date_xpath="//time/[@class='post-intro__date meta']/text()",
-
+    post_date_xpath="//time[@class='post-intro__date meta']/text()",
     # Metadata
     lang="en",
     active=True,
