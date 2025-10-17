@@ -14,7 +14,9 @@ class TestSpider(ArticleSpider):
     custom_settings = {
         'LOG_LEVEL': 'DEBUG',
         'COMPRESSION_ENABLED': True,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 1
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
+        'CONCURRENT_REQUESTS': 1,
+        'DOWNLOAD_DELAY': 2,
     }
 
     @classmethod

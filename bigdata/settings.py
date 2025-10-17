@@ -281,5 +281,18 @@ COMPRESSION_ENABLED = True
 # Domain-specific settings will override these defaults
 # Add any additional custom settings here
 
+# Generic dynamic scraping mode: list of domains to be handled by the built-in generic parser
+# Example: GENERIC_ALLOWED_DOMAINS = ["example.com", "news.example.org"]
+GENERIC_ALLOWED_DOMAINS = [
+    "thetakeout.com"
+]
+# Minimum characters of core, tag-stripped article text (p/h2–h6/li) required for generic parser to accept a page
+GENERIC_MIN_BODY_CHARS = 200
+
 # Enable stats collection
 # STATS_CLASS = 'scrapy.statscollectors.MemoryStatsCollector'
+# ===============================
+# Dynamic domain hints (JSON)
+# Path to a JSON file with per-domain crawling/extraction hints.
+# You can edit this file on the fly without touching domain config modules.
+DOMAIN_HINTS_FILE = "bigdata\\domain_hints.json"

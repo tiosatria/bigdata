@@ -53,8 +53,11 @@ OBVIOUS_EXCLUDES = [
     "//div[contains(@class,'popup')]",
     "//div[contains(@class,'modal')]",
     "//iframe",
+    "//svg",
+    "//*[local-name()='svg']",
     "//*[contains(@class,'related')]",
     "//*[contains(@class,'see-also')]",
+    "//symbol"
 ]
 
 blacklist_url_regex = [
@@ -63,6 +66,10 @@ blacklist_url_regex = [
     r'https?://product\.[^/]+',
     r'https?://stage\.[^/]+',
     r'https?://staging\.[^/]+',
+    # common path-based non-content areas (deny early)
+    r'/login|/signin|/signup|/register|/account|/profile|/user',
+    r'/cart|/checkout|/subscribe',
+    r'/shop|/store|/ecommerce',
 ]
 
 class CustomParser(ABC):
@@ -99,6 +106,11 @@ class DomainConfig:
 
     deny_urls_regex: Optional[Iterable[str]|str] = None
 
+    # Domain-level hints and filters
+    allowed_url_regex: Optional[Iterable[str] | str] = None  # Only follow URLs matching these regexes (categories)
+    blocked_url_keywords: Optional[Iterable[str] | str] = None  # Drop requests containing any of these substrings
+    blocked_title_keywords: Optional[Iterable[str] | str] = None  # Drop items whose title contains any of these substrings
+
     # Cleaning
     exclude_xpaths: List[str] = field(default_factory=list)
 
@@ -129,8 +141,24 @@ class DomainConfig:
 
         all_blacklist_url_regex = blacklist_url_regex.copy()
         if self.deny_urls_regex:
+            # Normalize to list
+            if isinstance(self.deny_urls_regex, str):
+                self.deny_urls_regex = [self.deny_urls_regex]
             all_blacklist_url_regex.extend(self.deny_urls_regex)
         self.deny_urls_regex = all_blacklist_url_regex
+
+        # Normalize allow/deny hints
+        if isinstance(self.allowed_url_regex, str):
+            self.allowed_url_regex = [self.allowed_url_regex]
+        if isinstance(self.blocked_url_keywords, str):
+            self.blocked_url_keywords = [self.blocked_url_keywords]
+        if isinstance(self.blocked_title_keywords, str):
+            self.blocked_title_keywords = [self.blocked_title_keywords]
+        # Lowercase for case-insensitive contains checks later
+        if self.blocked_url_keywords:
+            self.blocked_url_keywords = [str(x).lower() for x in self.blocked_url_keywords if str(x).strip()]
+        if self.blocked_title_keywords:
+            self.blocked_title_keywords = [str(x).lower() for x in self.blocked_title_keywords if str(x).strip()]
 
         # Convert string to enum if needed
         if isinstance(self.render_engine, str):
@@ -170,6 +198,9 @@ class DomainConfig:
             'exclude_xpaths': [x for x in self.exclude_xpaths if x not in OBVIOUS_EXCLUDES],
             'custom_parser': self.custom_parser,
             'deny_urls_regex': self.deny_urls_regex,
+            'allowed_url_regex': self.allowed_url_regex,
+            'blocked_url_keywords': self.blocked_url_keywords,
+            'blocked_title_keywords': self.blocked_title_keywords,
             'lang': self.lang,
             'active': self.active,
             'notes': self.notes,
