@@ -270,7 +270,7 @@ def _process_record(
                 prune_xpath=config.get('prune_xpath'),
                 retain_images=config.get('retain_images', False),
                 retain_tables=config.get('retain_tables', False),
-                output_format=config.get('format', 'text')
+                output_format=config.get('format', 'txt')
             )
             if cleaned_body:
                 cleaned_record['body'] = cleaned_body
@@ -460,7 +460,7 @@ Examples:
                         help='Retain images in trafilatura output')
     parser.add_argument('--retain-tbl', action='store_true',
                         help='Retain tables in trafilatura output')
-    parser.add_argument('--format', type=str, default='text',
+    parser.add_argument('--format', type=str, default='txt',
                         choices=['text', 'markdown', 'xml'],
                         help='Trafilatura output format (default: text)')
 

@@ -263,7 +263,8 @@ class DomainConfig:
             'notes': self.notes,
             'cleaning_pipeline': self.cleaning_pipelines,
             'domain_type': self.domain_type,
-            'subdomain': self.subdomain_type,
+            'subdomain_type': self.subdomain_type,
+            'site_subdomains': self.site_subdomains,
             'cloudflare_proxy_bypass' : self.cloudflare_proxy_bypass,
             'use_proxy': self.use_proxy,
             'is_wild_crawl': self.is_wild_crawl

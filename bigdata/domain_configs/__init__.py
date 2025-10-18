@@ -75,6 +75,9 @@ class DomainConfigRegistry:
                     article_target_xpaths=None,
                     title_xpath=None,
                     body_xpath=None,
+                    deny_urls_regex=config_data.get('deny_urls_regex'),
+                    exclude_xpaths=config_data.get('exclude_xpaths'),
+                    seeds=config_data.get('seeds')
                 )
 
                 cls.register(config)
