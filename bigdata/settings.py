@@ -23,6 +23,12 @@ NEWSPIDER_MODULE = "bigdata.spiders"
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 
 # ============================================================================
+# WILD CRAWL CONFIGURATION
+# ============================================================================
+# Path to wild_crawl.json for unconfigured domains
+WILD_CRAWL_CONFIG_PATH = "bigdata/domain_configs/wild_crawl.json"
+
+# ============================================================================
 # REDIS CONFIGURATION
 # ============================================================================
 
@@ -150,7 +156,7 @@ HTTP2_ENABLED = True
 DOWNLOADER_MIDDLEWARES = {
     # Disable default user agent middleware
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    # Proxy setup: custom first, then Scrapy’s built-in applies it
+    # Proxy setup: custom first, then Scrapy's built-in applies it
     ProxyMiddleware: 350,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 400,
     # User agent randomization

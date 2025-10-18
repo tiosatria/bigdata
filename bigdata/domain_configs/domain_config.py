@@ -43,6 +43,8 @@ class Seed:
 OBVIOUS_EXCLUDES = [
     "//script",
     "//style",
+    "//svg",  # NEW: Exclude SVG bloat
+    "//noscript",
     "//*[contains(@class,'ads')]",
     "//*[contains(@class,'advertisement')]",
     "//aside",
@@ -55,14 +57,93 @@ OBVIOUS_EXCLUDES = [
     "//iframe",
     "//*[contains(@class,'related')]",
     "//*[contains(@class,'see-also')]",
+    "//*[@role='complementary']",  # Sidebar content
+    "//*[contains(@class,'sidebar')]",
+    "//*[contains(@class,'widget')]",
 ]
 
 blacklist_url_regex = [
+    # Authentication and user management
     r'https?://auth\.[^/]+',
+    r'https?://login\.[^/]+',
+    r'https?://signin\.[^/]+',
+    r'https?://account\.[^/]+',
+    r'https?://my\.[^/]+',
+    r'https?://profile\.[^/]+',
+    r'https?://user\.[^/]+',
+    r'.*/login[/-]?',
+    r'.*/signin[/-]?',
+    r'.*/signup[/-]?',
+    r'.*/register[/-]?',
+    r'.*/logout[/-]?',
+    r'.*/account[/-]',
+    r'.*/profile[/-]',
+
+    # E-commerce
     r'https?://shop\.[^/]+',
+    r'https?://store\.[^/]+',
+    r'https?://cart\.[^/]+',
+    r'https?://checkout\.[^/]+',
     r'https?://product\.[^/]+',
+    r'.*/shop[/-]',
+    r'.*/store[/-]',
+    r'.*/cart[/-]?',
+    r'.*/checkout[/-]?',
+    r'.*/products?[/-]',
+    r'.*/buy[/-]',
+    r'.*/order[/-]',
+
+    # Staging and development
     r'https?://stage\.[^/]+',
     r'https?://staging\.[^/]+',
+    r'https?://dev\.[^/]+',
+    r'https?://test\.[^/]+',
+    r'https?://demo\.[^/]+',
+    r'https?://beta\.[^/]+',
+    r'https?://preview\.[^/]+',
+
+    # Legal and compliance
+    r'https?://dsar\.[^/]+',
+    r'.*/privacy[/-]?',
+    r'.*/terms[/-]?',
+    r'.*/conditions[/-]?',
+    r'.*/cookie[/-]?',
+    r'.*/gdpr[/-]?',
+    r'.*/legal[/-]?',
+    r'.*/disclaimer[/-]?',
+    r'.*/policy[/-]?',
+
+    # Company pages
+    r'.*/contact[/-]?',
+    r'.*/about[/-]?',
+    r'.*/team[/-]?',
+    r'.*/careers[/-]?',
+    r'.*/jobs[/-]?',
+    r'.*/press[/-]?',
+    r'.*/advertise[/-]?',
+
+    # User-generated content (non-article)
+    r'.*/comment[/-]',
+    r'.*/reply[/-]',
+    r'.*/forum[/-]',
+
+    # Functional pages
+    r'.*/subscribe[/-]?',
+    r'.*/unsubscribe[/-]?',
+    r'.*/newsletter[/-]?',
+
+    # Admin and backend
+    r'https?://admin\.[^/]+',
+    r'.*/admin[/-]',
+    r'.*/wp-admin[/-]',
+    r'.*/dashboard[/-]',
+    r'.*/backend[/-]',
+
+    # Tracking and analytics
+    r'.*/track[/-]?',
+    r'.*/analytics[/-]?',
+    r'.*/pixel[/-]?',
+    r'.*/beacon[/-]?',
 ]
 
 class CustomParser(ABC):
@@ -84,7 +165,7 @@ class DomainConfig:
     article_target_xpaths: Optional[Iterable[str] | str] = None
     max_pages: Optional[int] = None  # Limit pagination depth
 
-    # Content extraction (required fields)
+    # Content extraction (required fields for XPath-based extraction)
     title_xpath: str = "//h1/text()"
     body_xpath: str = "//article | //div[contains(@class,'content')]"
 
@@ -120,6 +201,9 @@ class DomainConfig:
     domain_type: str = "general"  # e.g., news, recipe, tech, etc.
     subdomain_type: Optional[str] = None
 
+    # NEW: Wild crawl mode (trafilatura-based extraction)
+    is_wild_crawl: bool = False  # True if created from wild_crawl.json
+
     def __post_init__(self):
         # Merge custom excludes with obvious ones
         all_excludes = OBVIOUS_EXCLUDES.copy()
@@ -142,6 +226,10 @@ class DomainConfig:
 
         if not self.domain:
             errors.append("Domain is required")
+
+        # Wild crawl configs don't need XPath validation
+        if self.is_wild_crawl:
+            return len(errors) == 0, errors
 
         if not self.title_xpath:
             errors.append("Title XPath is required")
@@ -177,5 +265,6 @@ class DomainConfig:
             'domain_type': self.domain_type,
             'subdomain': self.subdomain_type,
             'cloudflare_proxy_bypass' : self.cloudflare_proxy_bypass,
-            'use_proxy': self.use_proxy
+            'use_proxy': self.use_proxy,
+            'is_wild_crawl': self.is_wild_crawl
         }
