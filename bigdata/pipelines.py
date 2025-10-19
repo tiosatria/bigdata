@@ -2,154 +2,75 @@
 Production-grade item pipelines
 Handles validation, cleaning, deduplication, and storage
 """
-from collections import defaultdict
-from datetime import datetime
-from urllib.parse import urlparse
-import hashlib
-import logging
-import re
-from pathlib import Path
-from lxml import html, etree
-
+import uuid
+import trafilatura
+from itemadapter import ItemAdapter
 import json
 import logging
 import time
 from pathlib import Path
 from collections import defaultdict
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 import threading
 from queue import Queue
 import atexit
+from lxml import etree, html
+from scrapy.exceptions import DropItem
+from bigdata.cleaners.html_cleaner import OBVIOUS_EXCLUDES_LIST
+from bigdata.items import CrawlItem, DailyLifeResult
+from bigdata.spiders.dailylifespider import DailyLifeSpider, DomainConfig
+from trafilatura.external import try_readability, try_justext
+from trafilatura import html2txt
 
+class CleanHtmlFragmentPipeline:
 
-class CleaningPipeline:
-    """Clean and normalize scraped content"""
+    EXCLUDES = OBVIOUS_EXCLUDES_LIST.copy()
 
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
+    @staticmethod
+    def clean_html_fragment(fragment: str, exclude_xpaths: Optional[list[str]]) -> str:
 
-    def process_item(self, item, spider):
-        """Clean and normalize item data"""
-
-        # Clean title
-        item['title'] = self._clean_text(item['title'])
-
-        # Clean author if present
-        if item.get('author'):
-            item['author'] = self._clean_text(item['author'])
-
-        # Clean tags
-        if item.get('tags'):
-            item['tags'] = [self._clean_text(tag) for tag in item['tags']]
-            item['tags'] = [tag for tag in item['tags'] if tag]  # Remove empty
-
-        # Clean and validate body HTML
-        if item.get('body_type') == 'html':
-            item['body'] = self._clean_html(item['body'])
-
-        # Ensure URL is absolute and normalized
-        item['url'] = self._normalize_url(item['url'])
-
-        # Add content hash for deduplication
-        item['content_hash'] = self._generate_content_hash(item)
-
-        return item
-
-    def _clean_text(self, text):
-        """Clean text content"""
-        if not text:
-            return ""
-
-        # Remove extra whitespace
-        text = re.sub(r'\s+', ' ', text)
-
-        # Remove leading/trailing whitespace
-        text = text.strip()
-
-        # Remove control characters
-        text = ''.join(char for char in text if ord(char) >= 32 or char in '\n\t')
-
-        return text
-
-    def _clean_html(self, html_content):
-        """Clean HTML content"""
-        if not html_content:
+        """Clean HTML fragment by removing unwanted elements"""
+        if not fragment:
             return ""
 
         try:
-            # Parse HTML
-            doc = html.fromstring(html_content)
+            # Parse HTML fragment safely
+            doc = html.fromstring(fragment)
 
-            # Remove comments
-            for comment in doc.xpath('//comment()'):
-                comment.getparent().remove(comment)
-
-            # Remove empty elements
-            for element in doc.xpath('//*[not(normalize-space())]'):
-                if element.tag not in ['br', 'hr', 'img']:
-                    parent = element.getparent()
-                    if parent is not None:
-                        parent.remove(element)
-
-            # Serialize back to HTML
-            cleaned_html = etree.tostring(doc, encoding='unicode', method='html')
-
-            return cleaned_html
+            # Remove unwanted nodes
+            for xp in exclude_xpaths, CleanHtmlFragmentPipeline.EXCLUDES:
+                try:
+                    for node in doc.xpath(xp):
+                        parent = node.getparent()
+                        if parent is not None:
+                            parent.remove(node)
+                except Exception as e:
+                    logging.warning(f"Failed to apply exclude xpath {xp}: {e}")
+            # Return serialized, well-formed HTML
+            return etree.tostring(doc, encoding="unicode", method="html")
 
         except Exception as e:
-            self.logger.warning(f"Failed to clean HTML: {e}")
-            return html_content
-
-    def _normalize_url(self, url):
-        """Normalize URL"""
-        # Remove fragment
-        if '#' in url:
-            url = url.split('#')[0]
-
-        # Remove trailing slash (except for root)
-        parsed = urlparse(url)
-        if parsed.path != '/' and parsed.path.endswith('/'):
-            url = url.rstrip('/')
-
-        return url
-
-    def _generate_content_hash(self, item):
-        """Generate hash of content for deduplication"""
-        # Create hash from title + first 1000 chars of body
-        content = f"{item['title']}{item['body'][:1000]}"
-        return hashlib.md5(content.encode('utf-8')).hexdigest()
-
-class EnrichmentPipeline:
-    """Enrich items with additional metadata"""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
+            logging.error(f"Failed to clean HTML fragment: {e}")
+            return fragment
 
     def process_item(self, item, spider):
-        """Add additional metadata"""
+        if not isinstance(item, CrawlItem):
+            return item
+        raw = ItemAdapter(item)
+        domain = raw.get('meta',{}).get('hostname','') or spider.get_domain(raw.get('meta',{}).get('url'))
+        cfg :DomainConfig|None= getattr(spider, 'site_configs', {}).get(domain, None)
 
-        # Add word count
-        if item.get('body'):
-            text = html.fromstring(item['body']).text_content()
-            item['word_count'] = len(text.split())
+        site_noises = cfg.noises_xp or []
 
-        # Add reading time (assuming 200 words per minute)
-        if item.get('word_count'):
-            item['reading_time_minutes'] = max(1, round(item['word_count'] / 200))
-
-        # Parse domain info
-        parsed_url = urlparse(item['url'])
-        item['url_path'] = parsed_url.path
-        item['url_domain'] = parsed_url.netloc
-
-        # Add scrape metadata
-        if not item.get('timestamp'):
-            item['timestamp'] = datetime.now()
-
-        item['scraped_at'] = datetime.now().isoformat()
-        item['spider_name'] = spider.name
-
+        body_type = raw.get('meta', {}).get('body_type','html')
+        if body_type != 'html':
+            return item
+        body = raw['body']
+        if len(body) < 200:
+            raise DropItem(f'raw body is too short: {len(body)}')
+        sanitized_html = self.clean_html_fragment(body, site_noises)
+        raw['body'] = sanitized_html
         return item
 
 
@@ -165,7 +86,7 @@ class JSONExportPipeline:
     - Fast JSON serialization
     """
 
-    def __init__(self, export_dir='output', buffer_size=10000, flush_interval=60):
+    def __init__(self, export_dir='output', buffer_size=1000, flush_interval=60):
         """
         Args:
             export_dir: Directory to save JSON files
@@ -446,6 +367,173 @@ class JSONExportPipeline:
         except Exception as e:
             self.logger.error(f"Emergency cleanup failed: {e}")
 
+class TransformCrawlerItemToDailyLifeFormat:
+
+    min_text_length :int= 200
+    excludes_title :list[str]=[]
+
+    @staticmethod
+    def is_templated(text:str, config:DomainConfig, logger)->bool:
+        if not isinstance(text, str):
+            return False
+        comparison = text.lower()
+        compare_to = config.domain.lower()
+
+        return compare_to.__contains__(comparison)
+
+    def get_domain_subdomain(self, item:ItemAdapter, config:DomainConfig, logger) -> dict:
+
+        # get tags from meta appended by response
+        domain = item.get('meta',{}).get('content_domain')
+        subdomain = item.get('meta',{}).get('content_subdomain')
+
+        if domain and subdomain:
+            return {'domain':domain, 'subdomain':subdomain}
+
+        # get tags from meta
+        tags = item.get('meta',{}).get('tags',[])
+
+        if tags:
+            for tag in tags:
+                if self.is_templated(tag, config):
+                    continue
+                if not domain:
+                    domain = tag
+                else:
+                    subdomain = tag
+                    break
+
+        # todo: xpath the fuck outta body. maybe, later
+
+        # last resort, get from domain config
+
+        if not domain:
+            domain = config.content_domain
+        if not subdomain:
+            subdomain = config.content_subdomain
+
+        return {'domain':domain, 'subdomain':subdomain}
+
+    def sanitize_title(self, item: ItemAdapter, config:DomainConfig, logger):
+        return item.get('meta',{}).get('title','')
+
+    def sanitize_body_text(self, item:ItemAdapter, config:DomainConfig, logger) -> str:
+
+        """
+        Sanitize body text using multiple fallback\n
+        1. If the body xpath is specified on domain config, it will attempt to extract from there\n
+        2. If the extraction fails, trafilatura will perform automatic extraction\n
+        3. If it still fails, it will fallback to readability\n
+        4. If it still fails, it will fallback to justext\n
+        5. Lastly, if it still fails, it will return empty string.\n
+
+        :param item: item yielded by previous pipeline
+        :param config: domain config
+        :param logger: spider logger for debugging
+        :return: always return a str regardless of how funky the content, or atleast that's the idea.
+        """
+        raw = ItemAdapter(item)
+        body_type = raw.get('meta', {}).get('body_type', 'html')
+        if body_type != 'html':
+            return raw.get('body','')
+
+        h = raw.get('body','')
+
+        # extract right away from known xpath
+        if body_xpath:= config.xpath.get('body'):
+            if dom:= html.fromstring(h):
+                target_dom = dom.xpath(body_xpath)
+                sanitized_text = trafilatura.extract(target_dom,
+                                                     url=item.get('meta',{}).get('url'),
+                                                     output_format='txt',
+                                                     include_comments=False,
+                                                     include_images=True,
+                                                     include_tables=True,
+                                                     prune_xpath=config.noises_xp,
+                                                     target_language='en',
+                                                     # fast=True
+                                                     )
+                if sanitized_text:
+                    return sanitized_text
+
+        # fallback to auto extraction
+        sanitized_text = trafilatura.extract(h,
+                            url=item.get('meta',{}).get('url'),
+                            prune_xpath=config.noises_xp,
+                            output_format='txt',
+                            include_images=True,
+                            include_tables=True,
+                            include_comments=False,
+                                             target_language='en')
+
+        if sanitized_text:
+            return sanitized_text
+
+        # fallback to readibility
+        if not sanitized_text:
+                sanitized_html = try_readability(h)
+                sanitized_text = html2txt(sanitized_html, clean=True)
+                if sanitized_text:
+                    return sanitized_text
+
+        # fallback to justext
+        return try_justext(html.fromstring(h), url=item.get('meta',{}).get('url'), target_language='en') or ''
+
+    def process_item(self, item, spider:DailyLifeSpider):
+
+        if not isinstance(item, CrawlItem):
+            return item
+
+        if not isinstance(spider, DailyLifeSpider):
+            spider.logger.warning('This spider is not a DailyLifeSpider. the Item will be forwarded without transforming.')
+            return item
+
+        raw_item = ItemAdapter(item)
+        domain = raw_item.get('meta',{}).get('hostname','') or spider.get_domain(raw_item.get('meta',{}).get('url'))
+        cfg = spider.site_configs.get(domain,{})
+
+        if not cfg:
+            return item
+
+        sanitized_text = self.sanitize_body_text(raw_item, cfg, spider.logger)
+        sanitized_title = self.sanitize_title(raw_item, cfg, spider.logger)
+        domain, subdomain = self.get_domain_subdomain(raw_item, cfg, spider.logger)
+        text = f"{sanitized_title}\n{sanitized_text}"
+
+        out_item = {
+            'id': str(uuid.uuid4()),
+            'text': text,
+            'meta': {
+                'data_info': {
+                    'lang': cfg.lang or 'en',
+                    'url': raw_item.get('meta',{}).get('url'),
+                    'source': domain,
+                    'type': cfg.type or 'general',
+                    'processing_date': datetime.now().isoformat(),
+                    'delivery_version': cfg.delivery_version or 'V1',
+                    'title': sanitized_title
+                },
+                'content_info':{
+                    'domain': domain or cfg.content_domain,
+                    'subdomain':subdomain or cfg.content_subdomain
+                }
+            }
+        }
+
+        return DailyLifeResult(**out_item)
+
+class CleanedJsonlExportPipeline(JSONExportPipeline):
+
+    def __init__(self, export_dir='output_cleaned', buffer_size=10000,
+                 flush_interval=60):
+        super().__init__(export_dir=export_dir, buffer_size=buffer_size, flush_interval=flush_interval)
+        self.logger = logging.getLogger(__name__)
+
+    def process_item(self, item, spider):
+        if not isinstance(item, DailyLifeResult):
+            return item
+        return super().process_item(item, spider)
+
 class RotatingJSONExportPipeline(JSONExportPipeline):
     """Extended version with file rotation support
 
@@ -501,7 +589,6 @@ class RotatingJSONExportPipeline(JSONExportPipeline):
         else:
             return self.export_dir / f"{sanitized}_part{index:04d}.jsonl"
 
-
 class ErrorHandlingPipeline:
     """Handle errors gracefully and log failed items"""
 
@@ -545,70 +632,3 @@ class ErrorHandlingPipeline:
 
             if len(self.failed_items) > 10:
                 self.logger.error(f"  ... and {len(self.failed_items) - 10} more")
-
-class StatisticsPipeline:
-    """Collect statistics about scraped items"""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.stats = {
-            'total_items': 0,
-            'by_domain': {},
-            'by_language': {},
-            'total_words': 0,
-            'with_author': 0,
-            'with_tags': 0,
-            'with_date': 0
-        }
-
-    def process_item(self, item, spider):
-        """Collect statistics"""
-
-        self.stats['total_items'] += 1
-
-        # By domain
-        domain = item.get('source_domain', 'unknown')
-        self.stats['by_domain'][domain] = self.stats['by_domain'].get(domain, 0) + 1
-
-        # By language
-        lang = item.get('lang', 'unknown')
-        self.stats['by_language'][lang] = self.stats['by_language'].get(lang, 0) + 1
-
-        # Word count
-        if item.get('word_count'):
-            self.stats['total_words'] += item['word_count']
-
-        # Optional fields
-        if item.get('author'):
-            self.stats['with_author'] += 1
-
-        if item.get('tags'):
-            self.stats['with_tags'] += 1
-
-        if item.get('post_date'):
-            self.stats['with_date'] += 1
-
-        return item
-
-    def close_spider(self, spider):
-        """Log statistics"""
-        self.logger.info(
-            f"\n{'='*60}\n"
-            f"📊 SCRAPING STATISTICS\n"
-            f"{'='*60}\n"
-            f"Total items: {self.stats['total_items']}\n"
-            f"Total words: {self.stats['total_words']:,}\n"
-            f"Avg words per item: {self.stats['total_words'] // max(1, self.stats['total_items']):,}\n"
-            f"\nOptional fields:\n"
-            f"  With author: {self.stats['with_author']} ({self.stats['with_author']/max(1,self.stats['total_items'])*100:.1f}%)\n"
-            f"  With tags: {self.stats['with_tags']} ({self.stats['with_tags']/max(1,self.stats['total_items'])*100:.1f}%)\n"
-            f"  With date: {self.stats['with_date']} ({self.stats['with_date']/max(1,self.stats['total_items'])*100:.1f}%)\n"
-            f"\nBy domain:"
-        )
-
-        for domain, count in sorted(self.stats['by_domain'].items(), key=lambda x: x[1], reverse=True):
-            percentage = count / self.stats['total_items'] * 100
-            self.logger.info(f"  {domain}: {count} ({percentage:.1f}%)")
-
-        self.logger.info(f"{'='*60}")
-

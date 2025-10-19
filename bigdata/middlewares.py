@@ -10,7 +10,7 @@ from scrapy import signals
 class ProxyMiddleware:
 
     def process_request(self, request, spider):
-        if request.meta.get('cf-bypass', False):
+        if request.meta.get('bypass_cf', False):
             request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:1234'
         elif request.meta.get('use_proxy', False):
             request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'

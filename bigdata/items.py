@@ -3,18 +3,29 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy import Field, Item
+from typing_extensions import deprecated
 
-class ArticleItem(scrapy.Item):
-    url = scrapy.Field()
-    source_domain = scrapy.Field()
-    title = scrapy.Field()
-    tags = scrapy.Field()
-    author = scrapy.Field()
-    post_date = scrapy.Field()
-    body = scrapy.Field()  # Cleaned raw HTML (OBVIOUS_EXCLUDES applied)
-    body_type = scrapy.Field()
-    body_content = scrapy.Field()  # NEW: Trafilatura cleaned text with formatting (preserves images/tables)
-    extraction_method = scrapy.Field()  # NEW: "trafilatura", "xpath", or "hybrid"
-    lang = scrapy.Field()
-    timestamp = scrapy.Field()
+
+@deprecated("Use CrawlItem instead", category=FutureWarning)
+class ArticleItem(Item):
+    url = Field()
+    source_domain = Field()
+    title = Field()
+    tags = Field()
+    author = Field()
+    post_date = Field()
+    body = Field()
+    body_type = Field()
+    body_content = Field()
+    lang = Field()
+    timestamp = Field()
+
+class CrawlItem(Item):
+    meta = Field()
+    body = Field()
+
+class DailyLifeResult(Item):
+    id = Field()
+    text = Field()
+    meta = Field()

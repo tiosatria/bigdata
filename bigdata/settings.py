@@ -7,7 +7,8 @@
 from scrapy.settings.default_settings import FEEDS, TELNETCONSOLE_PASSWORD, TELNETCONSOLE_USERNAME
 
 from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
-from bigdata.pipelines import JSONExportPipeline
+from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, \
+    CleanHtmlFragmentPipeline
 import logging
 import scrapy.utils.reactor
 scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSelectorReactor")
@@ -19,14 +20,9 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 SPIDER_MODULES = ["bigdata.spiders"]
 NEWSPIDER_MODULE = "bigdata.spiders"
-
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 
-# ============================================================================
-# WILD CRAWL CONFIGURATION
-# ============================================================================
-# Path to wild_crawl.json for unconfigured domains
-WILD_CRAWL_CONFIG_PATH = "bigdata/domain_configs/wild_crawl.json"
+SITE_CONFIG_PATH = "./site_cfg.json"
 
 # ============================================================================
 # REDIS CONFIGURATION
@@ -34,11 +30,11 @@ WILD_CRAWL_CONFIG_PATH = "bigdata/domain_configs/wild_crawl.json"
 
 # Enables scheduling storing requests queue in redis
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # SCHEDULER_ORDER = 'DFO'
+SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
 SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
-SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # SCHEDULER_IDLE_BEFORE_CLOSE = 60
 
 # Redis Connection URL
@@ -169,11 +165,10 @@ DOWNLOADER_MIDDLEWARES = {
 # ============================================================================
 
 ITEM_PIPELINES = {
-    # Add your pipelines here
-    # 'pipelines.ValidationPipeline': 100,
-    # 'pipelines.CleaningPipeline': 200,
-    # 'pipelines.DatabasePipeline': 300,
-    JSONExportPipeline: 300
+    CleanHtmlFragmentPipeline: 1,
+    JSONExportPipeline: 2,
+    TransformCrawlerItemToDailyLifeFormat: 3,
+    CleanedJsonlExportPipeline: 4
 }
 
 LOG_ENABLED = True
