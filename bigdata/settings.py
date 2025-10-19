@@ -5,7 +5,7 @@
 #
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 from scrapy.settings.default_settings import FEEDS, TELNETCONSOLE_PASSWORD, TELNETCONSOLE_USERNAME
-
+from pathlib import Path
 from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
 from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, \
     CleanHtmlFragmentPipeline
@@ -22,7 +22,7 @@ SPIDER_MODULES = ["bigdata.spiders"]
 NEWSPIDER_MODULE = "bigdata.spiders"
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 
-SITE_CONFIG_PATH = "./site_cfg.json"
+SITE_CONFIG_PATH = Path(__file__).resolve().parent.parent / "site_cfg.json"
 
 # ============================================================================
 # REDIS CONFIGURATION
@@ -32,7 +32,7 @@ SITE_CONFIG_PATH = "./site_cfg.json"
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # SCHEDULER_ORDER = 'DFO'
-SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
+SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
 SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
 # SCHEDULER_IDLE_BEFORE_CLOSE = 60
@@ -55,6 +55,13 @@ RETRY_ENABLED = True
 RETRY_TIMES = 4
 RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
 RETRY_PRIORITY_ADJUST = -5
+
+ITEM_PIPELINES = {
+    CleanHtmlFragmentPipeline: 1,
+    JSONExportPipeline: 2,
+    TransformCrawlerItemToDailyLifeFormat: 3,
+    CleanedJsonlExportPipeline: 4
+}
 
 # ============================================================================
 # CONCURRENT REQUESTS & THROTTLING
@@ -164,18 +171,12 @@ DOWNLOADER_MIDDLEWARES = {
 # ITEM PIPELINES
 # ============================================================================
 
-ITEM_PIPELINES = {
-    CleanHtmlFragmentPipeline: 1,
-    JSONExportPipeline: 2,
-    TransformCrawlerItemToDailyLifeFormat: 3,
-    CleanedJsonlExportPipeline: 4
-}
-
 LOG_ENABLED = True
 LOG_LEVEL = 'INFO'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_ENCODING = 'utf-8'
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
+
 
 HTTPCACHE_ENABLED = False
 DNSCACHE_ENABLED = True
@@ -185,12 +186,13 @@ DNS_TIMEOUT = 60
 TELNETCONSOLE_USERNAME = 'gringo'
 TELNETCONSOLE_PASSWORD = "gringo"
 
+
 # ============================================================================
 # EXTENSIONS
 # ============================================================================
 
 EXTENSIONS = {
-    'scrapy.extensions.telnet.TelnetConsole': 100,  # Disable telnet
+    'scrapy.extensions.telnet.TelnetConsole': 100,
     # 'scrapy.extensions.memusage.MemoryUsage': 100,
     'scrapy.extensions.logstats.LogStats': 200,
 }

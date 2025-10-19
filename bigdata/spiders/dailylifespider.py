@@ -10,6 +10,8 @@ from scrapy.spiders import Rule
 from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 import trafilatura
 from bigdata.items import CrawlItem
+from redis import Redis
+
 
 @dataclass
 class DomainConfig:
@@ -25,6 +27,7 @@ class DomainConfig:
     bypass_cf:bool = False
     link_extractors:dict = field(default_factory=dict)
     test_run: bool = False
+    push_seed:bool = False
     noises_xp :list[str] = field(default_factory=list[str])
     seeds:list[dict]=field(default_factory=list)
     xpath: dict = field(default_factory=dict)
@@ -39,14 +42,32 @@ class DomainConfig:
 
 class DailyLifeSpider(RedisCrawlSpider):
 
-    name = 'daily_life'
+    name = 'dailylife'
     rules = []
     site_configs : dict[str, DomainConfig] = {}
 
     yielded: int = 0
 
-    def on_yielded_count_change(self):
-        pass
+    def push_seed(self) -> int:
+        server: Redis = self.server
+        seeded = 0
+        if not server:
+            raise CloseSpider('unable to push seed, please check redis connection')
+        for domain, config in self.site_configs.items():
+            self.logger.debug(f'Attempting to push seed for domain: {domain}')
+            if not config.test_run and not config.push_seed:
+                continue
+            for seed in config.seeds:
+                if url:=seed.get('url'):
+                    self.logger.info(f'pushed 1 seed with url {url}. for domain: {domain}')
+                    server.rpush(f"{self.name}:start_urls", json.dumps(seed))
+                    seeded+=1
+
+        return seeded
+
+    def start_requests(self):
+        self.push_seed()
+        return super().start_requests()
 
     def __init__(self, *args, **kwargs):
         settings = get_project_settings()
@@ -60,22 +81,15 @@ class DailyLifeSpider(RedisCrawlSpider):
         if not os.path.exists(config_path):
             self.logger.warning(f"sites config not found: {config_path}")
             raise CloseSpider('no_config')
-
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 site_configs = json.load(f)
-
             domains = site_configs.get('domains', {})
             self.logger.info(f"Loading {len(domains)} wild crawl domains from {config_path}")
-
             for domain_spec in domains:
-                # Merge with defaults
                 cfg = DomainConfig(**domain_spec)
-
                 self.site_configs[cfg.domain] = cfg
-
                 self.logger.info(f'Registered site config for {cfg.domain}')
-
         except Exception as e:
             self.logger.error(f"Failed to load wild crawl config: {e}", exc_info=True)
 
@@ -136,4 +150,3 @@ class DailyLifeSpider(RedisCrawlSpider):
             body = response.text
         )
         self.yielded+=1
-        self.on_yielded_count_change()

@@ -27,8 +27,7 @@ class CleanHtmlFragmentPipeline:
 
     EXCLUDES = OBVIOUS_EXCLUDES_LIST.copy()
 
-    @staticmethod
-    def clean_html_fragment(fragment: str, exclude_xpaths: Optional[list[str]]) -> str:
+    def clean_html_fragment(self,fragment: str, exclude_xpaths: Optional[list[str]]) -> str:
 
         """Clean HTML fragment by removing unwanted elements"""
         if not fragment:
@@ -37,9 +36,11 @@ class CleanHtmlFragmentPipeline:
         try:
             # Parse HTML fragment safely
             doc = html.fromstring(fragment)
-
+            unwanted_elements = self.EXCLUDES.copy()
+            if exclude_xpaths:
+                unwanted_elements.extend(exclude_xpaths)
             # Remove unwanted nodes
-            for xp in exclude_xpaths, CleanHtmlFragmentPipeline.EXCLUDES:
+            for xp in unwanted_elements:
                 try:
                     for node in doc.xpath(xp):
                         parent = node.getparent()
@@ -71,8 +72,7 @@ class CleanHtmlFragmentPipeline:
             raise DropItem(f'raw body is too short: {len(body)}')
         sanitized_html = self.clean_html_fragment(body, site_noises)
         raw['body'] = sanitized_html
-        return item
-
+        return CrawlItem(**raw)
 
 class JSONExportPipeline:
     """Ultra high-performance JSON export with async buffering and batch writes
@@ -183,7 +183,7 @@ class JSONExportPipeline:
     def process_item(self, item, spider):
         """Buffer item and flush when needed"""
         try:
-            domain = item.get('source_domain', 'unknown')
+            domain = item.get('meta',{}).get('source_domain', 'unknown')
 
             # Pre-serialize to JSON string (do this outside lock for speed)
             item_dict = self._prepare_item(item)
@@ -432,12 +432,11 @@ class TransformCrawlerItemToDailyLifeFormat:
         :param logger: spider logger for debugging
         :return: always return a str regardless of how funky the content, or atleast that's the idea.
         """
-        raw = ItemAdapter(item)
-        body_type = raw.get('meta', {}).get('body_type', 'html')
+        body_type = item.get('meta', {}).get('body_type', 'html')
         if body_type != 'html':
-            return raw.get('body','')
+            return item.get('body','')
 
-        h = raw.get('body','')
+        h = item.get('body','')
 
         # extract right away from known xpath
         if body_xpath:= config.xpath.get('body'):
@@ -480,8 +479,9 @@ class TransformCrawlerItemToDailyLifeFormat:
         return try_justext(html.fromstring(h), url=item.get('meta',{}).get('url'), target_language='en') or ''
 
     def process_item(self, item, spider:DailyLifeSpider):
-
+        spider.logger.debug('processing daily format')
         if not isinstance(item, CrawlItem):
+            spider.logger.debug("is not a crawler item, won't be processed")
             return item
 
         if not isinstance(spider, DailyLifeSpider):
@@ -497,7 +497,7 @@ class TransformCrawlerItemToDailyLifeFormat:
 
         sanitized_text = self.sanitize_body_text(raw_item, cfg, spider.logger)
         sanitized_title = self.sanitize_title(raw_item, cfg, spider.logger)
-        domain, subdomain = self.get_domain_subdomain(raw_item, cfg, spider.logger)
+        ds = self.get_domain_subdomain(raw_item, cfg, spider.logger)
         text = f"{sanitized_title}\n{sanitized_text}"
 
         out_item = {
@@ -514,8 +514,8 @@ class TransformCrawlerItemToDailyLifeFormat:
                     'title': sanitized_title
                 },
                 'content_info':{
-                    'domain': domain or cfg.content_domain,
-                    'subdomain':subdomain or cfg.content_subdomain
+                    'domain': ds.get('domain') or cfg.content_domain,
+                    'subdomain':ds.get('subdomain') or cfg.content_subdomain
                 }
             }
         }
@@ -524,9 +524,11 @@ class TransformCrawlerItemToDailyLifeFormat:
 
 class CleanedJsonlExportPipeline(JSONExportPipeline):
 
-    def __init__(self, export_dir='output_cleaned', buffer_size=10000,
-                 flush_interval=60):
-        super().__init__(export_dir=export_dir, buffer_size=buffer_size, flush_interval=flush_interval)
+    def __init__(self, export_dir = 'output',buffer_size=100,
+                 flush_interval=30):
+        super().__init__(export_dir=export_dir+"_cleaned",
+                         buffer_size=buffer_size,
+                         flush_interval=flush_interval)
         self.logger = logging.getLogger(__name__)
 
     def process_item(self, item, spider):

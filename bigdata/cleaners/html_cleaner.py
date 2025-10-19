@@ -2,7 +2,7 @@
 OBVIOUS_EXCLUDES_LIST = [
     "//script",
     "//style",
-    "//svg",  # NEW: Exclude SVG bloat
+    "//svg",
     "//noscript",
     "//*[contains(@class,'ads')]",
     "//*[contains(@class,'advertisement')]",
@@ -16,7 +16,7 @@ OBVIOUS_EXCLUDES_LIST = [
     "//iframe",
     "//*[contains(@class,'related')]",
     "//*[contains(@class,'see-also')]",
-    "//*[@role='complementary']",  # Sidebar content
+    "//*[@role='complementary']",
     "//*[contains(@class,'sidebar')]",
     "//*[contains(@class,'widget')]",
 ]

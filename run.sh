@@ -8,7 +8,7 @@ set -e
 # Default values
 NUM_INSTANCES=1
 SESSION_NAME="scrapy-cluster"
-SPIDER_NAME="article"
+SPIDER_NAME="dailylife"
 SCRAPY_ARGS=""
 MULTI_SCREEN=false
 
