@@ -11,7 +11,7 @@ class ProxyMiddleware:
 
     def process_request(self, request, spider):
         if request.meta.get('bypass_cf', False):
-            request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:1234'
+            request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:4321'
         elif request.meta.get('use_proxy', False):
             request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'
 

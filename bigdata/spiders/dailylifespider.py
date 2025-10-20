@@ -11,6 +11,7 @@ from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 import trafilatura
 from bigdata.items import CrawlItem
 from redis import Redis
+import re
 
 
 @dataclass
@@ -32,9 +33,22 @@ class DomainConfig:
     seeds:list[dict]=field(default_factory=list)
     xpath: dict = field(default_factory=dict)
 
+    compiled_re:dict = field(default_factory=dict)
+
+    def __post_init__(self):
+        if self.link_extractors:
+            nav_signature_url_re_match = (self.link_extractors
+                                  .get('follow_and_parse', {})
+                                  .get('navigation_signature',{})
+                                  .get('url_re_match',[]))
+            # navigation signature
+            compiled = []
+            for m in nav_signature_url_re_match:
+                compiled.append(re.compile(m))
+            self.compiled_re['navigation_signature:url_re_match'] = compiled
+
     @classmethod
     def from_dict(cls, dictionary:dict):
-
         cls(**dictionary)
 
     def to_dict(self) -> dict:
@@ -101,14 +115,26 @@ class DailyLifeSpider(RedisCrawlSpider):
                 continue
 
             for ln in config.link_extractors.get('navs',[]):
-                rules.append(Rule(link_extractor=LxmlLinkExtractor(**ln),
+                rules.append(Rule(link_extractor=LxmlLinkExtractor(
+                    allow_domains=domain,
+                    **ln),
                                   follow=True,
                                   process_request='_process_request_nav'))
 
             for la in config.link_extractors.get('articles',[]):
-                rules.append(Rule(link_extractor=LxmlLinkExtractor(**la),
+                rules.append(Rule(link_extractor=LxmlLinkExtractor(
+                    allow_domains=domain,
+                    **la),
                                   callback='parse_article',
                                   process_request='_process_request'))
+
+            for fap in config.link_extractors.get('follow_and_parse',[]):
+                rules.append(Rule(link_extractor=LxmlLinkExtractor(
+                    allow_domains=domain,
+                    **fap),
+                    callback='_follow_and_parse',
+                    follow=True,
+                    process_request='_process_follow_and_parse_request' ))
 
         self.rules = rules
 
@@ -140,11 +166,47 @@ class DailyLifeSpider(RedisCrawlSpider):
         self._apply_domain_config(request, config)
         return request
 
-    def parse_article(self, response:Response):
-        metadata = trafilatura.extract_metadata(response.text, default_url=response.url).as_dict()
+    def _process_follow_and_parse_request(self, request, response):
+        req = self._process_request(request,response)
+        req.meta['from_follow_and_parse']= True
+        return req
+
+    def get_and_set_metadata(self, response:Response):
+        metadata = (trafilatura
+                    .extract_metadata(response.text,
+                                      default_url=response.url)
+                    .as_dict())
         metadata['body_type'] = 'html'
         if cs := response.meta.get('content_subdomain'):
-            metadata['content_subdomain']=cs
+            metadata['content_subdomain'] = cs
+        if cd := response.meta.get('content_domain'):
+            metadata['content_domain'] = cd
+        return metadata
+
+    def is_navigation_link(self,response:Response, config) -> bool:
+        # check whether the response has index match
+        re_idx = config.compiled_re.get('navigation_signature:url_re_match')
+        if not re_idx:
+            return False
+        return bool(re.Pattern.match(re_idx, response.url))
+
+    def _follow_and_parse(self, response:Response):
+        config = self.site_configs.get(response.meta['domain'])
+        is_nav = self.is_navigation_link(response, config)
+        if is_nav:
+            self.logger.debug('is navigation link, skipping parsing')
+            return
+        metadata = (trafilatura.extract_metadata(response.text, default_url=response.url)
+                    .as_dict())
+
+        # check whether has body declared
+        content_container_xpath =
+
+        # check whether the content have content_signature
+
+
+    def parse_article(self, response:Response):
+        metadata= self.get_and_set_metadata(response)
         yield CrawlItem(
             meta = metadata,
             body = response.text

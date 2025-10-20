@@ -18,6 +18,7 @@ Processor: converts raw crawl records (JSON/JSONL) into standardized JSONL recor
 """
 import argparse
 import json
+import re
 import sys
 import uuid
 from pathlib import Path
@@ -25,6 +26,10 @@ from multiprocessing import cpu_count
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from typing import List, Dict, Any, Optional, Set
 from datetime import datetime, timezone
+
+import goose3
+import trafilatura.external
+from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from post_process.jsonloader import JSONLoader
@@ -112,12 +117,23 @@ def clean_remove_html(value: str) -> str:
 # HTML Cleaning
 # ---------------
 
-def clean_html_with_trafilatura(
+from html import unescape
+
+def strip_html(html_str: str) -> str:
+    if not html_str:
+        return ""
+    soup = BeautifulSoup(html_str, "html.parser")
+    text = soup.get_text(strip=True)
+    return unescape(" ".join(text.split()))
+
+def html_cleaning(
         html_content: str,
+        url:str,
         prune_xpath: Optional[List[str]] = None,
         retain_images: bool = False,
         retain_tables: bool = False,
-        output_format: str = 'text'
+        body_xpath: Optional[str] = None,
+        output_format: str = 'txt'
 ) -> Optional[str]:
     """Clean HTML using trafilatura"""
     if not TRAFILATURA_AVAILABLE:
@@ -128,33 +144,38 @@ def clean_html_with_trafilatura(
 
     try:
         # Parse HTML and prune specified xpaths
+        doc = lxml_html.fromstring(html_content)
+        if body_xpath:
+            body = doc.xpath(body_xpath)
+            if body:
+                doc = body[0]
         if prune_xpath:
             try:
-                doc = lxml_html.fromstring(html_content)
                 for xpath in prune_xpath:
                     for element in doc.xpath(xpath):
                         element.getparent().remove(element)
-                html_content = lxml_html.tostring(doc, encoding='unicode')
             except Exception as e:
                 print(f"Warning: XPath pruning failed: {e}", file=sys.stderr)
-
         # Extract with trafilatura
+        html_content = lxml_html.tostring(doc, encoding='unicode')
         result = extract(
             html_content,
             include_images=retain_images,
             include_tables=retain_tables,
             output_format=output_format,
             include_comments=False,
-            include_links=False
+            include_links=False,
+            prune_xpath=prune_xpath,
+            url=url
         )
-
+        if not result:
+            result = strip_html(html_content)
         return result
     except Exception as e:
-        print(f"Warning: trafilatura extraction failed: {e}", file=sys.stderr)
+        print(f"Warning: trafilatura extraction & fallback method has failed: {e}", file=sys.stderr)
         return None
 
-
-def apply_field_cleaners(value: Any, cleaner_names: Optional[List[str]]) -> Any:
+def apply_field_cleaners(value: Any,  cleaner_names: Optional[List[str]]) -> Any:
     """Apply a chain of cleaners to a field value"""
     if not cleaner_names or value is None:
         return value
@@ -220,6 +241,21 @@ def should_filter_record(
 # Worker functions
 # ---------------
 
+import re
+
+
+# re.compile(r"(?:\n)?submitted by:\s*.+$", re.IGNORECASE | re.MULTILINE),
+
+END_TEMPLATE_RE = [
+    re.compile(r"(?:\n)?submitted by.*", re.IGNORECASE | re.DOTALL)
+]
+
+def strip_end_template(text: str) -> str:
+    for pattern in END_TEMPLATE_RE:
+        text = pattern.sub("", text)
+    return text.strip()
+
+
 def _process_record(
         record: Dict[str, Any],
         config: Dict[str, Any]
@@ -265,18 +301,22 @@ def _process_record(
     if 'html' in config.get('cleaners', []):
         body_html = cleaned_record.get(body_source, '')
         if body_html:
-            cleaned_body = clean_html_with_trafilatura(
+            cleaned_body = html_cleaning(
                 body_html,
+                record['url'],
                 prune_xpath=config.get('prune_xpath'),
                 retain_images=config.get('retain_images', False),
                 retain_tables=config.get('retain_tables', False),
-                output_format=config.get('format', 'txt')
+                output_format=config.get('format', 'txt'),
+                body_xpath=config.get('body_xpath')
             )
-            if cleaned_body:
+            if len(cleaned_body):
                 cleaned_record['body'] = cleaned_body
             else:
-                # If trafilatura fails, keep original
-                cleaned_record['body'] = body_html
+                cleaned_record['body'] = None
+
+    if 'end_template' in config.get('cleaners',[]):
+        cleaned_record['body'] = strip_end_template(cleaned_record['body'])
 
     # Apply field-specific cleaners
     for field, cleaner_key in [
@@ -357,8 +397,11 @@ def _process_record(
     if subdomain_tag and domain_tag and subdomain_tag == domain_tag:
         subdomain_tag = None
 
-    domain_val = domain_tag or config.get('default_domain', 'general')
-    subdomain_val = subdomain_tag or config.get('default_subdomain', '')
+    specified_domain = config.get('specify_domain')
+    specified_subdomain = config.get('specify_subdomain')
+
+    domain_val = specified_domain or domain_tag or config.get('default_domain', 'general')
+    subdomain_val = specified_subdomain or subdomain_tag or config.get('default_subdomain', '')
     type_val = config.get('default_type', 'article')
 
     # Build output record
@@ -442,14 +485,15 @@ Examples:
     parser.add_argument('--workers', type=int, default=cpu_count(),
                         help=f'Number of parallel workers (default: {cpu_count()})')
     parser.add_argument('--limit', type=int, help='Limit number of records to process')
-    parser.add_argument('--chunk-size', type=int, default=1000,
-                        help='Records per chunk for parallel processing (default: 1000)')
+    parser.add_argument('--chunk-size', type=int, default=100,
+                        help='Records per chunk for parallel processing (default: 100)')
     parser.add_argument('--min-text-length', type=int, default=200,
                         help='Minimum length of combined title+body text (default: 200)')
 
     # Cleaners
-    parser.add_argument('--cleaners', nargs='+', choices=['html'],
+    parser.add_argument('--cleaners', nargs='+', choices=['html', 'end_template'],
                         help='List of cleaners to apply')
+
     parser.add_argument('--use-content', action='store_true',
                         help='Use body_content field if available, fallback to body')
 
@@ -463,6 +507,8 @@ Examples:
     parser.add_argument('--format', type=str, default='txt',
                         choices=['text', 'markdown', 'xml'],
                         help='Trafilatura output format (default: text)')
+
+    parser.add_argument('--body-xpath', help='body xpath to target for extraction')
 
     # Field-specific cleaners
     parser.add_argument('--title-cleaners', nargs='+',
@@ -497,6 +543,9 @@ Examples:
                         help='Fallback subdomain value (default: None)')
     parser.add_argument('--default-type', type=str, default='article',
                         help='Fallback type value (default: article)')
+
+    parser.add_argument("--specify-domain", type=str)
+    parser.add_argument("--specify-subdomain", type=str)
 
     args = parser.parse_args()
 
@@ -538,7 +587,10 @@ Examples:
         'timestamp_now': args.timestamp_now,
         'default_domain': args.default_domain,
         'default_subdomain': args.default_subdomain,
-        'default_type': args.default_type
+        'default_type': args.default_type,
+        'body_xpath': args.body_xpath,
+        'specify_domain': args.specify_domain,
+        'specify_subdomain': args.specify_subdomain
     }
 
     # Initialize JSON loader

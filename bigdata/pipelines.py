@@ -183,7 +183,7 @@ class JSONExportPipeline:
     def process_item(self, item, spider):
         """Buffer item and flush when needed"""
         try:
-            domain = item.get('meta',{}).get('source_domain', 'unknown')
+            domain = item.get('meta',{}).get('hostname', 'unknown')
 
             # Pre-serialize to JSON string (do this outside lock for speed)
             item_dict = self._prepare_item(item)
@@ -449,7 +449,7 @@ class TransformCrawlerItemToDailyLifeFormat:
                                                      include_images=True,
                                                      include_tables=True,
                                                      prune_xpath=config.noises_xp,
-                                                     target_language='en',
+                                                     # target_language='en',
                                                      # fast=True
                                                      )
                 if sanitized_text:
@@ -463,7 +463,8 @@ class TransformCrawlerItemToDailyLifeFormat:
                             include_images=True,
                             include_tables=True,
                             include_comments=False,
-                                             target_language='en')
+                                             # target_language='en'
+                                             )
 
         if sanitized_text:
             return sanitized_text
@@ -476,7 +477,9 @@ class TransformCrawlerItemToDailyLifeFormat:
                     return sanitized_text
 
         # fallback to justext
-        return try_justext(html.fromstring(h), url=item.get('meta',{}).get('url'), target_language='en') or ''
+        return try_justext(html.fromstring(h), url=item.get('meta',{}).get('url'),
+                           # target_language='en'
+                           ) or ''
 
     def process_item(self, item, spider:DailyLifeSpider):
         spider.logger.debug('processing daily format')
