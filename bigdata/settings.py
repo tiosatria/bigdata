@@ -7,8 +7,7 @@
 from scrapy.settings.default_settings import FEEDS, TELNETCONSOLE_PASSWORD, TELNETCONSOLE_USERNAME
 from pathlib import Path
 from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
-from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, \
-    CleanHtmlFragmentPipeline
+from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, CleanHtmlFragmentPipeline
 import logging
 import scrapy.utils.reactor
 scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSelectorReactor")
@@ -35,7 +34,7 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
 SCHEDULER_ORDER = 'BFO'
 SCHEDULER_PERSIST = True
-# SCHEDULER_IDLE_BEFORE_CLOSE = 60
+SCHEDULER_IDLE_BEFORE_CLOSE = 30
 
 # Redis Connection URL
 # REDIS_URL = 'redis://100.109.89.55:6379'
@@ -59,16 +58,16 @@ RETRY_PRIORITY_ADJUST = -5
 ITEM_PIPELINES = {
     CleanHtmlFragmentPipeline: 1,
     JSONExportPipeline: 2,
-    TransformCrawlerItemToDailyLifeFormat: 3,
-    CleanedJsonlExportPipeline: 4
+    # TransformCrawlerItemToDailyLifeFormat: 3,
+    # CleanedJsonlExportPipeline: 4
 }
 
 # ============================================================================
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
 # CONCURRENT_REQUESTS = 1536
-CONCURRENT_REQUESTS = 256
-CONCURRENT_REQUESTS_PER_DOMAIN = 12
+CONCURRENT_REQUESTS = 24
+CONCURRENT_REQUESTS_PER_DOMAIN = 16
 CONCURRENT_ITEMS = 2000
 DOWNLOAD_DELAY = 0
 RANDOMIZE_DOWNLOAD_DELAY = False
@@ -97,9 +96,12 @@ AUTOTHROTTLE_ENABLED = False
 # REQUEST HEADERS
 # ============================================================================
 
+
+
 DEFAULT_REQUEST_HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.5',
+    # 'Accept-Encoding': 'identity',
     'Accept-Encoding': 'gzip, deflate, br',
     'Connection': 'keep-alive',
     'Upgrade-Insecure-Requests': '1',
@@ -159,6 +161,7 @@ HTTP2_ENABLED = True
 DOWNLOADER_MIDDLEWARES = {
     # Disable default user agent middleware
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    # 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': None,
     # Proxy setup: custom first, then Scrapy's built-in applies it
     ProxyMiddleware: 350,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 400,

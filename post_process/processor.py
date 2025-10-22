@@ -246,9 +246,15 @@ import re
 
 # re.compile(r"(?:\n)?submitted by:\s*.+$", re.IGNORECASE | re.MULTILINE),
 
-END_TEMPLATE_RE = [
-    re.compile(r"(?:\n)?submitted by.*", re.IGNORECASE | re.DOTALL)
-]
+END_TEMPLATE_RE = [re.compile(
+    r"(?:\n)?(?:"
+    r"submitted by|submited by|shared by|courtesy of|"
+    r"contributed by|provided by|posted by|written by|"
+    r"author:?|credit(?:ed)? to|thanks to|source:?|"
+    r"recipe by|photo by|image by"
+    r").*",
+    re.IGNORECASE | re.DOTALL
+)]
 
 def strip_end_template(text: str) -> str:
     for pattern in END_TEMPLATE_RE:
