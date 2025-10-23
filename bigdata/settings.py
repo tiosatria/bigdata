@@ -14,8 +14,8 @@ scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSel
 
 logging.getLogger("scrapy_user_agents.user_agent_picker").setLevel(logging.ERROR)
 
-BOT_NAME = "google"
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+BOT_NAME = "rango"
+# USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 SPIDER_MODULES = ["bigdata.spiders"]
 NEWSPIDER_MODULE = "bigdata.spiders"
@@ -51,8 +51,8 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 4
-RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
+RETRY_TIMES = 10
+RETRY_HTTP_CODES = [403, 406, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
 RETRY_PRIORITY_ADJUST = -5
 
 ITEM_PIPELINES = {
@@ -66,8 +66,8 @@ ITEM_PIPELINES = {
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
 # CONCURRENT_REQUESTS = 1536
-CONCURRENT_REQUESTS = 24
-CONCURRENT_REQUESTS_PER_DOMAIN = 16
+CONCURRENT_REQUESTS = 128
+CONCURRENT_REQUESTS_PER_DOMAIN = 8
 CONCURRENT_ITEMS = 2000
 DOWNLOAD_DELAY = 0
 RANDOMIZE_DOWNLOAD_DELAY = False
@@ -78,9 +78,9 @@ COOKIES_ENABLED = True
 # ============================================================================
 # MEMORY TUNING
 # ============================================================================
-MEMUSAGE_ENABLED = True
-MEMUSAGE_LIMIT_MB = 0  # Disable memory limit (0 = unlimited)
-MEMUSAGE_WARNING_MB = 0  # Disable memory w
+# MEMUSAGE_ENABLED = True
+# MEMUSAGE_LIMIT_MB = 0  # Disable memory limit (0 = unlimited)
+# MEMUSAGE_WARNING_MB = 0  # Disable memory w
 
 # ============================================================================
 # AUTOTHROTTLE CONFIGURATION
@@ -97,17 +97,18 @@ AUTOTHROTTLE_ENABLED = False
 # ============================================================================
 
 
+# 'Accept-Encoding': 'identity',
+# 'Accept-Encoding': 'gzip, deflate, br',
+# 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+# 'Accept-Language': 'en-US,en;q=0.5',
 
 DEFAULT_REQUEST_HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.5',
-    # 'Accept-Encoding': 'identity',
     'Accept-Encoding': 'gzip, deflate, br',
     'Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': '1',
     'Sec-Fetch-Dest': 'document',
     'Sec-Fetch-Mode': 'navigate',
-    'Sec-Fetch-Site': 'none',
     'Cache-Control': 'max-age=0',
 }
 
@@ -143,7 +144,7 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 }
 
 # Playwright contexts for parallel processing
-PLAYWRIGHT_MAX_CONTEXTS = 64
+PLAYWRIGHT_MAX_CONTEXTS = 2048
 # PLAYWRIGHT_MAX_CONTEXTS = 4
 
 # Playwright abort unnecessary requests
@@ -201,91 +202,17 @@ EXTENSIONS = {
 }
 
 # Log stats every 60 seconds
-LOGSTATS_INTERVAL = 60.0
-
-# ============================================================================
-# HTTP CACHE (Optional - for development/testing)
-# ============================================================================
-
-# Uncomment to enable HTTP caching
-# HTTPCACHE_ENABLED = True
-# HTTPCACHE_EXPIRATION_SECS = 86400  # 24 hours
-# HTTPCACHE_DIR = 'httpcache'
-# HTTPCACHE_IGNORE_HTTP_CODES = [403, 429, 500, 502, 503, 504]
-# HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-# HTTPCACHE_POLICY = 'scrapy.extensions.httpcache.DummyPolicy'
-
-# ============================================================================
-# FEED EXPORTS
-# ============================================================================
-
-# seperated domain can't handle it
-# FEEDS = {
-#     'output/%(batch_id)d-data-%(batch_time)s.jsonl': {
-#         'format': 'jsonlines',
-#         'encoding': 'utf8',
-#         'store_empty': False,
-#     },
-# }
-
-# FEED_EXPORT_BATCH_ITEM_COUNT = 500000
-
-# FEED_EXPORT_ENCODING = "utf-8"
+LOGSTATS_INTERVAL = 30
 
 PIPELINE_BUFFER_SIZE = 10000
 PIPELINE_FLUSH_INTERVAL = 60
 
-# ============================================================================
-# CLOSESPIDER SETTINGS (Safety limits)
-# ============================================================================
-
-# Stop spider after certain conditions (uncomment as needed)
-# CLOSESPIDER_TIMEOUT = 3600  # Stop after 1 hour
-# CLOSESPIDER_ITEMCOUNT = 10000  # Stop after 10k items
-# CLOSESPIDER_PAGECOUNT = 50000  # Stop after 50k pages
-# CLOSESPIDER_ERRORCOUNT = 100  # Stop after 100 errors
-
-# ============================================================================
-# DEPTH LIMIT
-# ============================================================================
-
-# DEPTH_LIMIT = 10  # Maximum depth to crawl
-# DEPTH_PRIORITY = 1  # Adjust priority by depth
-# DEPTH_STATS_VERBOSE = True
-
-# ============================================================================
-# DUPLICATION FILTERING
-# ============================================================================
-
-# DUPEFILTER_DEBUG = False
-
-# ============================================================================
-# REDIRECT SETTINGS
-# ============================================================================
-
 REDIRECT_ENABLED = True
 REDIRECT_MAX_TIMES = 3
 
-# ============================================================================
-# COMPRESSION
-# ============================================================================
-
 COMPRESSION_ENABLED = True
 
-# ============================================================================
-# ADDITIONAL SECURITY
-# ============================================================================
-
 # Disable referrer header to avoid tracking
-# REFERER_ENABLED = False
+REFERER_ENABLED = True
 
-
-# ============================================================================
-# CUSTOM SETTINGS
-# ============================================================================
-
-# Domain-specific settings will override these defaults
-# Add any additional custom settings here
-
-# Enable stats collection
 # STATS_CLASS = 'scrapy.statscollectors.MemoryStatsCollector'

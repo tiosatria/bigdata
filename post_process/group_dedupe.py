@@ -50,7 +50,7 @@ class GroupAndDedupe:
         if self.sample_url_file:
             print(f"Loading external URLs from sample file: {self.sample_url_file}")
             try:
-                with self.sample_url_file.open('r', encoding='utf-8') as f:
+                with self.sample_url_file.open('r', encoding='utf-8', errors='ignore') as f:
                     for line in f:
                         url = line.strip()
                         if url:
@@ -65,7 +65,7 @@ class GroupAndDedupe:
             initial_count = len(external_urls)
             try:
                 is_jsonl = self.aggregate_file.suffix.lower() == '.jsonl'
-                with self.aggregate_file.open('r', encoding='utf-8') as f:
+                with self.aggregate_file.open('r', encoding='utf-8', errors='ignore') as f:
                     if is_jsonl:
                         for i, line in enumerate(f):
                             try:
@@ -105,9 +105,9 @@ class GroupAndDedupe:
         is_jsonl = self.input_file.suffix.lower() == '.jsonl'
         print(f"\nReading {self.input_file}...")
         try:
-            with open(self.input_file, 'r', encoding='utf-8') as f:
+            with open(self.input_file, 'r', encoding='utf-8', errors='ignore') as f:
                 if is_jsonl:
-                    total_lines = sum(1 for _ in open(self.input_file, 'r', encoding='utf-8'))
+                    total_lines = sum(1 for _ in open(self.input_file, 'r', encoding='utf-8', errors='ignore'))
                     pbar = tqdm(f, total=total_lines, desc=f"Reading {self.input_file.name}", unit=" lines")
                     for i, line in enumerate(pbar):
                         line = line.strip()
@@ -139,7 +139,7 @@ class GroupAndDedupe:
         domain_records, seen_urls_in_chunk = defaultdict(list), set()
         for record in chunk:
             if not isinstance(record, dict): continue
-            url = record.get('url', '').strip()
+            url = record.get('url', '').strip() or record.get('meta',{}).get('url', '').strip()
             if not url or url in seen_urls_in_chunk: continue
             seen_urls_in_chunk.add(url)
             domain = self.extract_domain(url)
@@ -177,7 +177,7 @@ class GroupAndDedupe:
                     domain_records, _ = future.result()
                     for domain, records in domain_records.items():
                         for record in records:
-                            url = record.get('url', '')
+                            url = record.get('url', '') or record.get('meta',{}).get('url', '').strip()
                             if url and url not in global_seen_urls:
                                 global_seen_urls.add(url)
                                 if self.group_by_domain:
@@ -192,7 +192,7 @@ class GroupAndDedupe:
         if self.group_by_domain:
             for domain, records in tqdm(sorted(all_domain_records.items()), desc="Writing grouped files"):
                 output_file = self.output_dir / f"{domain}.jsonl"
-                with open(output_file, 'w', encoding='utf-8') as f:
+                with open(output_file, 'w', encoding='utf-8', errors='ignore') as f:
                     for record in records:
                         f.write(json.dumps(record, ensure_ascii=False) + '\n')
                 total_records += len(records)
@@ -202,7 +202,7 @@ class GroupAndDedupe:
         else:
             output_filename = f"{self.input_file.stem}_deduped.jsonl"
             output_file = self.output_dir / output_filename
-            with open(output_file, 'w', encoding='utf-8') as f:
+            with open(output_file, 'w', encoding='utf-8', errors='ignore') as f:
                 for record in tqdm(all_unique_records, desc=f"Writing {output_filename}", unit=" records"):
                     f.write(json.dumps(record, ensure_ascii=False) + '\n')
             total_records = len(all_unique_records)

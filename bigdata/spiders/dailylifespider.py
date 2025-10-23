@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Any
 from urllib.parse import urlparse
 from scrapy.exceptions import IgnoreRequest, CloseSpider
 from scrapy.utils.project import get_project_settings
@@ -14,7 +13,7 @@ from bigdata.items import CrawlItem
 from redis import Redis
 import re
 
-NAVIGATION_REGEX = [
+NAVIGATION_REGEX : list[re.Pattern[str]] = [
         re.compile(r"(?:/)?(?:category|categories)(?:/|$)", re.IGNORECASE),
         re.compile(r"(?:/)?(index)(?:/|$)", re.IGNORECASE),
         re.compile(r"(?:/)?(?:tag|tags)(?:/|$)", re.IGNORECASE),
@@ -30,7 +29,7 @@ NAVIGATION_REGEX = [
     re.compile(r"(?:/)?(?:about-us|sitemap|faqs|our-impact|authors|podcasts)(?:/|$)", re.IGNORECASE),
 ]
 
-COMMON_DENY_REGEX = [
+COMMON_DENY_REGEX : list[re.Pattern[str]] = [
     # WordPress admin and technical endpoints
     re.compile(r"^(?:/)?(?:wp-json|wp-admin|wp-includes|xmlrpc\.php)(?:/|$)", re.IGNORECASE),
     # Authentication and user account pages
@@ -58,6 +57,7 @@ COMMON_DENY_REGEX = [
     re.compile(r"[?&](?:utm_|fbclid|gclid|ref=|source=)", re.IGNORECASE),
 re.compile(r"/(?:about-us|sitemap|faqs|our-impact|authors|podcasts|about)(?:/|$)?", re.IGNORECASE),
     re.compile(r"/(?:terms-and-conditions|privacy|privacy-policy|servicesandsupport|contact|accessibility)(?:/|$)?", re.IGNORECASE),
+    re.compile(r".*comment.*")
 ]
 
 @dataclass
@@ -293,7 +293,6 @@ class DailyLifeSpider(RedisCrawlSpider):
 
         self.yielded+=1
         self.logger.info(f'Yielded {metadata.get("title")} on : {response.url}. Total yielded: {self.yielded}')
-
 
     def parse_article(self, response:Response):
         metadata= self.get_and_set_metadata(response)

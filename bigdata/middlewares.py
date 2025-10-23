@@ -37,7 +37,7 @@ class FailedRequestExportMiddleware:
 
         # Settings
         self.output_dir = crawler.settings.get('FAILED_REQUESTS_DIR', 'failed_requests')
-        self.buffer_size = crawler.settings.get('FAILED_REQUESTS_BUFFER_SIZE', 100)
+        self.buffer_size = crawler.settings.get('FAILED_REQUESTS_BUFFER_SIZE', 3)
         self.include_body = crawler.settings.get('FAILED_REQUESTS_INCLUDE_BODY', False)
         self.max_body_size = crawler.settings.get('FAILED_REQUESTS_MAX_BODY_SIZE', 10000)
 
