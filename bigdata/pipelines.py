@@ -59,11 +59,7 @@ class CleanHtmlFragmentPipeline:
         if not isinstance(item, CrawlItem):
             return item
         raw = ItemAdapter(item)
-        domain = raw.get('meta',{}).get('hostname','') or spider.get_domain(raw.get('meta',{}).get('url'))
-        cfg :DomainConfig|None= getattr(spider, 'site_configs', {}).get(domain, None)
-
-        site_noises = cfg.noises_xp or []
-
+        site_noises = raw.get('meta', {}).get('noises', [])
         body_type = raw.get('meta', {}).get('body_type','html')
         if body_type != 'html':
             return item

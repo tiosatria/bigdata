@@ -198,108 +198,39 @@ def apply_field_cleaners(value: Any,  cleaner_names: Optional[List[str]]) -> Any
 
 def should_filter_record(
         record: Dict[str, Any],
-        title_filters_containing: Optional[List[str]],
-        tags_filters_containing: Optional[List[str]],
-        categories_filters_containing: Optional[List[str]],
-        url_filters_containing: Optional[List[str]],
-        content_filters_containing: Optional[List[str]],
-        title_filters_regex: Optional[List[re.Pattern]],
-        tags_filters_regex: Optional[List[re.Pattern]],
-        categories_filters_regex: Optional[List[re.Pattern]],
-        content_filters_regex: Optional[List[re.Pattern]],
-        url_filters_regex: Optional[List[re.Pattern]]
+        title_filters: Optional[List[str]],
+        tags_filters: Optional[List[str]],
+        content_filters: Optional[List[str]],
+        body_key: str = 'body'
 ) -> tuple[bool, Optional[str]]:
     """
     Check if record should be filtered out.
     Returns (should_filter, reason)
     """
     # Title filter (case-insensitive substring match)
-    meta = record.get('meta', {})
-
-    if not meta:
-        return True, 'no_meta'
-
-    if title_filters_containing:
-        title = (meta.get('title') or '').lower()
-        for filter_str in title_filters_containing:
+    if title_filters:
+        title = (record.get('title') or '').lower()
+        for filter_str in title_filters:
             if filter_str.lower() in title:
                 return True, f"title_filter:{filter_str}"
-    tags = meta.get('tags', [])
+
     # Tags filter (check if any tag matches)
-    if tags_filters_containing:
+    if tags_filters:
+        tags = record.get('tags', [])
         if isinstance(tags, str):
             tags = [tags]
         elif not isinstance(tags, list):
             tags = []
 
         tags_lower = [str(t).lower() for t in tags]
-        for filter_str in tags_filters_containing:
+        for filter_str in tags_filters:
             if filter_str.lower() in tags_lower:
                 return True, f"tags_filter:{filter_str}"
 
-    if categories_filters_containing:
-        categories = meta.get('content_info', {}).get('categories', [])
-        if isinstance(categories, str):
-            categories = [categories]
-        elif not isinstance(categories, list):
-            categories = []
-
-        for filter_str in categories_filters_containing:
-            if filter_str.lower() in categories:
-                return True, f"categories_filter:{filter_str}"
-
-    if url_filters_containing:
-        url = (meta.get('url') or '').lower()
-        for filter_str in url_filters_containing:
-            if filter_str.lower() in url:
-                return True, f"url_filter:{filter_str}"
-
-    if title_filters_regex:
-        title = (meta.get('title') or '').lower()
-        for pattern in title_filters_regex:
-            if pattern.search(title):
-                return True, f"title_filter_regex:{pattern.pattern}"
-
-    if tags_filters_regex:
-        tags = meta.get('tags', [])
-        if isinstance(tags, str):
-            tags = [tags]
-        elif not isinstance(tags, list):
-            tags = []
-
-        for tag in tags:
-            for pattern in tags_filters_regex:
-                if pattern.search(tag):
-                    return True, f"tags_filter_regex:{pattern.pattern}"
-
-    if categories_filters_regex:
-        categories = meta.get('categories', [])
-        if isinstance(categories, str):
-            categories = [categories]
-        elif not isinstance(categories, list):
-            categories = []
-
-        for category in categories:
-            for pattern in categories_filters_regex:
-                if pattern.search(category):
-                    return True, f"categories_filter_regex:{pattern.pattern}"
-
-    if url_filters_regex:
-        url = (meta.get('url') or '').lower()
-        for pattern in url_filters_regex:
-            if pattern.search(url):
-                return True, f"url_filter_regex:{pattern.pattern}"
-
-    if content_filters_regex:
-        body = (record.get('body') or '').lower()
-        for pattern in content_filters_regex:
-            if pattern.search(body):
-                return True, f"content_filter_regex:{pattern.pattern}"
-
     # Content filter (most expensive, check last)
-    if content_filters_containing:
-        body = (record.get('body') or '').lower()
-        for filter_str in content_filters_containing:
+    if content_filters:
+        body = (record.get(body_key) or '').lower()
+        for filter_str in content_filters:
             if filter_str.lower() in body:
                 return True, f"content_filter:{filter_str}"
 
@@ -348,16 +279,10 @@ def _process_record(
     # Apply filtering BEFORE cleaning
     should_filter, filter_reason = should_filter_record(
         record,
-        config.get('filter_title_containing'),
-        config.get('filter_tags_containing'),
-        config.get('filter_categories_containing'),
-        config.get('filter_url_containing'),
-        config.get('filter_body_containing'),
-        config.get('filter_title_regex'),
-        config.get('filter_tags_regex'),
-        config.get('filter_categories_regex'),
-        config.get('filter_body_regex'),
-        config.get('filter_url_regex')
+        config.get('title_filters'),
+        config.get('tags_filters'),
+        config.get('content_filters'),
+        config.get('body_key', 'body')
     )
 
     if should_filter:
@@ -371,13 +296,20 @@ def _process_record(
     # Clean fields based on configuration
     cleaned_record = record.copy()
 
+    # Determine which body field to use
+    body_key = config.get('body_key', 'body')
+    if config.get('use_content') and record.get('body_content'):
+        body_source = 'body_content'
+    else:
+        body_source = body_key
+
     # Apply HTML cleaning if specified
     if 'html' in config.get('cleaners', []):
-        body_html = cleaned_record.get('body', '')
+        body_html = cleaned_record.get(body_source, '')
         if body_html:
             cleaned_body = html_cleaning(
                 body_html,
-                record.get('meta',{}).get('url'),
+                record['url'],
                 prune_xpath=config.get('prune_xpath'),
                 retain_images=config.get('retain_images', False),
                 retain_tables=config.get('retain_tables', False),
@@ -397,27 +329,27 @@ def _process_record(
         ('title', 'title_cleaners'),
         ('tags', 'tags_cleaners'),
         ('author', 'author_cleaners'),
-        ('date', 'date_cleaners')
+        ('post_date', 'date_cleaners')
     ]:
         if field in cleaned_record:
             cleaners = config.get(cleaner_key)
             if cleaners:
-                cleaned_record['meta'][field] = apply_field_cleaners(
+                cleaned_record[field] = apply_field_cleaners(
                     cleaned_record[field],
                     cleaners
                 )
 
     # Extract required fields
-    title = (cleaned_record.get('meta',{}).get('title') or '').strip()
+    title = (cleaned_record.get('title') or '').strip()
     body = cleaned_record.get('body') or ''
 
     if not title and not body:
         return None, {
             'reason': 'empty_content',
-            'url': record.get('meta',{}).get('url'),
+            'url': record.get('url'),
             'title': title,
-            'source_domain': record.get('meta',{}).get('hostname',''),
-            'lang': record.get('meta',{}).get('language','en'),
+            'source_domain': record.get('source_domain'),
+            'lang': record.get('lang'),
             'text_length': 0
         }
 
@@ -426,10 +358,10 @@ def _process_record(
     if len(text) < config.get('min_text_length', 200):
         return None, {
             'reason': 'too_short',
-            'url': record.get('meta',{}).get('url'),
+            'url': record.get('url'),
             'title': title,
-            'source_domain': record.get('meta',{}).get('hostname',''),
-            'lang': record.get('meta',{}).get('language','en'),
+            'source_domain': record.get('source_domain'),
+            'lang': record.get('lang'),
             'text_length': len(text)
         }
 
@@ -437,17 +369,17 @@ def _process_record(
     if config.get('timestamp_now'):
         timestamp = datetime.now(timezone.utc).isoformat()
     else:
-        timestamp = record.get('meta',{}).get('filedate') or record.get('meta',{}).get('date') or datetime.now(timezone.utc).isoformat()
+        timestamp = record.get('timestamp') or record.get('post_date')
         if not timestamp:
             timestamp = datetime.now(timezone.utc).isoformat()
 
     # Extract metadata
-    lang = cleaned_record.get('meta',{}).get('language') or 'en'
-    url = (cleaned_record.get('meta',{}).get('url') or '').strip()
-    source_domain = cleaned_record.get('meta',{}).get('hostname', 'unknown')
+    lang = cleaned_record.get('lang')
+    url = (cleaned_record.get('url') or '').strip()
+    source_domain = cleaned_record.get('source_domain')
 
     # Infer domain/subdomain from tags
-    tags = cleaned_record.get('meta',{}).get('tags',[])
+    tags = cleaned_record.get('tags')
     tag_list: List[str] = []
     if isinstance(tags, list):
         tag_list = [str(t) for t in tags if t is not None]
@@ -475,7 +407,7 @@ def _process_record(
     specified_subdomain = config.get('specify_subdomain')
 
     domain_val = specified_domain or domain_tag or config.get('default_domain', 'general')
-    subdomain_val = specified_subdomain or subdomain_tag or config.get('default_subdomain', 'living')
+    subdomain_val = specified_subdomain or subdomain_tag or config.get('default_subdomain', '')
     type_val = config.get('default_type', 'article')
 
     # Build output record
@@ -597,31 +529,12 @@ Examples:
                         help='Cleaners to apply to date field')
 
     # Filters
-    parser.add_argument('--filter-title-containing', nargs='+',
+    parser.add_argument('--title-filter', nargs='+',
                         help='Filter out records with titles containing these strings')
-
-    parser.add_argument('--filter-tags-containing', nargs='+',
+    parser.add_argument('--tags-filter', nargs='+',
                         help='Filter out records with tags matching these strings')
-
-    parser.add_argument('--filter-body-containing', nargs='+',
+    parser.add_argument('--content-filter', nargs='+',
                         help='Filter out records with body containing these strings (expensive)')
-
-    parser.add_argument('--filter-categories-containing', nargs='+',
-                        help='Filter out records with categories containing these strings')
-
-    parser.add_argument('--filter-url-containing', nargs='+',
-                        help='Filter out url containing these strings')
-
-    parser.add_argument('--filter-title-regex', action='store_true',
-                        help='Toggle title filter to use regex instead of containing')
-
-    parser.add_argument('--filter-tags-regex', nargs='+', help='filter out records with tags matching these regex strings')
-
-    parser.add_argument('--filter-body-regex', nargs='+', help='filter out records with body containing these regex strings (expensive)')
-
-    parser.add_argument('--filter-categories-regex', nargs='+', help='filter out records with categories containing these regex strings')
-
-    parser.add_argument('--filter-url-regex', nargs='+', help='filter out url containing these regex strings')
 
     # Timestamp options
     parser.add_argument('--timestamp-now', action='store_true',
@@ -639,28 +552,6 @@ Examples:
     parser.add_argument("--specify-subdomain", type=str)
 
     args = parser.parse_args()
-
-    title_regexs : list[re.Pattern] = []
-    tags_regexs : list[re.Pattern] = []
-    body_regexs : list[re.Pattern] = []
-    categories_regexs : list[re.Pattern] = []
-    url_regexs : list[re.Pattern] = []
-
-    if args.filter_title_regex:
-        for reg in args.filter_title_regex:
-            title_regexs.append(re.compile(reg))
-    if args.filter_tags_regex:
-        for reg in args.filter_tags_regex:
-            tags_regexs.append(re.compile(reg))
-    if args.filter_body_regex:
-        for reg in args.filter_body_regex:
-            body_regexs.append(re.compile(reg))
-    if args.filter_categories_regex:
-        for reg in args.filter_categories_regex:
-            categories_regexs.append(re.compile(reg))
-    if args.filter_url_regex:
-        for reg in args.filter_url_regex:
-            url_regexs.append(re.compile(reg))
 
     # Validate input
     input_path = Path(args.input)
@@ -683,13 +574,18 @@ Examples:
     # Build processing config
     config = {
         'cleaners': args.cleaners or [],
+        'use_content': args.use_content,
+        'body_key': 'body',
         'prune_xpath': args.prune_xpath,
         'retain_images': args.retain_img,
         'retain_tables': args.retain_tbl,
         'format': args.format,
         'title_cleaners': args.title_cleaners,
+        'tags_cleaners': args.tags_cleaners,
         'author_cleaners': args.author_cleaners,
         'date_cleaners': args.date_cleaners,
+        'title_filters': args.title_filter,
+        'content_filters': args.content_filter,
         'min_text_length': args.min_text_length,
         'timestamp_now': args.timestamp_now,
         'default_domain': args.default_domain,
@@ -697,19 +593,7 @@ Examples:
         'default_type': args.default_type,
         'body_xpath': args.body_xpath,
         'specify_domain': args.specify_domain,
-        'specify_subdomain': args.specify_subdomain,
-
-        'filter_title_containing': args.filter_title_containing,
-        'filter_tags_containing': args.filter_tags_containing,
-        'filter_body_containing': args.filter_body_containing,
-        'filter_categories_containing': args.filter_categories_containing,
-        'filter_url_containing': args.filter_url_containing,
-
-        'filter_title_regex': title_regexs,
-        'filter_tags_regex': tags_regexs,
-        'filter_body_regex': body_regexs,
-        'filter_categories_regex': categories_regexs,
-        'filter_url_regex': url_regexs
+        'specify_subdomain': args.specify_subdomain
     }
 
     # Initialize JSON loader
@@ -720,7 +604,6 @@ Examples:
         total_count = None
 
     limit = args.limit if args.limit is not None else total_count
-
     total_to_process = min(total_count, limit) if (
             total_count is not None and limit is not None) else limit or total_count
 
