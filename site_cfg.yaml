@@ -372,6 +372,7 @@ domains:
     start_urls:
       - https://www.godairyfree.org/
     use_proxy: true
+  # GCP
   angelaskitchen:
     allowed_domains:
       - angelaskitchen.com
@@ -483,7 +484,6 @@ domains:
     start_urls:
       - https://www.lovehandles.uk.com/
     use_proxy: true
-  # LMEO DDOSED
   louskitchencorner:
     allowed_domains:
       - louskitchencorner.freybors.com
@@ -673,18 +673,21 @@ domains:
     start_urls:
       - https://www.ambitiouskitchen.com/
     use_proxy: true
+  # GCP
   feastingonfruit:
     allowed_domains:
       - feastingonfruit.com
     start_urls:
       - https://www.feastingonfruit.com/
     use_proxy: true
+  # GCP
   petguide:
     allowed_domains:
       - petguide.com
     start_urls:
       - https://www.petguide.com/
     use_proxy: true
+  # GCP
   chewy:
     allowed_domains:
       - chewy.com
@@ -692,12 +695,14 @@ domains:
       - https://www.chewy.com/education
     allow:
       - /education/
+  # GCP
   petful:
     allowed_domains:
       - petful.com
     start_urls:
       - https://www.petful.com/
     use_proxy: true
+  # GCP
   laurenlatest:
     allowed_domains:
       - laurenlatest.com
