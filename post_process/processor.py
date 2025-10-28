@@ -96,7 +96,6 @@ def clean_normalize_whitespace(value: str) -> str:
         return value
     return ' '.join(value.split())
 
-
 @CleanerRegistry.register('remove_html')
 def clean_remove_html(value: str) -> str:
     """Remove HTML tags"""
@@ -111,7 +110,6 @@ def clean_remove_html(value: str) -> str:
     # Fallback: simple regex
     import re
     return re.sub(r'<[^>]+>', '', value)
-
 
 # ---------------
 # HTML Cleaning
@@ -409,7 +407,21 @@ def _process_record(
 
     # Extract required fields
     title = (cleaned_record.get('meta',{}).get('title') or '').strip()
+
     body = cleaned_record.get('body') or ''
+
+    site_name = config.get('site_name')
+
+    if site_name and config.get('clean_title_template'):
+        separator_to_use = None
+        separators = ['|']
+        for sep in separators:
+            if sep in title:
+                separator_to_use = sep
+                break
+
+        title.split(separator_to_use)
+        title = title.split(separator_to_use)[0].strip()
 
     if not title and not body:
         return None, {
@@ -635,6 +647,11 @@ Examples:
     parser.add_argument('--default-type', type=str, default='article',
                         help='Fallback type value (default: article)')
 
+    parser.add_argument("--site-name", type=str, help="Site name to use for site template cleanup")
+
+    parser.add_argument('--clean-title-template', action='store_true',
+                        help='Clean title template from site name')
+
     parser.add_argument("--specify-domain", type=str)
     parser.add_argument("--specify-subdomain", type=str)
 
@@ -698,13 +715,13 @@ Examples:
         'body_xpath': args.body_xpath,
         'specify_domain': args.specify_domain,
         'specify_subdomain': args.specify_subdomain,
-
+        'site_name': args.site_name,
+        'clean_title_template': args.clean_title_template,
         'filter_title_containing': args.filter_title_containing,
         'filter_tags_containing': args.filter_tags_containing,
         'filter_body_containing': args.filter_body_containing,
         'filter_categories_containing': args.filter_categories_containing,
         'filter_url_containing': args.filter_url_containing,
-
         'filter_title_regex': title_regexs,
         'filter_tags_regex': tags_regexs,
         'filter_body_regex': body_regexs,

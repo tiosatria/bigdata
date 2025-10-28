@@ -183,6 +183,7 @@ class DailyLifeSpider(RedisCrawlSpider):
                                   callback='parse_article',
                                   process_request='_process_request'))
 
+
             for fap in config.link_extractors.get('follow_and_parse',[]):
                 fap_rule = Rule(link_extractor=LxmlLinkExtractor(
                     allow_domains=domain,

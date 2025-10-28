@@ -10,16 +10,17 @@ from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
 from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, CleanHtmlFragmentPipeline
 import logging
 import scrapy.utils.reactor
+from bigdata.persistent_scheduler import SQLiteScheduler, SQLiteDupeFilter
+
 scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSelectorReactor")
 
 logging.getLogger("scrapy_user_agents.user_agent_picker").setLevel(logging.ERROR)
 
-BOT_NAME = "rango"
+BOT_NAME = "googleseo"
 # USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 SPIDER_MODULES = ["bigdata.spiders"]
 NEWSPIDER_MODULE = "bigdata.spiders"
-REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 
 SITE_CONFIG_PATH = Path(__file__).resolve().parent.parent / "site_cfg.json"
 
@@ -28,18 +29,28 @@ SITE_CONFIG_PATH = Path(__file__).resolve().parent.parent / "site_cfg.json"
 # ============================================================================
 
 # Enables scheduling storing requests queue in redis
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+
 # SCHEDULER_ORDER = 'DFO'
-SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
-SCHEDULER_ORDER = 'BFO'
+# SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
+# SCHEDULER_IDLE_BEFORE_CLOSE = 30
+# REDIS_URL = 'redis://127.0.0.1:6379'
+
+DEPTH_PRIORITY = 1
+SCHEDULER = SQLiteScheduler
+DUPEFILTER_CLASS = SQLiteDupeFilter
 SCHEDULER_PERSIST = True
-SCHEDULER_IDLE_BEFORE_CLOSE = 30
+SCHEDULER_FLUSH_ON_START = False
+DUPEFILTER_DEBUG = False
+SCHEDULER_DISK_QUEUE = "scrapy.squeues.PickleFifoDiskQueue"
+SCHEDULER_MEMORY_QUEUE = "scrapy.squeues.FifoMemoryQueue"
+DEPTH_LIMIT = 0
+MAX_RETRY_FAILED = 5
 
 # Redis Connection URL
 # REDIS_URL = 'redis://100.109.89.55:6379'
 
-REDIS_URL = 'redis://127.0.0.1:6379'
 
 # ============================================================================
 # ROBOTS.TXT
@@ -51,8 +62,8 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 10
-RETRY_HTTP_CODES = [403, 406, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599]
+RETRY_TIMES = 5
+RETRY_HTTP_CODES = [403, 406, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599, 400]
 RETRY_PRIORITY_ADJUST = -5
 
 ITEM_PIPELINES = {
@@ -66,9 +77,9 @@ ITEM_PIPELINES = {
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
 # CONCURRENT_REQUESTS = 1536
-CONCURRENT_REQUESTS = 1000
+CONCURRENT_REQUESTS = 256
 CONCURRENT_REQUESTS_PER_DOMAIN = 100
-CONCURRENT_ITEMS = 2000
+CONCURRENT_ITEMS = 1024
 DOWNLOAD_DELAY = 0
 RANDOMIZE_DOWNLOAD_DELAY = False
 
@@ -147,9 +158,12 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 PLAYWRIGHT_MAX_CONTEXTS = 2048
 # PLAYWRIGHT_MAX_CONTEXTS = 4
 
-# Playwright abort unnecessary requests
-PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "stylesheet", "font", "media"]
+def should_abort_request(request):
+    """Check if playwright request should be aborted"""
+    return request.resource_type in ["image", "stylesheet", "font", "media"]
 
+# Playwright abort unnecessary requests
+PLAYWRIGHT_ABORT_REQUEST = should_abort_request
 
 REACTOR_THREADPOOL_MAXSIZE = 256
 
@@ -176,7 +190,7 @@ DOWNLOADER_MIDDLEWARES = {
 # ============================================================================
 
 LOG_ENABLED = True
-LOG_LEVEL = 'INFO'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_LEVEL = 'DEBUG'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_ENCODING = 'utf-8'
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
@@ -184,12 +198,11 @@ LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 
 HTTPCACHE_ENABLED = False
 DNSCACHE_ENABLED = True
-DOWNLOAD_TIMEOUT = 60
+DOWNLOAD_TIMEOUT = 120
 DNS_TIMEOUT = 60
 
 TELNETCONSOLE_USERNAME = 'gringo'
 TELNETCONSOLE_PASSWORD = "gringo"
-
 
 # ============================================================================
 # EXTENSIONS
@@ -206,9 +219,6 @@ LOGSTATS_INTERVAL = 30
 
 PIPELINE_BUFFER_SIZE = 10000
 PIPELINE_FLUSH_INTERVAL = 60
-
-REDIRECT_ENABLED = True
-REDIRECT_MAX_TIMES = 3
 
 COMPRESSION_ENABLED = True
 

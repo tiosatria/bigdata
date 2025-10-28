@@ -12,9 +12,11 @@ class ProxyMiddleware:
     def process_request(self, request, spider):
         if request.meta.get('bypass_cf', False):
             request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:1234'
+        elif request.meta.get('playwright', False):
+            if request.meta.get('use_proxy', False):
+                request.meta['playwright_context_kwargs'] = {'proxy': {'server': 'http://p.webshare.io:9999'}}
         elif request.meta.get('use_proxy', False):
-            if request.meta.get('playwright', False):
-                request.meta['playwright_context_kwargs'] = {'proxy': {'server': 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'}}
+            request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'
 
     """
     Scrapy Downloader Middleware for exporting failed requests to JSONL
@@ -82,6 +84,13 @@ class FailedRequestExportMiddleware:
                 spider=spider
             )
             self.stats.inc_value('failed_requests_middleware/http_errors')
+
+            # Mark as failed in persistent scheduler if available
+            if hasattr(spider.crawler.engine.slot, 'scheduler'):
+                scheduler = spider.crawler.engine.slot.scheduler
+                if hasattr(scheduler, 'df'):
+                    scheduler.df.mark_failed(request, response.status)
+
         return response
 
     def process_exception(self, request, exception, spider):
@@ -94,6 +103,13 @@ class FailedRequestExportMiddleware:
             spider=spider
         )
         self.stats.inc_value('failed_requests_middleware/exceptions')
+
+        # Mark as failed in persistent scheduler if available
+        if hasattr(spider.crawler.engine.slot, 'scheduler'):
+            scheduler = spider.crawler.engine.slot.scheduler
+            if hasattr(scheduler, 'df'):
+                scheduler.df.mark_failed(request)
+
         # Return None to let other middlewares handle the exception
         return None
 

@@ -1,4 +1,6 @@
 from scrapy.exceptions import CloseSpider
+from scrapy.http import TextResponse
+from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 from scrapy_redis.spiders import RedisCrawlSpider
 from redis import Redis
 from scrapy.responsetypes import Response
@@ -18,7 +20,8 @@ class RedisBaseCrawlSpider(RedisCrawlSpider):
     push_seed :bool = False
 
     def _push_seed(self) -> int:
-        self.logger.info(f'pushing {len(self.seeds)} seeds')
+        self.logger.info(f'seed available: {len(self.seeds)} seeds')
+        self.logger.info(f'pushing: {self.push_seed}')
         if not self.push_seed or not self.seeds:
             return 0
         server: Redis = self.server
@@ -43,7 +46,7 @@ class RedisBaseCrawlSpider(RedisCrawlSpider):
                     seed['meta']['playwright_page_goto_kwargs'] = {
                         'wait_until': 'domcontentloaded',
                     }
-                server.rpush(f"{self.name}:start_urls", json.dumps(seed))
+                server.lpush(f"{self.name}:start_urls", json.dumps(seed))
                 seeded+=1
         return seeded
 

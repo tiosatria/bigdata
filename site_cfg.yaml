@@ -1,0 +1,445 @@
+domains:
+  veganchef.com:
+    allowed_domains:
+      - veganchef.com
+    start_urls:
+      - https://veganchef.com/
+  internationalcuisine.com:
+    allowed_domains:
+      - internationalcuisine.com
+    start_urls:
+      - https://internationalcuisine.com/
+    use_playwright: true
+  botanical.com:
+    allowed_domains:
+      - botanical.com
+      - www.botanical.com
+    start_urls:
+      - https://www.botanical.com/
+    use_proxy: true
+  fatfree.com:
+    allowed_domains:
+      - fatfree.com
+    start_urls:
+      - http://fatfree.com/
+  goodcooking.com:
+    allowed_domains:
+      - goodcooking.com
+    start_urls:
+      - https://www.goodcooking.com/
+  thriftyfun.com:
+    allowed_domains:
+      - thriftyfun.com
+    start_urls:
+      - https://www.thriftyfun.com/
+    use_proxy: true
+  foodsubs:
+    allowed_domains:
+      - foodsubs.com
+    start_urls:
+      - https://www.foodsubs.com/
+    use_proxy: true
+  homebnc:
+    allowed_domains:
+      - homebnc.com
+    start_urls:
+      - https://www.homebnc.com/
+    use_playwright: true
+    use_proxy: true
+  homedecorideas:
+    allowed_domains:
+      - homedecorideas.eu
+    start_urls:
+      - https://www.homedecorideas.eu/
+  homedesigning:
+    allowed_domains:
+      - home-designing.com
+    start_urls:
+      - https://www.home-designing.com
+  homedit:
+    allowed_domains:
+      - homedit.com
+    start_urls:
+      - https://www.homedit.com/
+    use_proxy: true
+  homesandantiques:
+    allowed_domains:
+      - homesandantiques.com
+    start_urls:
+      - https://www.homesandantiques.com/
+  homeserve:
+    allowed_domains:
+      - homeserve.com
+    start_urls:
+      - https://www.homeserve.com/en-us/blog
+    allow:
+      - /en-us/blog/
+    use_playwright: true
+  homesicktexan:
+    allowed_domains:
+      - homesicktexan.com
+    start_urls:
+      - https://www.homesicktexan.com/
+    use_proxy: true
+  homewyse:
+    allowed_domains:
+      - homewyse.com
+    start_urls:
+      - https://www.homewyse.com/
+    use_proxy: true
+  honestcooking:
+    allowed_domains:
+      - honestcooking.com
+    start_urls:
+      - https://www.honestcooking.com/
+  hookedonheat:
+    allowed_domains:
+      - hookedonheat.com
+    start_urls:
+      - https://www.hookedonheat.com/
+    use_proxy: true
+  hoosierhomemade:
+    allowed_domains:
+      - hoosierhomemade.com
+    start_urls:
+      - https://www.hoosierhomemade.com/
+    use_proxy: true
+  hort_extension:
+    allowed_domains:
+      - hort.extension.wisc.edu
+    start_urls:
+      - https://hort.extension.wisc.edu/
+    settings:
+      CONCURRENT_REQUESTS: 12
+  hortmag:
+    allowed_domains:
+      - hortmag.com
+    start_urls:
+      - https://hortmag.com/
+    use_proxy: true
+    settings:
+      CONCURRENT_REQUESTS: 4
+  hostelworld:
+    allowed_domains:
+      - hostelworld.com
+    start_urls:
+      - https://www.hostelworld.com/blog/
+    allow:
+      - /blog/
+    use_proxy: true
+  houseandhome:
+    allowed_domains:
+      - houseandhome.com
+    start_urls:
+      - https://www.houseandhome.com/
+    use_proxy: true
+  housedigest:
+    allowed_domains:
+      - housedigest.com
+    start_urls:
+      - https://www.housedigest.com/
+    use_proxy: true
+  houselogic:
+    allowed_domains:
+      - houselogic.com
+    start_urls:
+      - https://www.houselogic.com/
+    use_proxy: true
+  houseofroseblog:
+    allowed_domains:
+      - houseofroseblog.com
+    start_urls:
+      - https://www.houseofroseblog.com/
+    use_proxy: true
+  hungryhodophile:
+    allowed_domains:
+      - hungryhodophile.com
+    start_urls:
+      - https://www.hungryhodophile.com/
+    use_proxy: true
+  hungrysofia:
+    allowed_domains:
+      - hungrysofia.com
+    start_urls:
+      - https://www.hungrysofia.com/
+    use_proxy: true
+  iamafoodblog:
+    allowed_domains:
+      - iamafoodblog.com
+    start_urls:
+      - https://www.iamafoodblog.com/
+    use_proxy: true
+  iheartorganizing:
+    allowed_domains:
+      - iheartorganizing.com
+    start_urls:
+      - http://www.iheartorganizing.com/
+    use_proxy: true
+  ikeahackers:
+    allowed_domains:
+      - ikeahackers.net
+    start_urls:
+      - https://www.ikeahackers.net/
+    deny:
+      - .*/connect.*
+      - .*/contest.*
+      - .*/start-here.*
+      - .*/submit-hack.*
+      - .*/ikea-hacks-shop.*
+    use_proxy: true
+  immigrantstable:
+    allowed_domains:
+      - immigrantstable.com
+    start_urls:
+      - https://www.immigrantstable.com/
+    use_proxy: true
+  indiansimmer:
+    allowed_domains:
+      - indiansimmer.com
+    start_urls:
+      - https://www.indiansimmer.com/
+    use_proxy: true
+  inhabitedkitchen:
+    allowed_domains:
+      - inhabitedkitchen.com
+    start_urls:
+      - https://www.inhabitedkitchen.com/
+    use_proxy: true
+  insighttimer:
+    allowed_domains:
+      - insighttimer.com
+    start_urls:
+      - https://www.insighttimer.com/blog
+    allow:
+      - /blog/
+    use_proxy: true
+  insightvacations:
+    allowed_domains:
+      - insightvacations.com
+    start_urls:
+      - https://www.insightvacations.com/blog
+    allow:
+      - /blog/
+    use_proxy: true
+  intothegloss:
+    allowed_domains:
+      - intothegloss.com
+    start_urls:
+      - https://www.intothegloss.com/
+    use_proxy: true
+  intrepidtravel:
+    allowed_domains:
+      - intrepidtravel.com
+    start_urls:
+      - https://www.intrepidtravel.com/adventures
+    use_proxy: true
+    allow:
+      - /adventures/
+  isabeleats:
+    allowed_domains:
+      - isabeleats.com
+    start_urls:
+      - https://www.isabeleats.com/
+    deny:
+      - .*/isabel-eats-cooking.*
+    use_proxy: true
+    use_playwright: true
+  iwashyoudry:
+    allowed_domains:
+      - iwashyoudry.com
+    start_urls:
+      - https://www.iwashyoudry.com/
+    use_proxy: true
+  jeffnippard:
+    allowed_domains:
+      - jeffnippard.com
+    start_urls:
+      - https://www.jeffnippard.com/blogs/news
+    allow:
+      - /blogs/
+    use_proxy: true
+  jennasuedesign:
+    allowed_domains:
+      - jennasuedesign.com
+    start_urls:
+      - https://www.jennasuedesign.com/
+    use_playwright: true
+    use_proxy: true
+  jessicagavin:
+    allowed_domains:
+      - jessicagavin.com
+    start_urls:
+      - https://www.jessicagavin.com/
+    use_proxy: true
+  joyoushealth:
+    allowed_domains:
+      - joyoushealth.com
+    start_urls:
+      - https://www.joyoushealth.com/
+    use_proxy: true
+  joythebaker:
+    allowed_domains:
+      - joythebaker.com
+    start_urls:
+      - https://www.joythebaker.com/
+    use_proxy: true
+    use_playwright: true
+
+  kalimirchbysmita:
+    allowed_domains:
+      - kalimirchbysmita.com
+    start_urls:
+      - https://kalimirchbysmita.com/
+    use_proxy: true
+  kannammacooks:
+    allowed_domains:
+      - kannammacooks.com
+    start_urls:
+      - https://www.kannammacooks.com/
+    use_proxy: true
+  kaveyeats:
+    allowed_domains:
+      - kaveyeats.com
+    start_urls:
+      - https://www.kaveyeats.com/
+    use_proxy: true
+  kitchenfrau:
+    allowed_domains:
+      - kitchenfrau.com
+    start_urls:
+      - https://www.kitchenfrau.com/
+    use_proxy: true
+  kitchensanctuary:
+    allowed_domains:
+      - kitchensanctuary.com
+    start_urls:
+      - https://www.kitchensanctuary.com/
+    use_proxy: true
+    use_playwright: true
+  dishingupthedirt:
+    allowed_domains:
+      - dishingupthedirt.com
+    start_urls:
+      - https://www.dishingupthedirt.com/
+    use_proxy: true
+  thefigtreeblog:
+    allowed_domains:
+      - thefigtreeblog.com
+    start_urls:
+      - https://www.thefigtreeblog.com/
+    use_proxy: true
+  heatherchristo:
+    allowed_domains:
+      - heatherchristo.com
+    start_urls:
+      - https://www.heatherchristo.com/
+    use_proxy: true
+  forkandbeans:
+    allowed_domains:
+      - forkandbeans.com
+    start_urls:
+      - https://www.forkandbeans.com/
+    use_proxy: true
+  godairyfree:
+    allowed_domains:
+      - godairyfree.org
+    start_urls:
+      - https://www.godairyfree.org/
+    use_proxy: true
+  angelaskitchen:
+    allowed_domains:
+      - angelaskitchen.com
+    start_urls:
+      - https://angelaskitchen.com/
+    use_proxy: true
+  milkallergymom:
+    allowed_domains:
+      - milkallergymom.com
+    start_urls:
+      - https://milkallergymom.com/
+    use_proxy: true
+    use_playwright: true
+    settings:
+      CONCURRENT_REQUESTS: 12
+  milkfreemom:
+    allowed_domains:
+      - milkfreemom.com
+    start_urls:
+      - https://milkfreemom.com/
+    use_proxy: true
+  laurenconrad:
+    allowed_domains:
+      - laurenconrad.com
+    start_urls:
+      - https://laurenconrad.com/
+    use_proxy: true
+  latoyah:
+    allowed_domains:
+      - latoyah.co.uk
+    start_urls:
+      - https://latoyah.co.uk/
+    use_proxy: true
+  latinofoodie:
+    allowed_domains:
+      - latinofoodie.com
+    start_urls:
+      - https://latinofoodie.com/
+    use_proxy: true
+  laurenslatest:
+    allowed_domains:
+      - laurenslatest.com
+    start_urls:
+      - https://laurenslatest.com/
+  lavenderandlovage:
+    allowed_domains:
+      - lavenderandlovage.com
+    start_urls:
+      - https://lavenderandlovage.com/
+    use_proxy: true
+  laylita:
+    allowed_domains:
+      - laylita.com
+    start_urls:
+      - https://laylita.com/
+    bypass_cf: true
+  lemonblossoms:
+    allowed_domains:
+      - lemonblossoms.com
+    start_urls:
+      - https://lemonblossoms.com/
+    use_proxy: true
+  lionsroar:
+    allowed_domains:
+      - lionsroar.com
+    start_urls:
+      - https://lionsroar.com/
+    use_proxy: true
+  littleferrarokitchen:
+    allowed_domains:
+      - littleferrarokitchen.com
+    start_urls:
+      - https://littleferrarokitchen.com/
+    use_proxy: true
+    use_playwright: true
+  livelovediy:
+    allowed_domains:
+      - livelovediy.com
+    start_urls:
+      - https://livelovediy.com/
+    use_proxy: true
+  livesimplybyannie:
+    allowed_domains:
+      - livesimplybyannie.com
+    start_urls:
+      - https://livesimplybyannie.com/
+    use_proxy: true
+  lobsterandswan:
+    allowed_domains:
+      - lobsterandswan.com
+    start_urls:
+      - https://lobsterandswan.com/
+    use_proxy: true
+
+
+defaults:
+  settings:

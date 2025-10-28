@@ -3,3 +3,4 @@ failed_request/
 logs/
 *.json
 *.jsonl
+*.db
