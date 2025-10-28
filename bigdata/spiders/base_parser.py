@@ -43,7 +43,7 @@ class RequestAndResponseParser:
             meta=metadata,
             body=body
         )
-        self.logger.info(f'Yielded {metadata.get('title')} on : {response.url}')
+        self.logger.info(f"Yielded {metadata.get('title')} on : {response.url}")
 
     def get_and_set_metadata(self, response:Response):
         metadata = (trafilatura
