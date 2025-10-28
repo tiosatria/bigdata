@@ -84,13 +84,6 @@ class FailedRequestExportMiddleware:
                 spider=spider
             )
             self.stats.inc_value('failed_requests_middleware/http_errors')
-
-            # Mark as failed in persistent scheduler if available
-            if hasattr(spider.crawler.engine.slot, 'scheduler'):
-                scheduler = spider.crawler.engine.slot.scheduler
-                if hasattr(scheduler, 'df'):
-                    scheduler.df.mark_failed(request, response.status)
-
         return response
 
     def process_exception(self, request, exception, spider):
@@ -103,13 +96,6 @@ class FailedRequestExportMiddleware:
             spider=spider
         )
         self.stats.inc_value('failed_requests_middleware/exceptions')
-
-        # Mark as failed in persistent scheduler if available
-        if hasattr(spider.crawler.engine.slot, 'scheduler'):
-            scheduler = spider.crawler.engine.slot.scheduler
-            if hasattr(scheduler, 'df'):
-                scheduler.df.mark_failed(request)
-
         # Return None to let other middlewares handle the exception
         return None
 

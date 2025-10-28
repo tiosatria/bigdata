@@ -1,3 +1,4 @@
+from scrapy.exceptions import IgnoreRequest
 from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 import trafilatura
@@ -6,6 +7,7 @@ import re
 import scrapy
 from pathlib import Path
 import yaml
+from urllib3.util import parse_url
 
 from bigdata.items import CrawlItem
 
@@ -59,6 +61,8 @@ DEFAULT_DENY = [
     r'.*/recetas.*',
     r'.*/unsubscribe.*',
     r'.*/comment.*',
+    r'\?reply.+\='
+    r'.*comment.*'
     r'.*/#comment.*',
     r'.*/share.*',
     r'.*print.*',
@@ -105,6 +109,7 @@ DEFAULT_DENY = [
     r'.*/service.*',
     r'.*/course.*',
     r'.*/find.*',
+    r'.*password.*',
     r'.*/scholarship.*',
     r'.*\?print$',
 ]
@@ -112,13 +117,16 @@ DEFAULT_DENY = [
 DEFAULT_URL_FILTERS = [
     # Navigation pages
     r'/about/?$',
-    r'/contact/?$',
-    r'/privacy/?$',
-    r'/terms/?$',
-    r'/disclaimer/?$',
+    r'/contact/?',
+    r'/privacy/?',
+    r'/terms/?',
+    r'/disclaimer/?',
     r'/cookie[s]?/?$',
-    r'/legal/?$',
-    r'/sitemap/?$',
+    r'/\..*',
+    r'/#.*',
+    r'\?.+=',
+    r'/legal/?',
+    r'/sitemap/?',
     # Homepage/root
     r'^https?://[^/]+/?$',
     # Pagination
@@ -137,33 +145,33 @@ DEFAULT_URL_FILTERS = [
     # File extensions (non-HTML)
     r'\.(js|css|json|xml|txt|pdf|zip|gz|tar|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$',
     # Feed/API endpoints
-    r'/feed/?$',
-    r'/rss/?$',
-    r'/atom/?$',
-    r'/api/',
+    r'/feed/?',
+    r'/rss/?',
+    r'/atom/?',
+    r'/api/?',
     r'\.json$',
     r'\.xml$',
     # Auth/account pages
-    r'/login/?$',
-    r'/signin/?$',
-    r'/signup/?$',
-    r'/register/?$',
-    r'/logout/?$',
-    r'/account/?$',
-    r'/profile/?$',
-    r'/settings/?$',
+    r'/login/?',
+    r'/signin/?',
+    r'/signup/?',
+    r'/register/?',
+    r'/logout/?',
+    r'/account/?',
+    r'/profile/?',
+    r'/settings/?',
     # Admin/backend
     r'/admin/',
     r'/wp-admin/',
-    r'/dashboard/?$',
+    r'/dashboard/?',
     # Common non-content paths
     r'/tag/',
-    r'/tags/?$',
-    r'/category/?$',
-    r'/categories/?$',
+    r'/tags/?',
+    r'/category/?',
+    r'/categories/?',
     r'/author/',
-    r'/archive/?$',
-    r'/search/?$',
+    r'/archive/?',
+    r'/search/?',
 ]
 
 class UniversalSpider(CrawlSpider):
@@ -185,14 +193,11 @@ class UniversalSpider(CrawlSpider):
         If domain is provided, load configuration from YAML file.
         """
         self.domain = domain
+        self.name = domain
         self.config_file = config_file
-        self._domain_settings = {}  # Store settings to apply later
+        self._domain_settings = {}
         if domain:
             self._load_domain_config(domain)
-
-        # Build deny list
-        denies = DEFAULT_DENY.copy()
-        denies.extend(self.deny)
 
         # Setup rules
         self.rules = [
@@ -200,7 +205,7 @@ class UniversalSpider(CrawlSpider):
                 allow_domains=self.allowed_domains,
                 restrict_xpaths=self.restrict_xpaths,
                 allow=self.allow,
-                deny=denies,
+                deny=DEFAULT_DENY+self.deny,
                 deny_extensions=self.deny_extensions),
                 process_request=self._apply_request_meta,
                 callback=self.parse_response,
@@ -208,20 +213,6 @@ class UniversalSpider(CrawlSpider):
         ]
 
         super().__init__(*args, **kwargs)
-
-    @classmethod
-    def update_settings(cls, settings):
-        """
-        Override this method to apply domain-specific settings.
-        This is called by Scrapy before the spider is instantiated.
-        """
-        super().update_settings(settings)
-
-        # Get domain and config from spider arguments
-        # Note: These come from the crawler arguments
-        if hasattr(cls, '_temp_domain_settings'):
-            for key, value in cls._temp_domain_settings.items():
-                settings.set(key, value)
 
     def _load_domain_config(self, domain):
         """Load domain-specific configuration from YAML file"""
@@ -255,13 +246,8 @@ class UniversalSpider(CrawlSpider):
         self.use_proxy = domain_config.get('use_proxy', False)
         self.use_playwright = domain_config.get('use_playwright', False)
 
-        # Load custom spider settings
-        if 'settings' in domain_config:
-            self.custom_settings = domain_config['settings']
-            self.__class__._temp_domain_settings = self._domain_settings
-
         self.logger.info(f'Loaded configuration for domain: {domain}')
-        self.logger.info(f'Start URLs: {self.start_urls} | Allowed domains : {self.allowed_domains} | Custom Settings: {self.custom_settings}')
+        self.logger.info(f'Start URLs: {self.start_urls} | Allowed domains : {self.allowed_domains} | Custom Settings: {domain_config.get("custom_settings", {})}')
         self.logger.info(f'Proxy: {self.use_proxy}, CF Bypass: {self.bypass_cf}, Playwright: {self.use_playwright}')
 
     async def start(self):
@@ -271,19 +257,23 @@ class UniversalSpider(CrawlSpider):
                                  meta={'bypass_cf': self.bypass_cf,
                                        'use_proxy': self.use_proxy,
                                        'playwright': self.use_playwright,
+                                       'is_start_url': True,
                                        'playwright_page_goto_kwargs': {
                                            'wait_until': 'domcontentloaded',
-                                       }},
-                                 callback=self._parse)
+                                       }}, dont_filter=True,
+                                 callback=self.parse_response)
 
     def _apply_playwright_meta(self, request):
         request.meta['playwright'] = True
         request.meta['playwright_page_goto_kwargs'] = {
-            'wait_until': 'domcontentloaded',
-        }
+            'wait_until': 'domcontentloaded',}
 
     def _apply_request_meta(self, request, response):
         """Apply domain-specific configuration to request"""
+        # if parse_url(request.url).netloc.replace('www.','') not in self.allowed_domains:
+        #     self.logger.warning(
+        #         f'Request to {request.url} is not allowed by domain settings. ❌')
+        #     raise IgnoreRequest
         if self.bypass_cf:
             request.meta['bypass_cf'] = True
         if self.use_proxy:
@@ -311,11 +301,15 @@ class UniversalSpider(CrawlSpider):
                 return True, f"default_filter:{pattern}"
         return False
 
-    def parse_response(self, response: Response):
+    async def parse_response(self, response: Response):
         """Parse and yield article content"""
 
+        async for item in self._parse(response):
+            yield item
+
         if self.should_skip_content(response):
-            self.logger.info(f'Skipping navigation: {response.url} ❌')
+            self.logger.debug(response.text)
+            self.logger.info(f'Passing through: {response.url} 🙈...')
             return
 
         metadata = self.get_and_set_metadata(response)
@@ -326,7 +320,10 @@ class UniversalSpider(CrawlSpider):
             self.logger.info(f'No title found, skipping: {response.url} ❌')
             return
 
+        metadata['referer'] = response.headers.get('referer')
+
         self.logger.info(f'Yielding {metadata.get("title")} on: {response.url} ✅')
+
         yield CrawlItem(
             meta=metadata,
             body=body

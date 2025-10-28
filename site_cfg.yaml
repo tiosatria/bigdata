@@ -1,32 +1,38 @@
 domains:
-  veganchef.com:
+  # DONE
+  veganchef:
     allowed_domains:
       - veganchef.com
     start_urls:
       - https://veganchef.com/
-  internationalcuisine.com:
+    use_proxy: true
+  internationalcuisine:
     allowed_domains:
       - internationalcuisine.com
     start_urls:
       - https://internationalcuisine.com/
     use_playwright: true
-  botanical.com:
+    use_proxy: true
+  botanical:
     allowed_domains:
       - botanical.com
       - www.botanical.com
     start_urls:
       - https://www.botanical.com/
     use_proxy: true
-  fatfree.com:
+  fatfree:
     allowed_domains:
       - fatfree.com
+      - cgi.fatfree.com
     start_urls:
       - http://fatfree.com/
-  goodcooking.com:
+    use_proxy: true
+  goodcooking:
     allowed_domains:
       - goodcooking.com
     start_urls:
       - https://www.goodcooking.com/
+    use_proxy: true
   thriftyfun.com:
     allowed_domains:
       - thriftyfun.com
@@ -46,16 +52,24 @@ domains:
       - https://www.homebnc.com/
     use_playwright: true
     use_proxy: true
+    settings:
+      CONCURRENT_REQUESTS_PER_DOMAIN: 12
+  # NO RESPONSE
   homedecorideas:
     allowed_domains:
       - homedecorideas.eu
     start_urls:
       - https://www.homedecorideas.eu/
+    use_proxy: true
+    use_playwright: true
+    settings:
+      CONCURRENT_REQUESTS_PER_DOMAIN: 12
   homedesigning:
     allowed_domains:
       - home-designing.com
     start_urls:
       - https://www.home-designing.com
+    use_proxy: true
   homedit:
     allowed_domains:
       - homedit.com
@@ -67,14 +81,19 @@ domains:
       - homesandantiques.com
     start_urls:
       - https://www.homesandantiques.com/
+    use_proxy: true
+  # PITA, WRITE CUSTOM SPIDER FOR PAGINATION
   homeserve:
     allowed_domains:
       - homeserve.com
     start_urls:
       - https://www.homeserve.com/en-us/blog
     allow:
-      - /en-us/blog/
-    use_playwright: true
+      - /en-us/blog/?
+    bypass_cf: true
+    settings:
+      CONCURRENT_REQUESTS_PER_DOMAIN: 12
+      COMPRESSION_ENABLED: false
   homesicktexan:
     allowed_domains:
       - homesicktexan.com
@@ -85,13 +104,15 @@ domains:
     allowed_domains:
       - homewyse.com
     start_urls:
-      - https://www.homewyse.com/
+      - https://www.homewyse.com/index.html
     use_proxy: true
+  # PITA, WRITE CUSTOM SPIDER FOR PAGINATION
   honestcooking:
     allowed_domains:
       - honestcooking.com
     start_urls:
       - https://www.honestcooking.com/
+    use_proxy: true
   hookedonheat:
     allowed_domains:
       - hookedonheat.com
@@ -111,6 +132,7 @@ domains:
       - https://hort.extension.wisc.edu/
     settings:
       CONCURRENT_REQUESTS: 12
+    use_proxy: true
   hortmag:
     allowed_domains:
       - hortmag.com
@@ -118,7 +140,7 @@ domains:
       - https://hortmag.com/
     use_proxy: true
     settings:
-      CONCURRENT_REQUESTS: 4
+      CONCURRENT_REQUESTS: 8
   hostelworld:
     allowed_domains:
       - hostelworld.com
@@ -132,7 +154,10 @@ domains:
       - houseandhome.com
     start_urls:
       - https://www.houseandhome.com/
-    use_proxy: true
+    bypass_cf: true
+    settings:
+      CONCURRENT_REQUESTS: 12
+      COMPRESSION_ENABLED: false
   housedigest:
     allowed_domains:
       - housedigest.com
@@ -156,7 +181,10 @@ domains:
       - hungryhodophile.com
     start_urls:
       - https://www.hungryhodophile.com/
-    use_proxy: true
+    bypass_cf : true
+    settings:
+      CONCURRENT_REQUESTS: 12
+      COMPRESSION_ENABLED: false
   hungrysofia:
     allowed_domains:
       - hungrysofia.com
@@ -282,9 +310,7 @@ domains:
       - joythebaker.com
     start_urls:
       - https://www.joythebaker.com/
-    use_proxy: true
-    use_playwright: true
-
+    bypass_cf: true
   kalimirchbysmita:
     allowed_domains:
       - kalimirchbysmita.com
@@ -402,6 +428,7 @@ domains:
     start_urls:
       - https://laylita.com/
     bypass_cf: true
+#    use_proxy: true
   lemonblossoms:
     allowed_domains:
       - lemonblossoms.com
@@ -433,13 +460,249 @@ domains:
     start_urls:
       - https://livesimplybyannie.com/
     use_proxy: true
+  #PITA
   lobsterandswan:
     allowed_domains:
       - lobsterandswan.com
     start_urls:
       - https://lobsterandswan.com/
     use_proxy: true
-
-
+    use_playwright: true
+    settings:
+      CONCURRENT_REQUESTS_PER_DOMAIN: 8
+      COMPRESSION_ENABLED: false
+  lollyjane:
+    allowed_domains:
+      - lollyjane.com
+    start_urls:
+      - https://www.lollyjane.com/
+    use_proxy: true
+  lovehandles:
+    allowed_domains:
+      - lovehandles.uk.com
+    start_urls:
+      - https://www.lovehandles.uk.com/
+    use_proxy: true
+  # LMEO DDOSED
+  louskitchencorner:
+    allowed_domains:
+      - louskitchencorner.freybors.com
+    start_urls:
+      - https://louskitchencorner.freybors.com/
+    settings:
+      CONCURRENT_REQUESTS: 12
+    use_proxy: true
+  lovemaegan:
+    allowed_domains:
+      - lovemaegan.com
+    start_urls:
+      - https://lovemaegan.com/
+    use_proxy: true
+  lyricflair:
+    allowed_domains:
+      - lyricflair.com
+    start_urls:
+      - https://lyricflair.com/
+    use_proxy: true
+  housecleaningcentral:
+    allowed_domains:
+      - housecleaningcentral.com
+    start_urls:
+      - https://www.housecleaningcentral.com/
+    use_proxy: true
+    settings:
+      CONCURRENT_REQUESTS: 8
+      DOWNLOAD_DELAY: 0.6
+  homehacks:
+    allowed_domains:
+      - homehacks.co
+    start_urls:
+      - https://www.homehacks.co/
+    use_proxy: true
+  homeimprovementideas:
+    allowed_domains:
+      - homeimprovementideas.com
+    start_urls:
+      - https://www.homeimprovementideas.com/
+    use_proxy: true
+  # HY PITA
+  cookingwithdog:
+    allowed_domains:
+      - cookingwithdog.com
+    start_urls:
+      - https://www.cookingwithdog.com/
+    deny:
+      - \/[a-z]{2}(?:[-_][a-zA-Z]{2,4})?\/
+    bypass_cf: true
+    settings:
+      CONCURRENT_REQUESTS: 8
+      DOWNLOAD_DELAY: 0.6
+      COMPRESSION_ENABLED: false
+  thehungryhutch:
+    allowed_domains:
+      - thehungryhutch.com
+    start_urls:
+      - https://www.thehungryhutch.com/
+    use_proxy: true
+  culinaryginger:
+    allowed_domains:
+      - culinaryginger.com
+    start_urls:
+      - https://www.culinaryginger.com/
+    use_proxy: true
+  kitchenfunwithmy3sons:
+    allowed_domains:
+      - kitchenfunwithmy3sons.com
+    start_urls:
+      - https://www.kitchenfunwithmy3sons.com/
+    use_proxy: true
+    use_playwright: true
+  lovefoodies:
+    allowed_domains:
+      - lovefoodies.com
+    start_urls:
+      - https://www.lovefoodies.com/
+    use_proxy: true
+  cookwithmanali:
+    allowed_domains:
+      - cookwithmanali.com
+    start_urls:
+      - https://www.cookwithmanali.com/
+    use_proxy: true
+  browneyedbaker:
+    allowed_domains:
+      - browneyedbaker.com
+    start_urls:
+      - https://www.browneyedbaker.com/
+    use_proxy: true
+    use_playwright: true
+  thecookinmama:
+    allowed_domains:
+      - thecookinmama.com
+    start_urls:
+      - https://www.thecookinmama.com/
+    use_proxy: true
+  organizesimply:
+    allowed_domains:
+      - organizesimply.com
+    start_urls:
+      - https://www.organizesimply.com/
+    use_proxy: true
+  gardensillustrated:
+    allowed_domains:
+      - gardensillustrated.com
+    start_urls:
+      - https://www.gardensillustrated.com/
+    use_proxy: true
+  gardeningetc:
+    allowed_domains:
+      - gardeningetc.com
+    start_urls:
+      - https://www.gardeningetc.com/
+    use_proxy: true
+  moneycrashers:
+    allowed_domains:
+      - moneycrashers.com
+    start_urls:
+      - https://www.moneycrashers.com/
+    use_proxy: true
+  savingadvice:
+    allowed_domains:
+      - savingadvice.com
+    start_urls:
+      - https://www.savingadvice.com/
+    use_proxy: true
+  mymoneycoach:
+    allowed_domains:
+      - mymoneycoach.ca
+    start_urls:
+      - https://www.mymoneycoach.ca/
+    use_proxy: true
+    use_playwright: true
+  frugalwoods:
+    allowed_domains:
+      - frugalwoods.com
+    start_urls:
+      - https://www.frugalwoods.com/
+    use_proxy: true
+  thefrugalgirls:
+    allowed_domains:
+      - thefrugalgirls.com
+    start_urls:
+      - https://www.thefrugalgirls.com/
+    use_proxy: true
+  debtfreecharts:
+    allowed_domains:
+      - debtfreecharts.com
+    start_urls:
+      - https://www.debtfreecharts.com/
+    use_proxy: true
+  thebudgetmom:
+    allowed_domains:
+      - thebudgetmom.com
+    start_urls:
+      - https://www.thebudgetmom.com/
+    use_proxy: true
+  frugalconfessions:
+    allowed_domains:
+      - frugalconfessions.com
+    start_urls:
+      - https://www.frugalconfessions.com/
+    use_proxy: true
+  eatthis:
+    allowed_domains:
+      - eatthis.com
+    start_urls:
+      - https://www.eatthis.com/
+    use_proxy: true
+  nutritionadvance:
+    allowed_domains:
+      - nutritionadvance.com
+    start_urls:
+      - https://www.nutritionadvance.com/
+    use_proxy: true
+  cleaneatingmag:
+    allowed_domains:
+      - cleaneatingmag.com
+    start_urls:
+      - https://www.cleaneatingmag.com/
+    use_proxy: true
+  ambitiouskitchen:
+    allowed_domains:
+      - ambitiouskitchen.com
+    start_urls:
+      - https://www.ambitiouskitchen.com/
+    use_proxy: true
+  feastingonfruit:
+    allowed_domains:
+      - feastingonfruit.com
+    start_urls:
+      - https://www.feastingonfruit.com/
+    use_proxy: true
+  petguide:
+    allowed_domains:
+      - petguide.com
+    start_urls:
+      - https://www.petguide.com/
+    use_proxy: true
+  chewy:
+    allowed_domains:
+      - chewy.com
+    start_urls:
+      - https://www.chewy.com/education
+    allow:
+      - /education/
+  petful:
+    allowed_domains:
+      - petful.com
+    start_urls:
+      - https://www.petful.com/
+    use_proxy: true
+  laurenlatest:
+    allowed_domains:
+      - laurenlatest.com
+    start_urls:
+      - https://laurenlatest.com/
+    use_proxy: true
 defaults:
   settings:

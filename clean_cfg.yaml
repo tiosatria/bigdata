@@ -1,0 +1,119 @@
+GLOBAL:
+  # number of workers to run in parallel
+  workers: 12
+  # number of lines to process
+  limit: 0
+  input_dir: 'C:/Users/ASUS ROG/Desktop/input_data'
+  dedupe_dir: 'C:/Users/ASUS ROG/Desktop/dedupe_data'
+  output_dir: 'C:/Users/ASUS ROG/Desktop/output_data'
+  logs_dir: 'C:/Users/ASUS ROG/Desktop/cleaning_logs'
+  filters:
+    title:
+      # array of regex patterns to match title, when matched, the page will be filtered
+    url:
+      # array of regex pattern to match url, when matched, the page will be filtered
+      - 'about'
+      - 'contact'
+      - 'privacy'
+    category:
+      # array of regex pattern to match category, when matched, the page will be filtered
+      - 'news'
+    subcategory:
+      # array of regex pattern to match subcategory, when matched, the page will be filtered
+    content_keyword:
+      # use with caution! array of regex pattern to match content keyword, when matched, the page will be filtered, not recommended to use this filter on large dataset, as it will take a long time to run
+  cleaning_steps:
+    url_dedupe_and_filtering :
+      use_default: true
+      regex_filter:
+        - "/about/?$"
+        - "/contact/?"
+        - "/privacy/?"
+        - "/terms/?"
+        - "/disclaimer/?"
+        - "/cookie[s]?/?$"
+        - "/\..*"
+        - "/#.*"
+        - "\?.+="
+        - "/legal/?"
+        - "/sitemap/?"
+        - "^https?://[^/]+/?$"
+        - "[ ?& ]page=\d+"
+        - "[?&]p=\d+"
+        - "/page/\d+/?$"
+        - "/p/\d+/?$"
+        - "[?&]s="
+        - "[?&]search="
+        - "[?&]q="
+        - "[?&]query="
+        - "[?&]filter="
+        - "[?&]sort="
+        - "[?&]category="
+        - "[?&]tag="
+        # File extensions (non-HTML)
+        - "\.(js|css|json|xml|txt|pdf|zip|gz|tar|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$"
+        # Feed/API endpoints
+        - "/feed/?"
+        - "/rss/?"
+        - "/atom/?"
+        - "/api/?"
+        - "\.json$"
+        - "\.xml$"
+        # Auth/account pages
+        - "/login/?"
+        - "/signin/?"
+        - "/signup/?"
+        - "/register/?"
+        - "/logout/?"
+        - "/account/?"
+        - "/profile/?"
+        - "/settings/?"
+        # Admin/backend
+        - "/admin/"
+        - "/wp-admin/"
+        - "/dashboard/?"
+        # Common non-content paths
+        - "/tag/"
+        - "/tags/?"
+        - "/category/?"
+        - "/categories/?"
+        - "/author/"
+        - "/archive/?"
+        - "/search/?"
+      enabled: true
+    html_body_cleaning:
+      enabled: true
+      # Xpath
+      use_default_noises: true
+      noises:
+        - "//script"
+        - "//style"
+        - "//head"
+        - "//footer"
+        - "//header"
+        - "//nav"
+        - "//aside"
+        - "//form"
+        - "//input"
+        - "//button"
+      retain_table: true
+      retain_image: true
+      body_xpath: null
+    emoji_cleaning:
+      enabled: false
+    anonymization:
+      enabled: false
+    non_latin:
+      enabled: true
+    whitespace:
+      enabled: true
+    zero_width_space:
+      enabled: true
+    html_unescape:
+      enabled: false
+  validation:
+    min_text_length: 200
+
+
+
+SITE_SPECIFIC:

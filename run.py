@@ -144,6 +144,10 @@ Note: Only one domain can be crawled per run.
             settings.set(key, value)
             print(f"  {key}: {value}")
 
+    domain_state_dir = Path('.scrapy') / domain
+    domain_state_dir.mkdir(parents=True, exist_ok=True)
+    settings.set('JOBDIR', str(domain_state_dir), priority='spider')
+
     # Apply custom settings from command line (these override domain settings)
     if args.set:
         print(f"\nApplying command-line overrides:")

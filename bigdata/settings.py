@@ -10,7 +10,6 @@ from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
 from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, CleanHtmlFragmentPipeline
 import logging
 import scrapy.utils.reactor
-from bigdata.persistent_scheduler import SQLiteScheduler, SQLiteDupeFilter
 
 scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSelectorReactor")
 
@@ -38,19 +37,17 @@ SITE_CONFIG_PATH = Path(__file__).resolve().parent.parent / "site_cfg.json"
 # REDIS_URL = 'redis://127.0.0.1:6379'
 
 DEPTH_PRIORITY = 1
-SCHEDULER = SQLiteScheduler
-DUPEFILTER_CLASS = SQLiteDupeFilter
-SCHEDULER_PERSIST = True
-SCHEDULER_FLUSH_ON_START = False
-DUPEFILTER_DEBUG = False
+# DUPEFILTER_DEBUG = False
 SCHEDULER_DISK_QUEUE = "scrapy.squeues.PickleFifoDiskQueue"
 SCHEDULER_MEMORY_QUEUE = "scrapy.squeues.FifoMemoryQueue"
+DUPEFILTER_CLASS = "scrapy.dupefilters.RFPDupeFilter"
 DEPTH_LIMIT = 0
-MAX_RETRY_FAILED = 5
+SCHEDULER_PERSIST = True
+SCHEDULER_FLUSH_ON_START = False
+MAX_RETRY_FAILED = 3
 
 # Redis Connection URL
 # REDIS_URL = 'redis://100.109.89.55:6379'
-
 
 # ============================================================================
 # ROBOTS.TXT
@@ -78,7 +75,7 @@ ITEM_PIPELINES = {
 # ============================================================================
 # CONCURRENT_REQUESTS = 1536
 CONCURRENT_REQUESTS = 256
-CONCURRENT_REQUESTS_PER_DOMAIN = 100
+CONCURRENT_REQUESTS_PER_DOMAIN = 24
 CONCURRENT_ITEMS = 1024
 DOWNLOAD_DELAY = 0
 RANDOMIZE_DOWNLOAD_DELAY = False
@@ -158,12 +155,9 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 PLAYWRIGHT_MAX_CONTEXTS = 2048
 # PLAYWRIGHT_MAX_CONTEXTS = 4
 
-def should_abort_request(request):
-    """Check if playwright request should be aborted"""
-    return request.resource_type in ["image", "stylesheet", "font", "media"]
-
 # Playwright abort unnecessary requests
-PLAYWRIGHT_ABORT_REQUEST = should_abort_request
+PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "stylesheet", "font", "media"]
+
 
 REACTOR_THREADPOOL_MAXSIZE = 256
 
@@ -190,7 +184,7 @@ DOWNLOADER_MIDDLEWARES = {
 # ============================================================================
 
 LOG_ENABLED = True
-LOG_LEVEL = 'DEBUG'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_LEVEL = 'INFO'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_ENCODING = 'utf-8'
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
