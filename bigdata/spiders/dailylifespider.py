@@ -307,5 +307,4 @@ class DailyLifeSpider(RedisCrawlSpider):
             body = body
         )
         self.yielded+=1
-        self.logger.info(f'Yielded {metadata.get('title')} on : {response.url}')
-
+        self.logger.info(f"Yielded {metadata.get('title')} on : {response.url}")
