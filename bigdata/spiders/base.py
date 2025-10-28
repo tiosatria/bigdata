@@ -66,7 +66,7 @@ class RedisBaseCrawlSpider(RedisCrawlSpider):
             meta=metadata,
             body=body
         )
-        self.logger.info(f'Yielded {metadata.get('title')} on : {response.url}')
+        self.logger.info(f"Yielded {metadata.get('title')} on : {response.url}")
 
     def _apply_playwright_meta(self, request):
         request.meta['playwright'] = True
