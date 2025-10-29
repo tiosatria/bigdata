@@ -1,0 +1,131 @@
+CONFIG_VERSION: 1
+
+GLOBAL:
+  workers: 12
+  limit: 0
+  key_mapping:
+    id: <uuid4>
+    domain: metadata.hostname
+    body: body
+    text: <title>\n<body>
+    meta:
+      data_info:
+        url: metadata.url
+        lang: @en
+        source: metadata.domain
+        type: @article
+        processing_date: metadata.date
+        delivery_version: @v1
+        title: metadata.title
+      content_info:
+        domain: <meta.content_info.specify.domain> or metadata.categories[:first] or metadata.tags[:last] or <meta.content_info.fallbacks.domain>
+        subdomain: <meta.content_info.specify.subdomain> or metadata.tags[:first] or <meta.content_info.fallbacks.subdomain>
+  meta:
+    data_info:
+      fallbacks:
+        lang: en
+        type: site article
+        processing_date: 2021-01-01
+        delivery_version: v1
+      specify:
+        lang: null
+        type: null
+        processing_date: null
+        delivery_version: null
+    content_info:
+      fallbacks:
+        domain: daily life
+        subdomain: living
+      specify:
+        domain: null
+        subdomain: null
+  paths:
+    input: "${DATA_ROOT}/input"
+    dedupe: "${DATA_ROOT}/dedupe"
+    output: "${DATA_ROOT}/output"
+    logs: "${DATA_ROOT}/logs"
+  validation:
+    min_text_length: 200
+  filters:
+    # filterable fields: title, url, domain, subdomain & body
+    exclude:
+      # when specified, record containing any of these regex pattern will be filtered
+      url:
+        - "(?i)about"
+        - "(?i)contact"
+        - "(?i)privacy"
+        - "(?i)terms"
+      domain:
+        - "(?i)news"
+    include:
+    # when specified, only record containing all of these regex pattern will be included
+      url: null
+      domain: null
+  cleaning_pipeline:
+    - name: url_dedupe_and_filtering
+      enabled: true
+      params:
+        use_default: true
+        # exclude all url containing these regex pattern
+        regex_filter:
+          - "/about/?$"
+          - "/contact/?"
+          - "/privacy/?"
+          - "/terms/?"
+    - name: html_body_cleaning
+      enabled: true
+      params:
+        use_default_noises: true
+        noises:
+          - "//script"
+          - "//style"
+          - "//head"
+          - "//footer"
+          - "//header"
+          - "//nav"
+          - "//aside"
+          - "//form"
+          - "//input"
+          - "//button"
+        retain_table: true
+        retain_image: true
+        body_xpath: null
+    - name: emoji_cleaning
+      enabled: false
+    - name: anonymization
+      enabled: false
+    - name: non_latin
+      enabled: true
+    - name: whitespace
+      enabled: true
+    - name: zero_width_space
+      enabled: true
+    - name: html_unescape
+      enabled: false
+    - name: title_site_template
+      enabled: true
+    - name: english_only_filter
+      enabled: true
+SITES:
+  default:
+    inherit: GLOBAL
+  joyoushealth.com:
+    inherit: GLOBAL
+    overrides:
+      filters:
+        url:
+          - "(?i)recipes"
+          - "(?i)podcast"
+      cleaning_pipeline:
+        - name: html_body_cleaning
+          params:
+            retain_image: false
+            body_xpath: "//div[@class='main-content']"
+  feastingonfruit.com:
+    inherit: GLOBAL
+    overrides:
+      validation:
+        min_text_length: 400
+      filters:
+        title:
+          - 'some regex'

@@ -983,42 +983,49 @@ domains:
     start_urls:
       - https://cuckoo4design.com
     use_proxy: true
+  #GCP
   dabblinganddecorating:
     allowed_domains:
       - dabblinganddecorating.com
     start_urls:
       - https://dabblinganddecorating.com
     use_proxy: true
+  #GCP
   decoratingden:
     allowed_domains:
       - decoratingden.com
     start_urls:
       - https://decoratingden.com
     use_proxy: true
+  #GCP
   decorchamp:
     allowed_domains:
       - decorchamp.com
     start_urls:
       - https://decorchamp.com
     use_proxy: true
+  #GCP
   decorhint:
     allowed_domains:
       - decorhint.com
     start_urls:
       - https://decorhint.com
     use_proxy: true
+  #GCP
   decorsnob:
     allowed_domains:
       - decorsnob.com
     start_urls:
       - https://decorsnob.com
     use_proxy: true
+  #GCP
   decorsteals:
     allowed_domains:
       - decorsteals.com
     start_urls:
       - https://www.decorsteals.com
     use_proxy: true
+  #GCP
   designcafe:
     allowed_domains:
       - designcafe.com
@@ -1027,16 +1034,18 @@ domains:
     use_proxy: true
   diy100ideas:
     allowed_domains:
-      - diy100ideas.com
+      - diy-100ideas.com
     start_urls:
-      - https://diy100ideas.com
+      - https://diy-100ideas.com
     use_proxy: true
+  #GCP
   diy-tips:
     allowed_domains:
       - diy-tips.co.uk
     start_urls:
       - https://diy-tips.co.uk
     use_proxy: true
+  #GCP
   diyncrafts:
     allowed_domains:
       - diyncrafts.com
@@ -1049,66 +1058,77 @@ domains:
     start_urls:
       - https://diyshowoff.com
     use_proxy: true
+  #GCP
   doityourselfdivas:
     allowed_domains:
       - doityourselfdivas.com
     start_urls:
       - https://www.doityourselfdivas.com
     use_proxy: true
+  #GCP, 403
   dragonflyfun:
     allowed_domains:
       - dragonflyfun.com
     start_urls:
       - https://dragonflyfun.com
     use_proxy: true
+  #GCP
   dreamgreendiy:
     allowed_domains:
       - dreamgreendiy.com
     start_urls:
       - https://www.dreamgreendiy.com
     use_proxy: true
+  #GCP
   drivenbydecor:
     allowed_domains:
       - drivenbydecor.com
     start_urls:
       - https://drivenbydecor.com
     use_proxy: true
+  #GCP
   flippingtheflip:
     allowed_domains:
       - flippingtheflip.com
     start_urls:
       - https://flippingtheflip.com
     use_proxy: true
+  #GCP
   foxhollowcottage:
     allowed_domains:
       - foxhollowcottage.com
     start_urls:
       - https://www.foxhollowcottage.com
     use_proxy: true
+  #GCP
   howdoesshe:
     allowed_domains:
       - howdoesshe.com
     start_urls:
       - https://howdoesshe.com
     use_proxy: true
+  #GCP
   hwtm:
     allowed_domains:
       - hwtm.com
     start_urls:
       - https://www.hwtm.com
     use_proxy: true
+  #GCP
   indiandiy:
     allowed_domains:
       - indiandiy.blogspot.com
     start_urls:
       - https://indiandiy.blogspot.com/
     use_proxy: true
+  #GCP
   itigic:
     allowed_domains:
       - itigic.com
     start_urls:
       - https://itigic.com
     use_proxy: true
+  #GCP
   jane_athome:
     allowed_domains:
       - jane-athome.com
@@ -1121,84 +1141,98 @@ domains:
     start_urls:
       - https://www.justcook.tv
     use_proxy: true
+  #GCP
   katrinaleedesigns:
     allowed_domains:
       - katrinaleedesigns.com
     start_urls:
       - https://katrinaleedesigns.com
     use_proxy: true
+  #GCP
   leafyplace:
     allowed_domains:
       - leafyplace.com
     start_urls:
       - https://leafyplace.com
     use_proxy: true
+  #GCP
   lifeasaleowife:
     allowed_domains:
       - lifeasaleowife.com
     start_urls:
       - https://www.lifeasaleowife.com
     use_proxy: true
+  #GCP
   lifeonvirginiastreet:
     allowed_domains:
       - lifeonvirginiastreet.com
     start_urls:
       - https://www.lifeonvirginiastreet.com
     use_proxy: true
+  #GCP, err conn lost
   lizmarieblog:
     allowed_domains:
       - lizmarieblog.com
     start_urls:
       - https://www.lizmarieblog.com
     use_proxy: true
+  #GCP
   looksgoodtous:
     allowed_domains:
       - looksgoodtous.com
     start_urls:
       - https://looksgoodtous.com
     use_proxy: true
+  #GCP
   manhattan_nest:
     allowed_domains:
       - manhattan-nest.com
     start_urls:
       - https://manhattan-nest.com
     use_proxy: true
+  #GCP
   michealadianedesigns:
     allowed_domains:
       - michealadianedesigns.com
     start_urls:
       - https://michealadianedesigns.com
     use_proxy: true
+  #GCP
   oldbrandnew:
     allowed_domains:
       - oldbrandnew.com
     start_urls:
       - https://www.oldbrandnew.com
     use_proxy: true
+  #GCP
   oursouthernhomesc:
     allowed_domains:
       - oursouthernhomesc.com
     start_urls:
       - https://www.oursouthernhomesc.com
     use_proxy: true
+  #GCP
   papernstitchblog:
     allowed_domains:
       - papernstitchblog.com
     start_urls:
       - https://papernstitchblog.com
     use_proxy: true
+  #403
   paradehomeandgarden:
     allowed_domains:
       - paradehomeandgarden.com
     start_urls:
       - https://paradehomeandgarden.com
     use_proxy: true
+  #GCP
   petscribbles:
     allowed_domains:
       - petscribbles.com
     start_urls:
       - https://petscribbles.com
     use_proxy: true
+  #GCP
   petticoatjunktion:
     allowed_domains:
       - petticoatjunktion.com
@@ -1207,40 +1241,46 @@ domains:
     use_proxy: true
   ramblingrenovators:
     allowed_domains:
-      - ramblingrenovators.com
+      - ramblingrenovators.ca
     start_urls:
-      - https://www.ramblingrenovators.com
+      - https://www.ramblingrenovators.ca/
     use_proxy: true
+  #GCP
   refreshrestyle:
     allowed_domains:
       - refreshrestyle.com
     start_urls:
       - https://www.refreshrestyle.com
     use_proxy: true
+  #GCP
   ruffledblog:
     allowed_domains:
       - ruffledblog.com
     start_urls:
       - https://www.ruffledblog.com
     use_proxy: true
+  #GCP
   sewdiy:
     allowed_domains:
       - sewdiy.com
     start_urls:
       - https://www.sewdiy.com
     use_proxy: true
+  #GCP
   simplyhomedecorating:
     allowed_domains:
       - simplyhomedecorating.com
     start_urls:
       - https://www.simplyhomedecorating.com
     use_proxy: true
+  #GCP
   sincerelysarad:
     allowed_domains:
       - sincerelysarad.com
     start_urls:
       - https://sincerelysarad.com
     use_proxy: true
+  # NOT YIELDING
   skillsinthekitchen:
     allowed_domains:
       - skillsinthekitchen.com
