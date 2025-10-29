@@ -768,18 +768,21 @@ domains:
       - https://marksdailyapple.com/
     use_proxy: true
     use_playwright: true
+  #GCP, NOT DONE
   maryswholelife:
     allowed_domains:
       - maryswholelife.com
     start_urls:
       - https://www.maryswholelife.com/
     use_proxy: true
+  #GCP
   masalachilli:
     allowed_domains:
       - masalachilli.com
     start_urls:
       - https://masalachilli.com/
     use_proxy: true
+  #GCP
   cathealth:
     allowed_domains:
       - cathealth.com
@@ -791,6 +794,8 @@ domains:
       - pets4homes.co.uk
     start_urls:
       - https://www.pets4homes.co.uk/
+    use_playwright: true
+  #GCP
   thehappycatsite:
     allowed_domains:
       - thehappycatsite.com
@@ -803,12 +808,14 @@ domains:
     start_urls:
       - https://cats.com/
     use_proxy: true
+  #GCP
   alltop:
     allowed_domains:
       - alltop.com
     start_urls:
       - https://alltop.com/
     use_proxy: true
+  #GCP
   askmen:
     allowed_domains:
       - askmen.com
@@ -821,6 +828,7 @@ domains:
     start_urls:
       - https://www.atlfamilylawgroup.com/
     use_proxy: true
+  #GCP
   atomicsmash:
     allowed_domains:
       - atomicsmash.co.uk
@@ -829,12 +837,14 @@ domains:
     allow:
       - /blog/
     use_proxy: true
+  #GCP
   blogdigger:
     allowed_domains:
       - blogdigger.com
     start_urls:
       - https://blogdigger.com/
     use_proxy: true
+  #GCP
   bloggizmo:
     allowed_domains:
       - bloggizmo.com
@@ -847,108 +857,126 @@ domains:
     start_urls:
       - https://clickbizhub.com/
     use_proxy: true
-  # js pagination
+  # js pagination, GCP
   goodnewsnetwork:
     allowed_domains:
       - goodnewsnetwork.org
     start_urls:
       - https://www.goodnewsnetwork.org
     use_proxy: true
+  #GCP
   longevityreview:
     allowed_domains:
       - longevityreview.com
     start_urls:
       - https://longevityreview.com
     use_proxy: true
+  #GCP
   travelandoo:
     allowed_domains:
       - travelandoo.com
     start_urls:
       - https://travelandoo.com
     use_proxy: true
+  #GCP
   ablossominglife:
     allowed_domains:
       - ablossominglife.com
     start_urls:
       - https://ablossominglife.com
     use_proxy: true
+  #GCP
   allthingsthrifty:
     allowed_domains:
       - allthingsthrifty.com
     start_urls:
       - https://www.allthingsthrifty.com
     use_proxy: true
+  #GCP
   almostmakesperfect:
     allowed_domains:
       - almostmakesperfect.com
     start_urls:
       - https://almostmakesperfect.com
     use_proxy: true
+  #GCP
   artsychicksrule:
     allowed_domains:
       - artsychicksrule.com
     start_urls:
       - https://www.artsychicksrule.com
     use_proxy: true
+  #GCP
   astrollthrulife:
     allowed_domains:
       - astrollthrulife.net
     start_urls:
       - https://www.astrollthrulife.net
+  #GCP
   atthepicketfence:
     allowed_domains:
       - atthepicketfence.com
     start_urls:
       - https://www.atthepicketfence.com
     use_proxy: true
+  #GCP
   biketips:
     allowed_domains:
       - biketips.com
     start_urls:
       - https://www.biketips.com
     use_proxy: true
+  #GCP
   blesserhouse:
     allowed_domains:
       - blesserhouse.com
     start_urls:
       - https://www.blesserhouse.com
     use_proxy: true
+  #GCP
   brepurposed:
     allowed_domains:
       - brepurposed.com
     start_urls:
       - https://brepurposed.com
     use_proxy: true
+  #GCP, ERR
   cherylmoreo:
     allowed_domains:
       - cherylmoreo.com
     start_urls:
       - https://cherylmoreo.com
     use_proxy: true
+  # 403
   chrislovesjulia:
     allowed_domains:
       - chrislovesjulia.com
     start_urls:
       - https://chrislovesjulia.com
     use_proxy: true
+    use_playwright : true
+  #403
   cococozy:
     allowed_domains:
       - cococozy.com
     start_urls:
       - https://cococozy.com
     use_proxy: true
+  #GCP
   cocolapinedesign:
     allowed_domains:
       - cocolapinedesign.com
     start_urls:
       - https://cocolapinedesign.com
     use_proxy: true
+  #GCP
   creationsbykara:
     allowed_domains:
       - creationsbykara.com
     start_urls:
       - https://creationsbykara.com
     use_proxy: true
+  #GCP
   cuckoo4design:
     allowed_domains:
       - cuckoo4design.com
@@ -966,6 +994,366 @@ domains:
       - decoratingden.com
     start_urls:
       - https://decoratingden.com
+    use_proxy: true
+  decorchamp:
+    allowed_domains:
+      - decorchamp.com
+    start_urls:
+      - https://decorchamp.com
+    use_proxy: true
+  decorhint:
+    allowed_domains:
+      - decorhint.com
+    start_urls:
+      - https://decorhint.com
+    use_proxy: true
+  decorsnob:
+    allowed_domains:
+      - decorsnob.com
+    start_urls:
+      - https://decorsnob.com
+    use_proxy: true
+  decorsteals:
+    allowed_domains:
+      - decorsteals.com
+    start_urls:
+      - https://www.decorsteals.com
+    use_proxy: true
+  designcafe:
+    allowed_domains:
+      - designcafe.com
+    start_urls:
+      - https://designcafe.com
+    use_proxy: true
+  diy100ideas:
+    allowed_domains:
+      - diy100ideas.com
+    start_urls:
+      - https://diy100ideas.com
+    use_proxy: true
+  diy-tips:
+    allowed_domains:
+      - diy-tips.co.uk
+    start_urls:
+      - https://diy-tips.co.uk
+    use_proxy: true
+  diyncrafts:
+    allowed_domains:
+      - diyncrafts.com
+    start_urls:
+      - https://diyncrafts.com
+    use_proxy: true
+  diyshowoff:
+    allowed_domains:
+      - diyshowoff.com
+    start_urls:
+      - https://diyshowoff.com
+    use_proxy: true
+  doityourselfdivas:
+    allowed_domains:
+      - doityourselfdivas.com
+    start_urls:
+      - https://www.doityourselfdivas.com
+    use_proxy: true
+  dragonflyfun:
+    allowed_domains:
+      - dragonflyfun.com
+    start_urls:
+      - https://dragonflyfun.com
+    use_proxy: true
+  dreamgreendiy:
+    allowed_domains:
+      - dreamgreendiy.com
+    start_urls:
+      - https://www.dreamgreendiy.com
+    use_proxy: true
+  drivenbydecor:
+    allowed_domains:
+      - drivenbydecor.com
+    start_urls:
+      - https://drivenbydecor.com
+    use_proxy: true
+  flippingtheflip:
+    allowed_domains:
+      - flippingtheflip.com
+    start_urls:
+      - https://flippingtheflip.com
+    use_proxy: true
+  foxhollowcottage:
+    allowed_domains:
+      - foxhollowcottage.com
+    start_urls:
+      - https://www.foxhollowcottage.com
+    use_proxy: true
+  howdoesshe:
+    allowed_domains:
+      - howdoesshe.com
+    start_urls:
+      - https://howdoesshe.com
+    use_proxy: true
+  hwtm:
+    allowed_domains:
+      - hwtm.com
+    start_urls:
+      - https://www.hwtm.com
+    use_proxy: true
+  indiandiy:
+    allowed_domains:
+      - indiandiy.blogspot.com
+    start_urls:
+      - https://indiandiy.blogspot.com/
+    use_proxy: true
+  itigic:
+    allowed_domains:
+      - itigic.com
+    start_urls:
+      - https://itigic.com
+    use_proxy: true
+  jane_athome:
+    allowed_domains:
+      - jane-athome.com
+    start_urls:
+      - https://jane-athome.com/
+    use_proxy: true
+  justcooktv:
+    allowed_domains:
+      - justcooktv.tv
+    start_urls:
+      - https://www.justcook.tv
+    use_proxy: true
+  katrinaleedesigns:
+    allowed_domains:
+      - katrinaleedesigns.com
+    start_urls:
+      - https://katrinaleedesigns.com
+    use_proxy: true
+  leafyplace:
+    allowed_domains:
+      - leafyplace.com
+    start_urls:
+      - https://leafyplace.com
+    use_proxy: true
+  lifeasaleowife:
+    allowed_domains:
+      - lifeasaleowife.com
+    start_urls:
+      - https://www.lifeasaleowife.com
+    use_proxy: true
+  lifeonvirginiastreet:
+    allowed_domains:
+      - lifeonvirginiastreet.com
+    start_urls:
+      - https://www.lifeonvirginiastreet.com
+    use_proxy: true
+  lizmarieblog:
+    allowed_domains:
+      - lizmarieblog.com
+    start_urls:
+      - https://www.lizmarieblog.com
+    use_proxy: true
+  looksgoodtous:
+    allowed_domains:
+      - looksgoodtous.com
+    start_urls:
+      - https://looksgoodtous.com
+    use_proxy: true
+  manhattan_nest:
+    allowed_domains:
+      - manhattan-nest.com
+    start_urls:
+      - https://manhattan-nest.com
+    use_proxy: true
+  michealadianedesigns:
+    allowed_domains:
+      - michealadianedesigns.com
+    start_urls:
+      - https://michealadianedesigns.com
+    use_proxy: true
+  oldbrandnew:
+    allowed_domains:
+      - oldbrandnew.com
+    start_urls:
+      - https://www.oldbrandnew.com
+    use_proxy: true
+  oursouthernhomesc:
+    allowed_domains:
+      - oursouthernhomesc.com
+    start_urls:
+      - https://www.oursouthernhomesc.com
+    use_proxy: true
+  papernstitchblog:
+    allowed_domains:
+      - papernstitchblog.com
+    start_urls:
+      - https://papernstitchblog.com
+    use_proxy: true
+  paradehomeandgarden:
+    allowed_domains:
+      - paradehomeandgarden.com
+    start_urls:
+      - https://paradehomeandgarden.com
+    use_proxy: true
+  petscribbles:
+    allowed_domains:
+      - petscribbles.com
+    start_urls:
+      - https://petscribbles.com
+    use_proxy: true
+  petticoatjunktion:
+    allowed_domains:
+      - petticoatjunktion.com
+    start_urls:
+      - https://www.petticoatjunktion.com
+    use_proxy: true
+  ramblingrenovators:
+    allowed_domains:
+      - ramblingrenovators.com
+    start_urls:
+      - https://www.ramblingrenovators.com
+    use_proxy: true
+  refreshrestyle:
+    allowed_domains:
+      - refreshrestyle.com
+    start_urls:
+      - https://www.refreshrestyle.com
+    use_proxy: true
+  ruffledblog:
+    allowed_domains:
+      - ruffledblog.com
+    start_urls:
+      - https://www.ruffledblog.com
+    use_proxy: true
+  sewdiy:
+    allowed_domains:
+      - sewdiy.com
+    start_urls:
+      - https://www.sewdiy.com
+    use_proxy: true
+  simplyhomedecorating:
+    allowed_domains:
+      - simplyhomedecorating.com
+    start_urls:
+      - https://www.simplyhomedecorating.com
+    use_proxy: true
+  sincerelysarad:
+    allowed_domains:
+      - sincerelysarad.com
+    start_urls:
+      - https://sincerelysarad.com
+    use_proxy: true
+  skillsinthekitchen:
+    allowed_domains:
+      - skillsinthekitchen.com
+    start_urls:
+      - https://www.skillsinthekitchen.com
+    use_proxy: true
+  snazzylittlethings:
+    allowed_domains:
+      - snazzylittlethings.com
+    start_urls:
+      - https://www.snazzylittlethings.com
+    use_proxy: true
+  southernhospitalityblog:
+    allowed_domains:
+      - southernhospitalityblog.com
+    start_urls:
+      - https://southernhospitalityblog.com
+    use_proxy: true
+  sssedit:
+    allowed_domains:
+      - sssedit.com
+    start_urls:
+      - https://sssedit.com
+    use_proxy: true
+  stagg_design:
+    allowed_domains:
+      - stagg-design.com
+    start_urls:
+      - https://stagg-design.com
+    use_proxy: true
+  tampanails:
+    allowed_domains:
+      - tampanails.com
+    start_urls:
+      - https://tampanails.com
+    use_proxy: true
+  thedesignconfidential:
+    allowed_domains:
+      - thedesignconfidential.com
+    start_urls:
+      - https://www.thedesignconfidential.com
+    use_proxy: true
+  thedesignfiles:
+    allowed_domains:
+      - thedesignfiles.net
+    start_urls:
+      - https://thedesignfiles.net
+    use_proxy: true
+  thediydreamer:
+    allowed_domains:
+      - thediydreamer.com
+    start_urls:
+      - https://thediydreamer.com
+    use_proxy: true
+  thehandmadehome:
+    allowed_domains:
+      - thehandmadehome.net
+    start_urls:
+      - https://www.thehandmadehome.net
+    use_proxy: true
+  theletteredcottage:
+    allowed_domains:
+      - theletteredcottage.net
+    start_urls:
+      - https://www.theletteredcottage.net
+    use_proxy: true
+  thepaintedhive:
+    allowed_domains:
+      - thepaintedhive.net
+    start_urls:
+      - https://www.thepaintedhive.net
+    use_proxy: true
+  therecipecritic:
+    allowed_domains:
+      - therecipecritic.com
+    start_urls:
+      - https://therecipecritic.com
+    use_proxy: true
+  thetravelerbd:
+    allowed_domains:
+      - thetravelerbd.com
+    start_urls:
+      - https://thetravelerbd.com
+    use_proxy: true
+  thriftydecorchick:
+    allowed_domains:
+      - thriftydecorchick.com
+    start_urls:
+      - https://thriftydecorchick.com
+    use_proxy: true
+  uglyducklinghouse:
+    allowed_domains:
+      - uglyducklinghouse.com
+    start_urls:
+      - https://www.uglyducklinghouse.com
+    use_proxy: true
+  witanddelight:
+    allowed_domains:
+      - witanddelight.com
+    start_urls:
+      - https://witanddelight.com
+    use_proxy: true
+  zepboo:
+    allowed_domains:
+      - zepboo.com
+    start_urls:
+      - https://www.zepboo.com
+    use_proxy: true
+  canadianhometrends:
+    allowed_domains:
+      - canadianhometrends.com
+    start_urls:
+      - https://www.canadianhometrends.com
     use_proxy: true
 
 defaults:
