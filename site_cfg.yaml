@@ -1,5 +1,10 @@
 domains:
-  # DONE
+  vegweb:
+    allowed_domains:
+      - vegweb.com
+    start_urls:
+      - https://vegweb.com/
+    use_proxy: true
   veganchef:
     allowed_domains:
       - veganchef.com
@@ -379,6 +384,7 @@ domains:
     start_urls:
       - https://angelaskitchen.com/
     use_proxy: true
+  #HTTP2 ERROR
   milkallergymom:
     allowed_domains:
       - milkallergymom.com
@@ -569,6 +575,7 @@ domains:
     start_urls:
       - https://www.cookwithmanali.com/
     use_proxy: true
+  # GCP
   browneyedbaker:
     allowed_domains:
       - browneyedbaker.com
@@ -709,5 +716,257 @@ domains:
     start_urls:
       - https://laurenlatest.com/
     use_proxy: true
+  # HY
+  dogster:
+    allowed_domains:
+      - dogster.com
+    start_urls:
+      - https://www.dogster.com/
+    use_proxy: true
+    use_playwright: true
+  hillspet:
+    allowed_domains:
+      - hillspet.co.id
+    start_urls:
+      - https://www.hillspet.co.id/
+    use_proxy: true
+    use_playwright: true
+  # HTTP2 Error
+  makermama:
+    allowed_domains:
+      - makermama.com
+    start_urls:
+      - https://www.makermama.com/
+    use_proxy: true
+    use_playwright: true
+  #CF
+  manjulaskitchen:
+    allowed_domains:
+      - manjulaskitchen.com
+    start_urls:
+      - https://www.manjulaskitchen.com/
+    bypass_cf: true
+  marathonhandbook:
+    allowed_domains:
+      - marathonhandbook.com
+    start_urls:
+      - https://www.marathonhandbook.com/
+    use_proxy: true
+  iherb:
+    allowed_domains:
+      - iherb.com
+      - id1.iherb.com
+    start_urls:
+      - https://id1.iherb.com/blog
+    allow:
+      - /blog/?
+    use_proxy: true
+  marksdailyapple:
+    allowed_domains:
+      - marksdailyapple.com
+    start_urls:
+      - https://marksdailyapple.com/
+    use_proxy: true
+    use_playwright: true
+  maryswholelife:
+    allowed_domains:
+      - maryswholelife.com
+    start_urls:
+      - https://www.maryswholelife.com/
+    use_proxy: true
+  masalachilli:
+    allowed_domains:
+      - masalachilli.com
+    start_urls:
+      - https://masalachilli.com/
+    use_proxy: true
+  cathealth:
+    allowed_domains:
+      - cathealth.com
+    start_urls:
+      - https://www.cathealth.com/
+    use_proxy: true
+  pets4homes:
+    allowed_domains:
+      - pets4homes.co.uk
+    start_urls:
+      - https://www.pets4homes.co.uk/
+  thehappycatsite:
+    allowed_domains:
+      - thehappycatsite.com
+    start_urls:
+      - https://www.thehappycatsite.com/
+    use_proxy: true
+  cats:
+    allowed_domains:
+      - cats.com
+    start_urls:
+      - https://cats.com/
+    use_proxy: true
+  alltop:
+    allowed_domains:
+      - alltop.com
+    start_urls:
+      - https://alltop.com/
+    use_proxy: true
+  askmen:
+    allowed_domains:
+      - askmen.com
+    start_urls:
+      - https://www.askmen.com/
+    use_proxy: true
+  atlfamilylawgroup:
+    allowed_domains:
+      - atlfamilylawgroup.com
+    start_urls:
+      - https://www.atlfamilylawgroup.com/
+    use_proxy: true
+  atomicsmash:
+    allowed_domains:
+      - atomicsmash.co.uk
+    start_urls:
+      - https://www.atomicsmash.co.uk/blog/
+    allow:
+      - /blog/
+    use_proxy: true
+  blogdigger:
+    allowed_domains:
+      - blogdigger.com
+    start_urls:
+      - https://blogdigger.com/
+    use_proxy: true
+  bloggizmo:
+    allowed_domains:
+      - bloggizmo.com
+    start_urls:
+      - https://bloggizmo.com/
+    use_proxy: true
+  clickbizhub:
+    allowed_domains:
+      - clickbizhub.com
+    start_urls:
+      - https://clickbizhub.com/
+    use_proxy: true
+  # js pagination
+  goodnewsnetwork:
+    allowed_domains:
+      - goodnewsnetwork.org
+    start_urls:
+      - https://www.goodnewsnetwork.org
+    use_proxy: true
+  longevityreview:
+    allowed_domains:
+      - longevityreview.com
+    start_urls:
+      - https://longevityreview.com
+    use_proxy: true
+  travelandoo:
+    allowed_domains:
+      - travelandoo.com
+    start_urls:
+      - https://travelandoo.com
+    use_proxy: true
+  ablossominglife:
+    allowed_domains:
+      - ablossominglife.com
+    start_urls:
+      - https://ablossominglife.com
+    use_proxy: true
+  allthingsthrifty:
+    allowed_domains:
+      - allthingsthrifty.com
+    start_urls:
+      - https://www.allthingsthrifty.com
+    use_proxy: true
+  almostmakesperfect:
+    allowed_domains:
+      - almostmakesperfect.com
+    start_urls:
+      - https://almostmakesperfect.com
+    use_proxy: true
+  artsychicksrule:
+    allowed_domains:
+      - artsychicksrule.com
+    start_urls:
+      - https://www.artsychicksrule.com
+    use_proxy: true
+  astrollthrulife:
+    allowed_domains:
+      - astrollthrulife.net
+    start_urls:
+      - https://www.astrollthrulife.net
+  atthepicketfence:
+    allowed_domains:
+      - atthepicketfence.com
+    start_urls:
+      - https://www.atthepicketfence.com
+    use_proxy: true
+  biketips:
+    allowed_domains:
+      - biketips.com
+    start_urls:
+      - https://www.biketips.com
+    use_proxy: true
+  blesserhouse:
+    allowed_domains:
+      - blesserhouse.com
+    start_urls:
+      - https://www.blesserhouse.com
+    use_proxy: true
+  brepurposed:
+    allowed_domains:
+      - brepurposed.com
+    start_urls:
+      - https://brepurposed.com
+    use_proxy: true
+  cherylmoreo:
+    allowed_domains:
+      - cherylmoreo.com
+    start_urls:
+      - https://cherylmoreo.com
+    use_proxy: true
+  chrislovesjulia:
+    allowed_domains:
+      - chrislovesjulia.com
+    start_urls:
+      - https://chrislovesjulia.com
+    use_proxy: true
+  cococozy:
+    allowed_domains:
+      - cococozy.com
+    start_urls:
+      - https://cococozy.com
+    use_proxy: true
+  cocolapinedesign:
+    allowed_domains:
+      - cocolapinedesign.com
+    start_urls:
+      - https://cocolapinedesign.com
+    use_proxy: true
+  creationsbykara:
+    allowed_domains:
+      - creationsbykara.com
+    start_urls:
+      - https://creationsbykara.com
+    use_proxy: true
+  cuckoo4design:
+    allowed_domains:
+      - cuckoo4design.com
+    start_urls:
+      - https://cuckoo4design.com
+    use_proxy: true
+  dabblinganddecorating:
+    allowed_domains:
+      - dabblinganddecorating.com
+    start_urls:
+      - https://dabblinganddecorating.com
+    use_proxy: true
+  decoratingden:
+    allowed_domains:
+      - decoratingden.com
+    start_urls:
+      - https://decoratingden.com
+    use_proxy: true
+
 defaults:
   settings:
