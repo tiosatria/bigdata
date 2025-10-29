@@ -1,13 +1,10 @@
-from scrapy.exceptions import IgnoreRequest
 from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-import trafilatura
 from scrapy.responsetypes import Response
-import re
 import scrapy
 from pathlib import Path
 import yaml
-from urllib3.util import parse_url
+import uuid
 
 from bigdata.items import CrawlItem
 
@@ -61,14 +58,16 @@ DEFAULT_DENY = [
     r'.*/email.*',
     r'.*/recetas.*',
     r'.*/unsubscribe.*',
-    r'.*/comment.*',
+    r'.*comment.*',
+    r'.*Comment.*',
     r'\?reply.+\='
-    r'.*comment.*'
-    r'.*/#comment.*',
-    r'.*/share.*',
+    r'.*share.*',
+    r'.*Share.*',
     r'.*print.*',
+    r'.*Print.*',
     r'.*/redirect.*',
     r'.*/track.*',
+    r'.*editorial.*',
     r'.*/click.*',
     r'.*/?\?s=.*',
     r'.*/?\?reply=.*',
@@ -240,6 +239,8 @@ class UniversalSpider(CrawlSpider):
         # Load link extraction rules
         self.allow = domain_config.get('allow', [])
         self.deny = domain_config.get('deny', [])
+        if not domain_config.get('allow_query_params', True):
+            self.deny.append(r'[?&].+')
         self.restrict_xpaths = domain_config.get('restrict_xpaths', [])
         self.deny_extensions = domain_config.get('deny_extensions', [])
 
@@ -284,49 +285,23 @@ class UniversalSpider(CrawlSpider):
             self._apply_playwright_meta(request)
         return request
 
-    def get_and_set_metadata(self, response: Response):
-        metadata = (trafilatura
-                    .extract_metadata(response.text,
-                                      default_url=response.url)
-                    .as_dict())
-        metadata['body_type'] = 'html'
-        if cs := response.meta.get('content_subdomain'):
-            metadata['content_subdomain'] = cs
-        if cd := response.meta.get('content_domain'):
-            metadata['content_domain'] = cd
-        return metadata
-
-    def should_skip_content(self, response):
-        url = response.url
-        for pattern in DEFAULT_URL_FILTERS:
-            if re.search(pattern, url, re.IGNORECASE):
-                return True, f"default_filter:{pattern}"
-        return False
-
     async def parse_response(self, response: Response):
         """Parse and yield article content"""
 
         async for item in self._parse(response):
             yield item
 
-        if self.should_skip_content(response):
-            self.logger.debug(response.text)
-            self.logger.info(f'Passing through: {response.url} 🙈...')
-            return
-
-        metadata = self.get_and_set_metadata(response)
         body = response.text
 
-        # Additional validation: check if trafilatura found a title
-        if not metadata.get('title'):
-            self.logger.info(f'No title found, skipping: {response.url} ❌')
-            return
+        meta = response.meta
+        meta['site'] = self.domain
+        meta['body_type'] = 'html'
 
-        metadata['referer'] = response.headers.get('referer')
-
-        self.logger.info(f'Yielding {metadata.get("title")} on: {response.url} ✅')
+        self.logger.info(f'Yielding from {response.url} ✅')
 
         yield CrawlItem(
-            meta=metadata,
+            url = response.url,
+            id=uuid.uuid4(),
+            meta=meta,
             body=body
         )

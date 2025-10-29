@@ -5,12 +5,14 @@ domains:
     start_urls:
       - https://vegweb.com/
     use_proxy: true
+  # DONE
   veganchef:
     allowed_domains:
       - veganchef.com
     start_urls:
       - https://veganchef.com/
     use_proxy: true
+  # DONE
   internationalcuisine:
     allowed_domains:
       - internationalcuisine.com
@@ -18,6 +20,7 @@ domains:
       - https://internationalcuisine.com/
     use_playwright: true
     use_proxy: true
+  # DONE
   botanical:
     allowed_domains:
       - botanical.com
@@ -25,6 +28,7 @@ domains:
     start_urls:
       - https://www.botanical.com/
     use_proxy: true
+  # DONE
   fatfree:
     allowed_domains:
       - fatfree.com
@@ -32,24 +36,28 @@ domains:
     start_urls:
       - http://fatfree.com/
     use_proxy: true
+  # DONE
   goodcooking:
     allowed_domains:
       - goodcooking.com
     start_urls:
       - https://www.goodcooking.com/
     use_proxy: true
+  # DONE
   thriftyfun.com:
     allowed_domains:
       - thriftyfun.com
     start_urls:
       - https://www.thriftyfun.com/
     use_proxy: true
+  # DONE
   foodsubs:
     allowed_domains:
       - foodsubs.com
     start_urls:
       - https://www.foodsubs.com/
     use_proxy: true
+  # DONE
   homebnc:
     allowed_domains:
       - homebnc.com
@@ -69,18 +77,21 @@ domains:
     use_playwright: true
     settings:
       CONCURRENT_REQUESTS_PER_DOMAIN: 12
+  # DONE
   homedesigning:
     allowed_domains:
       - home-designing.com
     start_urls:
       - https://www.home-designing.com
     use_proxy: true
+  # DONE
   homedit:
     allowed_domains:
       - homedit.com
     start_urls:
       - https://www.homedit.com/
     use_proxy: true
+
   homesandantiques:
     allowed_domains:
       - homesandantiques.com
@@ -99,25 +110,28 @@ domains:
     settings:
       CONCURRENT_REQUESTS_PER_DOMAIN: 12
       COMPRESSION_ENABLED: false
+  # DONE
   homesicktexan:
     allowed_domains:
       - homesicktexan.com
     start_urls:
       - https://www.homesicktexan.com/
     use_proxy: true
+  # DONE
   homewyse:
     allowed_domains:
       - homewyse.com
     start_urls:
       - https://www.homewyse.com/index.html
     use_proxy: true
-  # PITA, WRITE CUSTOM SPIDER FOR PAGINATION
+  # DONE
   honestcooking:
     allowed_domains:
       - honestcooking.com
     start_urls:
       - https://www.honestcooking.com/
     use_proxy: true
+  # DONE
   hookedonheat:
     allowed_domains:
       - hookedonheat.com
@@ -208,6 +222,7 @@ domains:
     start_urls:
       - http://www.iheartorganizing.com/
     use_proxy: true
+  # need to recrawl
   ikeahackers:
     allowed_domains:
       - ikeahackers.net
@@ -353,6 +368,7 @@ domains:
     start_urls:
       - https://www.dishingupthedirt.com/
     use_proxy: true
+    allow_query_params: false
   thefigtreeblog:
     allowed_domains:
       - thefigtreeblog.com
@@ -454,7 +470,6 @@ domains:
     start_urls:
       - https://littleferrarokitchen.com/
     use_proxy: true
-    use_playwright: true
   livelovediy:
     allowed_domains:
       - livelovediy.com
@@ -680,6 +695,8 @@ domains:
     start_urls:
       - https://www.ambitiouskitchen.com/
     use_proxy: true
+    settings:
+      CONCURRENT_REQUESTS: 48
   # GCP
   feastingonfruit:
     allowed_domains:
@@ -722,8 +739,12 @@ domains:
       - dogster.com
     start_urls:
       - https://www.dogster.com/
-    use_proxy: true
-    use_playwright: true
+    bypass_cf: true
+    settings:
+      CONCURRENT_REQUESTS_PER_DOMAIN: 12
+      DOWNLOAD_DELAY: 0.6
+      COMPRESSION_ENABLED: false
+
   hillspet:
     allowed_domains:
       - hillspet.co.id
@@ -789,12 +810,18 @@ domains:
     start_urls:
       - https://www.cathealth.com/
     use_proxy: true
+  # NEED TO WRITE CUSTOM, HIGH YIELD
   pets4homes:
     allowed_domains:
       - pets4homes.co.uk
     start_urls:
       - https://www.pets4homes.co.uk/
-    use_playwright: true
+    # ADJUST THIS
+    allow:
+      - /pet-advice/?
+      - /(?:dog|cat|rabbit)-breeds/?
+#    use_playwright: true
+#    use_proxy: true
   #GCP
   thehappycatsite:
     allowed_domains:

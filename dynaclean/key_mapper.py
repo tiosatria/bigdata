@@ -52,6 +52,9 @@ class KeyMapper:
         if mapping == '<uuid4>':
             return str(uuid.uuid4())
 
+        if mapping == '<now>':
+            return datetime.now().isoformat()
+
         # Handle static literals with @
         if mapping.startswith('@'):
             return mapping[1:]

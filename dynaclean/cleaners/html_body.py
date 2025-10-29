@@ -87,7 +87,7 @@ class HtmlBodyCleaner(BaseCleaner):
                 include_tables=self.retain_table,
                 include_images=self.retain_image,
                 include_links=False,
-                no_fallback=False,
+                prune_xpath=self.noises,
                 config=config
             )
 

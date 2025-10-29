@@ -49,11 +49,12 @@ class ConfigLoader:
         else:
             site_config = self.sites[site_key]
 
-        # Start with base (inherited config)
-        if site_config.get('inherit') == 'GLOBAL':
-            merged = deepcopy(self.global_config)
-        else:
-            merged = {}
+        merged = {}
+        merge_key = site_config.get('inherit')
+        if merge_key:
+            cfg = self.config.get(merge_key)
+            if cfg:
+                merged = deepcopy(cfg)
 
         # Apply overrides
         if 'overrides' in site_config:

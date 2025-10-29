@@ -1,0 +1,2 @@
+url,use_proxy,use_playwright,bypass_cf
+https://www.dogster.com,TRUE,FALSE,FALSE

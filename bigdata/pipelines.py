@@ -36,7 +36,7 @@ class CleanHtmlFragmentPipeline:
         try:
             # Parse HTML fragment safely
             doc = html.fromstring(fragment)
-            unwanted_elements = self.EXCLUDES.copy()
+            unwanted_elements = self.EXCLUDES
             if exclude_xpaths:
                 unwanted_elements.extend(exclude_xpaths)
             # Remove unwanted nodes
@@ -179,7 +179,7 @@ class JSONExportPipeline:
     def process_item(self, item, spider):
         """Buffer item and flush when needed"""
         try:
-            domain = item.get('meta',{}).get('hostname', 'unknown')
+            domain = item.get('meta',{}).get('site', 'unknown')
 
             # Pre-serialize to JSON string (do this outside lock for speed)
             item_dict = self._prepare_item(item)

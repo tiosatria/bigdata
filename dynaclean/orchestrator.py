@@ -6,7 +6,7 @@ import argparse
 import os
 import sys
 from pathlib import Path
-from multiprocessing import Pool, Manager
+from multiprocessing import Pool, Manager, current_process
 from tqdm import tqdm
 import json
 
@@ -77,10 +77,22 @@ class Pipeline:
                 total_lines = sum(1 for _ in open(input_path, 'r', encoding='utf-8'))
 
                 infile.seek(0)
+
+                # --- ADD THESE LINES ---
+                # Get a unique position for this worker's progress bar
+                # The main 'Files' pbar is at position=0
+                try:
+                    # current_process()._identity[0] is the 1-based worker number
+                    bar_position = current_process()._identity[0]
+                except IndexError:
+                    # Fallback if not running in a pool (e.g., testing)
+                    bar_position = 1
+
+                # --- MODIFY THIS LINE ---
                 pbar = tqdm(
                     total=total_lines,
                     desc=f"{filename[:30]}",
-                    position=None,
+                    position=bar_position,  # <-- Change position=None to this
                     leave=False,
                     unit='rec'
                 )
@@ -93,7 +105,7 @@ class Pipeline:
                         record = json.loads(line.strip())
 
                         # Step 1: Deduplication
-                        url = self._get_nested(record, 'metadata.url') or ''
+                        url = self._get_nested(record, 'url') or self._get_nested(record, 'metadata.url') or ''
                         if deduplicator.is_duplicate(url):
                             stats['dedupe_filtered'] += 1
                             logger.debug(f"Duplicate URL: {url}")

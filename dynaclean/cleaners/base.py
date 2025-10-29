@@ -2,7 +2,7 @@
 Base cleaner interface
 """
 from abc import ABC, abstractmethod
-from utils.logger import get_logger
+from utils import get_logger
 
 
 class BaseCleaner(ABC):

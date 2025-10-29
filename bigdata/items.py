@@ -22,6 +22,8 @@ class ArticleItem(Item):
     timestamp = Field()
 
 class CrawlItem(Item):
+    id = Field()
+    url = Field()
     meta = Field()
     body = Field()
 

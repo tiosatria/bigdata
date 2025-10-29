@@ -32,7 +32,7 @@ class UrlDedupeCleaner(BaseCleaner):
             filters = custom_filters
 
         # Compile patterns
-        self.patterns = [re.compile(f) for f in filters]
+        self.patterns = [re.compile(f) for f in filters] if filters else []
 
     def clean(self, record):
         """Filter URLs based on regex patterns"""

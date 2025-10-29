@@ -1,35 +1,35 @@
 CONFIG_VERSION: 1
 
 GLOBAL:
-  workers: 12
+  workers: 20
   limit: 0
 
   key_mapping:
-    id: <uuid4>
+    id: id
     text: <title>\n<body>
     meta:
       data_info:
-        url: metadata.url
+        url: url
         lang: '@en'
-        source: metadata.sitename
-        type: '@article'
-        processing_date: metadata.date
+        source: meta.site
+        type: '@website article'
+        processing_date: <now>
         delivery_version: '@v1'
-        title: metadata.title
+        title: meta.title
       content_info:
-        domain: metadata.categories[:first] or metadata.tags[:last] or <meta.content_info.fallbacks.domain>
-        subdomain: metadata.tags[:first] or <meta.content_info.fallbacks.subdomain>
+        domain: meta.categories[:first] or meta.tags[:last] or <meta.content_info.fallbacks.domain>
+        subdomain: meta.tags[:first] or <meta.content_info.fallbacks.subdomain>
 
   meta:
     data_info:
       fallbacks:
         lang: en
         type: site article
-        processing_date: '2021-01-01'
+        processing_date: '2025-10-29'
         delivery_version: v1
       specify:
-        lang: null
-        type: null
+        lang: en
+        type: site article
         processing_date: null
         delivery_version: null
     content_info:
@@ -142,29 +142,128 @@ GLOBAL:
         body_xpath: null
 
     - name: emoji_cleaning
-      enabled: false
+      enabled: true
 
     - name: anonymization
       enabled: false
 
     - name: non_latin
-      enabled: true
+      enabled: false
 
     - name: whitespace
-      enabled: true
+      enabled: false
 
     - name: zero_width_space
-      enabled: true
+      enabled: false
 
     - name: html_unescape
       enabled: false
 
     - name: title_site_template
+      enabled: false
+
+    - name: english_only_filter
+      enabled: false
+
+WORDPRESS:
+  workers: 20
+  limit: 0
+
+  key_mapping:
+    id: id
+    text: <title>\n<body>
+    meta:
+      data_info:
+        url: url
+        lang: '@en'
+        source: meta.site
+        type: body.type
+        processing_date: <now>
+        delivery_version: '@v1'
+        title: body.title.rendered
+      content_info:
+        domain: body.categories[:first] or meta.tags[:last] or <meta.content_info.fallbacks.domain>
+        subdomain: meta.tags[:first] or <meta.content_info.fallbacks.subdomain>
+
+  meta:
+    data_info:
+      fallbacks:
+        lang: en
+        type: site article
+        processing_date: '2025-10-29'
+        delivery_version: v1
+      specify:
+        lang: en
+        type: site article
+        processing_date: null
+        delivery_version: null
+    content_info:
+      fallbacks:
+        domain: daily life
+        subdomain: living
+      specify:
+        domain: null
+        subdomain: null
+
+  paths:
+    input: '${DATA_ROOT}/input'
+    dedupe: '${DATA_ROOT}/dedupe'
+    output: '${DATA_ROOT}/output'
+    logs: '${DATA_ROOT}/logs'
+
+  validation:
+    min_text_length: 200
+
+  filters:
+    exclude:
+      url: null
+      domain: null
+    include:
+      url: null
+      domain: null
+
+  cleaning_pipeline:
+    - name: url_dedupe_and_filtering
       enabled: true
+      params:
+        use_default: false
+        regex_filter: null
+
+    - name: html_body_cleaning
+      enabled: true
+      params:
+        use_default_noises: false
+        noises: null
+        retain_table: true
+        retain_image: true
+        body_xpath: null
+
+    - name: emoji_cleaning
+      enabled: true
+
+    - name: anonymization
+      enabled: false
+
+    - name: non_latin
+      enabled: false
+
+    - name: whitespace
+      enabled: false
+
+    - name: zero_width_space
+      enabled: true
+
+    - name: html_unescape
+      enabled: true
+
+    - name: title_site_template
+      enabled: false
 
     - name: english_only_filter
       enabled: true
 
+
 SITES:
   default:
-    inherit: GLOBAL
+    inherit: WORDPRESS
+

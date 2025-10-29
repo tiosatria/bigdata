@@ -15,7 +15,7 @@ scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSel
 
 logging.getLogger("scrapy_user_agents.user_agent_picker").setLevel(logging.ERROR)
 
-BOT_NAME = "googleseo"
+BOT_NAME = "Mediapartners-Google"
 # USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 SPIDER_MODULES = ["bigdata.spiders"]
@@ -64,7 +64,7 @@ RETRY_HTTP_CODES = [403, 406, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599, 
 RETRY_PRIORITY_ADJUST = -5
 
 ITEM_PIPELINES = {
-    CleanHtmlFragmentPipeline: 1,
+    # CleanHtmlFragmentPipeline: 1,
     JSONExportPipeline: 2,
     # TransformCrawlerItemToDailyLifeFormat: 3,
     # CleanedJsonlExportPipeline: 4
