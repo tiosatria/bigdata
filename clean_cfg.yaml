@@ -26,76 +26,71 @@ GLOBAL:
     url_dedupe_and_filtering :
       use_default: true
       regex_filter:
-        - "/about/?$"
-        - "/contact/?"
-        - "/privacy/?"
-        - "/terms/?"
-        - "/disclaimer/?"
-        - "/cookie[s]?/?$"
-        - "/\..*"
-        - "/#.*"
-        - "\?.+="
-        - "/legal/?"
-        - "/sitemap/?"
-        - "^https?://[^/]+/?$"
-        - "[ ?& ]page=\d+"
-        - "[?&]p=\d+"
-        - "/page/\d+/?$"
-        - "/p/\d+/?$"
-        - "[?&]s="
-        - "[?&]search="
-        - "[?&]q="
-        - "[?&]query="
-        - "[?&]filter="
-        - "[?&]sort="
-        - "[?&]category="
-        - "[?&]tag="
-        # File extensions (non-HTML)
-        - "\.(js|css|json|xml|txt|pdf|zip|gz|tar|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$"
-        # Feed/API endpoints
-        - "/feed/?"
-        - "/rss/?"
-        - "/atom/?"
-        - "/api/?"
-        - "\.json$"
-        - "\.xml$"
-        # Auth/account pages
-        - "/login/?"
-        - "/signin/?"
-        - "/signup/?"
-        - "/register/?"
-        - "/logout/?"
-        - "/account/?"
-        - "/profile/?"
-        - "/settings/?"
-        # Admin/backend
-        - "/admin/"
-        - "/wp-admin/"
-        - "/dashboard/?"
-        # Common non-content paths
-        - "/tag/"
-        - "/tags/?"
-        - "/category/?"
-        - "/categories/?"
-        - "/author/"
-        - "/archive/?"
-        - "/search/?"
+        - '/about/?$'
+        - '/contact/?'
+        - '/privacy/?'
+        - '/terms/?'
+        - '/disclaimer/?'
+        - '/cookie[s]?/?$'
+        - '/\..*'
+        - '/#.*'
+        - '\?.+='
+        - '/legal/?'
+        - '/sitemap/?'
+        - '^https?://[^/]+/?$'
+        - '[?&]page=\d+'
+        - '[?&]p=\d+'
+        - '/page/\d+/?$'
+        - '/p/\d+/?$'
+        - '[?&]s='
+        - '[?&]search='
+        - '[?&]q='
+        - '[?&]query='
+        - '[?&]filter='
+        - '[?&]sort='
+        - '[?&]category='
+        - '[?&]tag='
+        - '\.(js|css|json|xml|txt|pdf|zip|gz|tar|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$'
+        - '/feed/?'
+        - '/rss/?'
+        - '/atom/?'
+        - '/api/?'
+        - '\.json$'
+        - '\.xml$'
+        - '/login/?'
+        - '/signin/?'
+        - '/signup/?'
+        - '/register/?'
+        - '/logout/?'
+        - '/account/?'
+        - '/profile/?'
+        - '/settings/?'
+        - '/admin/'
+        - '/wp-admin/'
+        - '/dashboard/?'
+        - '/tag/'
+        - '/tags/?'
+        - '/category/?'
+        - '/categories/?'
+        - '/author/'
+        - '/archive/?'
+        - '/search/?'
       enabled: true
     html_body_cleaning:
       enabled: true
       # Xpath
       use_default_noises: true
       noises:
-        - "//script"
-        - "//style"
-        - "//head"
-        - "//footer"
-        - "//header"
-        - "//nav"
-        - "//aside"
-        - "//form"
-        - "//input"
-        - "//button"
+        - '//script'
+        - '//style'
+        - '//head'
+        - '//footer'
+        - '//header'
+        - '//nav'
+        - '//aside'
+        - '//form'
+        - '//input'
+        - '//button'
       retain_table: true
       retain_image: true
       body_xpath: null

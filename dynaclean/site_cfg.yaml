@@ -10,11 +10,11 @@ GLOBAL:
     meta:
       data_info:
         url: metadata.url
-        lang: @en
+        lang: '@en'
         source: metadata.sitename
-        type: @article
+        type: '@article'
         processing_date: metadata.date
-        delivery_version: @v1
+        delivery_version: '@v1'
         title: metadata.title
       content_info:
         domain: metadata.categories[:first] or metadata.tags[:last] or <meta.content_info.fallbacks.domain>
@@ -41,10 +41,10 @@ GLOBAL:
         subdomain: null
 
   paths:
-    input: "${DATA_ROOT}/input"
-    dedupe: "${DATA_ROOT}/dedupe"
-    output: "${DATA_ROOT}/output"
-    logs: "${DATA_ROOT}/logs"
+    input: '${DATA_ROOT}/input'
+    dedupe: '${DATA_ROOT}/dedupe'
+    output: '${DATA_ROOT}/output'
+    logs: '${DATA_ROOT}/logs'
 
   validation:
     min_text_length: 200
@@ -52,10 +52,60 @@ GLOBAL:
   filters:
     exclude:
       url:
-        - "(?i)about"
-        - "(?i)contact"
-        - "(?i)privacy"
-        - "(?i)terms"
+        - '/about/?$'
+        - '/contact/?'
+        - '/privacy/?'
+        - '/terms/?'
+        - '/disclaimer/?'
+        - '/cookie[s]?/?$'
+        - '/\..*'
+        - '/#.*'
+        - '\?.+='
+        - '/legal/?'
+        - '/sitemap/?'
+        - '^https?://[^/]+/?$'
+        - '[ ?& ]page=\d+'
+        - '[?&]p=\d+'
+        - '/page/\d+/?$'
+        - '/p/\d+/?$'
+        - '[?&]s='
+        - '[?&]search='
+        - '[?&]q='
+        - '[?&]query='
+        - '[?&]filter='
+        - '[?&]sort='
+        - '[?&]category='
+        - '[?&]tag='
+        # File extensions (non-HTML)
+        - '\.(js|css|json|xml|txt|pdf|zip|gz|tar|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$'
+        # Feed/API endpoints
+        - '/feed/?'
+        - '/rss/?'
+        - '/atom/?'
+        - '/api/?'
+        - '\.json$'
+        - '\.xml$'
+        # Auth/account pages
+        - '/login/?'
+        - '/signin/?'
+        - '/signup/?'
+        - '/register/?'
+        - '/logout/?'
+        - '/account/?'
+        - '/profile/?'
+        - '/settings/?'
+        # Admin/backend
+        - '/admin/'
+        - '/wp-admin/'
+        - '/dashboard/?'
+        # Common non-content paths
+        - '/tag/'
+        - '/tags/?'
+        - '/category/?'
+        - '/categories/?'
+        - '/author/'
+        - '/archive/?'
+        - '/search/?'
       domain: null
     include:
       url: null
@@ -67,26 +117,26 @@ GLOBAL:
       params:
         use_default: true
         regex_filter:
-          - "/about/?$"
-          - "/contact/?"
-          - "/privacy/?"
-          - "/terms/?"
+          - '/about/?$'
+          - '/contact/?'
+          - '/privacy/?'
+          - '/terms/?'
 
     - name: html_body_cleaning
       enabled: true
       params:
         use_default_noises: true
         noises:
-          - "//script"
-          - "//style"
-          - "//head"
-          - "//footer"
-          - "//header"
-          - "//nav"
-          - "//aside"
-          - "//form"
-          - "//input"
-          - "//button"
+          - '//script'
+          - '//style'
+          - '//head'
+          - '//footer'
+          - '//header'
+          - '//nav'
+          - '//aside'
+          - '//form'
+          - '//input'
+          - '//button'
         retain_table: true
         retain_image: true
         body_xpath: null
@@ -118,27 +168,3 @@ GLOBAL:
 SITES:
   default:
     inherit: GLOBAL
-
-  joyoushealth:
-    inherit: GLOBAL
-    overrides:
-      filters:
-        exclude:
-          url:
-            - "(?i)recipes"
-            - "(?i)podcast"
-      cleaning_pipeline:
-        - name: html_body_cleaning
-          params:
-            retain_image: false
-            body_xpath: "//div[@class='main-content']"
-
-  feastingonfruit:
-    inherit: GLOBAL
-    overrides:
-      validation:
-        min_text_length: 400
-      filters:
-        exclude:
-          title:
-            - 'some regex pattern'

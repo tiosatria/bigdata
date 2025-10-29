@@ -1287,48 +1287,56 @@ domains:
     start_urls:
       - https://www.skillsinthekitchen.com
     use_proxy: true
+  #GCP
   snazzylittlethings:
     allowed_domains:
       - snazzylittlethings.com
     start_urls:
       - https://www.snazzylittlethings.com
     use_proxy: true
+  #GCP
   southernhospitalityblog:
     allowed_domains:
       - southernhospitalityblog.com
     start_urls:
       - https://southernhospitalityblog.com
     use_proxy: true
+  #GCP
   sssedit:
     allowed_domains:
       - sssedit.com
     start_urls:
       - https://sssedit.com
     use_proxy: true
+  #GCP
   stagg_design:
     allowed_domains:
       - stagg-design.com
     start_urls:
       - https://stagg-design.com
     use_proxy: true
+  #GCP
   tampanails:
     allowed_domains:
       - tampanails.com
     start_urls:
       - https://tampanails.com
     use_proxy: true
+  #GCP
   thedesignconfidential:
     allowed_domains:
       - thedesignconfidential.com
     start_urls:
       - https://www.thedesignconfidential.com
     use_proxy: true
+  #GCP
   thedesignfiles:
     allowed_domains:
       - thedesignfiles.net
     start_urls:
       - https://thedesignfiles.net
     use_proxy: true
+  #GCP
   thediydreamer:
     allowed_domains:
       - thediydreamer.com
@@ -1341,6 +1349,7 @@ domains:
     start_urls:
       - https://www.thehandmadehome.net
     use_proxy: true
+  #GCP
   theletteredcottage:
     allowed_domains:
       - theletteredcottage.net
