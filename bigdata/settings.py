@@ -10,7 +10,16 @@ from bigdata.middlewares import ProxyMiddleware, FailedRequestExportMiddleware
 from bigdata.pipelines import JSONExportPipeline, TransformCrawlerItemToDailyLifeFormat, CleanedJsonlExportPipeline, CleanHtmlFragmentPipeline
 import logging
 import scrapy.utils.reactor
+import sys
 
+# Use AsyncioSelectorReactor everywhere; on Windows, set Proactor event loop policy to avoid select() FD limits.
+import asyncio
+if sys.platform.startswith('win'):
+    try:
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+    except Exception:
+        # Fallback silently if policy cannot be set
+        pass
 scrapy.utils.reactor.install_reactor("twisted.internet.asyncioreactor.AsyncioSelectorReactor")
 
 logging.getLogger("scrapy_user_agents.user_agent_picker").setLevel(logging.ERROR)

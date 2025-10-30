@@ -10,8 +10,21 @@ from scrapy import signals
 class ProxyMiddleware:
 
     def process_request(self, request, spider):
+        """
+        Assign proxies based on request meta flags while avoiding errors when the URL has no hostname.
+        The Empty domain crash comes from trying to create TLS options for an empty host; guard against it.
+        """
+        from urllib.parse import urlparse
+
+        try:
+            host = urlparse(request.url).hostname or ''
+        except Exception:
+            host = ''
+
         if request.meta.get('bypass_cf', False):
-            request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:1234'
+            # Use the user's local CF-bypass proxy as-is, but only if URL has a hostname
+            if host:
+                request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:1234'
         elif request.meta.get('playwright', False):
             if request.meta.get('use_proxy', False):
                 request.meta['playwright_context_kwargs'] = {'proxy':
@@ -20,7 +33,8 @@ class ProxyMiddleware:
                                                                        'password': 'v3cylfcqz2p5'}
                                                              }
         elif request.meta.get('use_proxy', False):
-            request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'
+            if host:
+                request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'
 
     """
     Scrapy Downloader Middleware for exporting failed requests to JSONL

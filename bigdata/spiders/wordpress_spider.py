@@ -51,7 +51,7 @@ class WordpressSpider(scrapy.Spider):
         s = str(v).strip().lower()
         return s in {'1', 'true', 'yes', 'y', 't'}
 
-    def _build_wp_posts_url(self, base_url: str, page: int = 1, per_page: int = 100) -> str:
+    def _build_wp_posts_url(self, base_url: str, page: int = 1, per_page: int = 50) -> str:
         # Normalize to scheme+netloc
         p = urlparse(base_url)
         scheme = p.scheme or 'https'
@@ -211,7 +211,7 @@ class WordpressSpider(scrapy.Spider):
         # Build and yield requests for pages 2..N
         base_url_from_request = response.url.split('?')[0]
         for page in range(2, total_pages + 1):
-            api_url = f"{base_url_from_request}?per_page=100&page={page}"
+            api_url = f"{base_url_from_request}?per_page=50&page={page}"
             m = meta.copy()
             m['wp_current_page'] = page
 

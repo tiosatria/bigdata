@@ -1,0 +1,109 @@
+# Data Cleaning Configuration
+# This file defines cleaning templates and site-specific mappings
+
+# ============================================================================
+# TEMPLATES - Reusable cleaning configurations
+# ============================================================================
+
+template_wordpress:
+  delivery_version: v1
+  domain_fallback: 'daily life'
+  subdomain_fallback: 'living'
+  type_fallback: 'article'
+
+  # Pre-processing filters (applied before cleaning)
+  pre_filter:
+    # Drop records matching these URL patterns
+    re_url:
+      - '/contact/'
+      - '/about/'
+      - '/privacy-policy/'
+      - '/terms-of-service/'
+
+    # Minimum cleaned body length (characters)
+    body_length: 200
+
+  # Cleaning pipeline configuration
+  clean:
+    # Enabled cleaning steps (applied in order)
+    enabled:
+      - clean_html          # Extract text from HTML with trafilatura
+      - clean_title         # Clean title text
+      - normalize_unicode   # Normalize unicode and map smart punctuation
+      - clean_emoji         # Remove emojis
+      - clean_whitespace    # Normalize whitespace
+      - anonymization       # Anonymize email addresses
+      - clean_punctuation   # Clean excessive punctuation
+      - english_only        # Drop if content is not English
+
+    # Cleaning arguments
+    args:
+      # XPath selector to apply before extraction (null = use full HTML)
+      body_xpath: null
+
+      # XPath expressions to prune/remove
+      noises:
+        - //script
+        - //style
+        - //aside
+        - //nav
+        - //footer
+        - //header[@class='site-header']
+
+      # Trafilatura formatting options
+      formating:
+        retain_table: true
+        retain_image: true
+
+  # Post-processing filters (applied after cleaning)
+  post_filter:
+    # Drop if cleaned text matches these patterns
+    re_cleaned_text:
+      - '.*nsfw.*'
+      - '.*explicit content.*'
+
+    # Drop if title matches these patterns
+    re_title:
+      - '.*video.*'
+      - '.*review.*'
+      - '.*podcast.*'
+      - '.*\[sponsored\].*'
+
+    # Drop if domain contains these terms
+    domain_containing:
+      - 'news'
+      - 'blog'
+
+    # Drop if subdomain contains these terms
+    subdomain_containing:
+      - 'entertainment'
+      - 'gossip'
+
+
+# ============================================================================
+# DOMAIN MAPPING - Map source domains to domain/subdomain categories
+# ============================================================================
+
+domain_mapping:
+  # Format: source_domain: {domain: category, subdomain: subcategory}
+
+  example.com:
+    domain: 'technology'
+    subdomain: 'programming'
+
+  foodblog.com:
+    domain: 'food'
+    subdomain: 'recipes'
+
+  mindoverclutter.ca:
+    domain: 'lifestyle'
+    subdomain: 'organizing'
+
+
+# ============================================================================
+# SITE MAPPING - Site-specific configurations
+# ============================================================================
+
+site_mapping:
+  # The key should match the input filename (without .jsonl extension)
+
