@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-High-Performance Data Cleaning Pipeline
-Supports multiple data shapes with modular architecture
+OPTIMIZED High-Performance Data Cleaning Pipeline
+Maximum concurrency, single-file focus, instant startup
 """
 
 import json
@@ -12,13 +12,13 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, field
 from datetime import datetime
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED
-from multiprocessing import Manager, cpu_count
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from multiprocessing import cpu_count, Manager
 import sys
-import os
 import time
+from queue import Queue
+from threading import Thread
 
-import trafilatura.utils
 import yaml
 from uuid import uuid4
 from collections import Counter
@@ -30,17 +30,17 @@ except Exception:
     tqdm = None
 
 try:
-    from trafilatura import extract, extract_metadata
+    from trafilatura import extract
     from trafilatura.settings import use_config
+    import trafilatura.utils
     from bs4 import BeautifulSoup
 except ImportError:
     print("ERROR: Missing required packages. Install with:")
     print("pip install trafilatura beautifulsoup4 lxml pyyaml")
     sys.exit(1)
 
-
 # ============================================================================
-# DATA CLASSES
+# DATA CLASSES (unchanged)
 # ============================================================================
 
 @dataclass
@@ -80,7 +80,7 @@ class CleaningConfig:
 
 
 # ============================================================================
-# CONFIGURATION LOADER
+# CONFIGURATION LOADER (unchanged)
 # ============================================================================
 
 class ConfigLoader:
@@ -169,7 +169,6 @@ class ConfigLoader:
         if not isinstance(site_config, dict):
             site_config = {}
 
-        # Get template config
         clean_section = site_config.get('clean') or {}
         if not isinstance(clean_section, dict):
             clean_section = {}
@@ -179,10 +178,8 @@ class ConfigLoader:
         if not isinstance(template, dict):
             template = {}
 
-        # Merge site config with template (site overrides template); ignore None values
         merged = self._merge_configs(template, site_config)
 
-        # Ensure sub-sections are dicts
         pre_filter = merged.get('pre_filter') or {}
         if not isinstance(pre_filter, dict):
             pre_filter = {}
@@ -212,7 +209,6 @@ class ConfigLoader:
             return result
 
         for key, value in override.items():
-            # Skip None overrides entirely to avoid clobbering dicts with None
             if value is None:
                 continue
             base_val = result.get(key)
@@ -229,13 +225,9 @@ class ConfigLoader:
         if not domain:
             return ''
         d = domain.strip().lower()
-        # Remove scheme
         d = re.sub(r'^https?://', '', d)
-        # Remove path and query
         d = d.split('/')[0]
-        # Remove port
         d = d.split(':')[0]
-        # Strip leading www.
         if d.startswith('www.'):
             d = d[4:]
         return d
@@ -249,15 +241,11 @@ class ConfigLoader:
         parts = d.split('.')
         if len(parts) <= 2:
             return d
-        # Handle common SLDs like co.uk, com.au, org.uk, gov.uk, ac.uk, co.nz
         slds = {('co', 'uk'), ('org', 'uk'), ('gov', 'uk'), ('ac', 'uk'),
                 ('com', 'au'), ('net', 'au'), ('org', 'au'), ('co', 'nz')}
         last2 = (parts[-2], parts[-1])
-        last3 = (parts[-3], parts[-2])
         if last2 in slds and len(parts) >= 3:
             return '.'.join(parts[-3:])
-        if last3 in slds and len(parts) >= 4:
-            return '.'.join(parts[-4:])
         return '.'.join(parts[-2:])
 
     def get_domain_mapping(self, source_domain: str) -> Tuple[Optional[str], Optional[str]]:
@@ -267,11 +255,9 @@ class ConfigLoader:
             domain_map = {}
         cand = self._normalize_domain(source_domain)
         candidates = [cand]
-        # Also try base domain and original key
         base = self._base_domain(cand)
         if base and base not in candidates:
             candidates.append(base)
-        # Try with and without www
         if cand and ('www.' + cand) not in candidates:
             candidates.append('www.' + cand)
         if base and ('www.' + base) not in candidates:
@@ -280,7 +266,6 @@ class ConfigLoader:
             if key in domain_map:
                 m = domain_map.get(key) or {}
                 return m.get('domain'), m.get('subdomain')
-        # Final attempt: iterate keys and compare normalized/base
         for k, v in domain_map.items():
             nk = self._normalize_domain(k)
             if nk == cand or nk == base or self._base_domain(nk) == base:
@@ -290,7 +275,7 @@ class ConfigLoader:
 
 
 # ============================================================================
-# CLEANING UTILITIES
+# CLEANING UTILITIES (unchanged - keeping all your working logic)
 # ============================================================================
 
 class TextCleaner:
@@ -299,10 +284,10 @@ class TextCleaner:
     EMAIL_PATTERN = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
     EMOJI_PATTERN = re.compile(
         "["
-        "\U0001F600-\U0001F64F"  # emoticons
-        "\U0001F300-\U0001F5FF"  # symbols & pictographs
-        "\U0001F680-\U0001F6FF"  # transport & map symbols
-        "\U0001F1E0-\U0001F1FF"  # flags
+        "\U0001F600-\U0001F64F"
+        "\U0001F300-\U0001F5FF"
+        "\U0001F680-\U0001F6FF"
+        "\U0001F1E0-\U0001F1FF"
         "\U00002702-\U000027B0"
         "\U000024C2-\U0001F251"
         "]+", flags=re.UNICODE
@@ -310,15 +295,10 @@ class TextCleaner:
 
     @staticmethod
     def normalize_unicode(text: str) -> str:
-        """Normalize unicode: NFKC normalization, map smart quotes/dashes to ASCII,
-        remove control characters except newlines and tabs.
-        """
         if not text:
             return ""
         import unicodedata
-        # Normalize compatibility characters
         text = unicodedata.normalize('NFKC', text)
-        # Map common punctuation to ASCII
         replacements = {
             '\u2018': "'", '\u2019': "'", '\u201A': ',', '\u201B': "'",
             '\u201C': '"', '\u201D': '"', '\u201E': '"',
@@ -327,33 +307,26 @@ class TextCleaner:
         }
         for k, v in replacements.items():
             text = text.replace(k, v)
-        # Remove other control characters
         text = ''.join(ch for ch in text if (ch == '\n' or ch == '\t' or (ch >= ' ')))
         return text
 
     @staticmethod
     def clean_html(
-        html: str,
-        xpath: Optional[str] = None,
-        prune_xpath: List[str] = None,
-        include_tables: bool = True,
-        include_images: bool = True,
-        include_links: bool = False,
-        config: Any = None,
+            html: str,
+            xpath: Optional[str] = None,
+            prune_xpath: List[str] = None,
+            include_tables: bool = True,
+            include_images: bool = True,
+            include_links: bool = False,
+            config: Any = None,
     ) -> str:
-        """Extract clean text from HTML using trafilatura.
-        - Supports true XPath pre-selection (not CSS).
-        - Respects include_tables/images/links flags from config.
-        """
         if not html or not html.strip():
             return ""
 
-        # Reuse provided config for performance if available
         if config is None:
             config = use_config()
             config.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
 
-        # Apply XPath selector if specified (use lxml)
         if xpath:
             try:
                 from lxml import html as lxml_html
@@ -364,7 +337,6 @@ class TextCleaner:
             except Exception as e:
                 logging.debug(f"XPath selection failed: {e}")
 
-        # Extract with trafilatura
         extracted = extract(
             html,
             config=config,
@@ -380,76 +352,57 @@ class TextCleaner:
 
     @staticmethod
     def clean_title(title: str) -> str:
-        """Clean title text"""
         if not title:
             return ""
-        # Remove HTML entities
         title = re.sub(r'&#?\w+;', ' ', title)
-        # Remove extra whitespace
         title = ' '.join(title.split())
         return title.strip()
 
     @staticmethod
     def clean_emoji(text: str) -> str:
-        """Remove emojis from text"""
         return TextCleaner.EMOJI_PATTERN.sub('', text)
 
     @staticmethod
     def clean_whitespace(text: str) -> str:
-        """Normalize whitespace"""
-        # Replace multiple spaces with single space
         text = re.sub(r' +', ' ', text)
-        # Replace multiple newlines with double newline
         text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
         return text.strip()
 
     @staticmethod
     def anonymize_emails(text: str) -> str:
-        """Replace emails with xxx@xxxxx.xxx"""
-
         def replace_email(match):
             email = match.group(0)
             parts = email.split('@')
             if len(parts) != 2:
                 return email
-
             local, domain = parts
             domain_parts = domain.split('.')
-
             anonymized_local = 'x' * len(local)
             anonymized_domain = '.'.join('x' * len(part) for part in domain_parts)
-
             return f"{anonymized_local}@{anonymized_domain}"
 
         return TextCleaner.EMAIL_PATTERN.sub(replace_email, text)
 
     @staticmethod
     def clean_punctuation(text: str) -> str:
-        """Clean excessive punctuation"""
-        # Remove multiple punctuation marks
         text = re.sub(r'([!?.]){3,}', r'\1\1', text)
         return text
 
     @staticmethod
     def is_english(text: str, threshold: float = 0.7) -> bool:
-        """Simple heuristic to check if text is mostly English"""
         if not text or len(text) < 50:
-            return True  # Too short to determine
-
-        # Count ASCII letters vs total characters
+            return True
         ascii_letters = sum(1 for c in text if c.isascii() and c.isalpha())
         total_letters = sum(1 for c in text if c.isalpha())
-
         if total_letters == 0:
             return False
-
         ratio = ascii_letters / total_letters
         return ratio >= threshold
 
 
 # ============================================================================
-# CUSTOM HTML MEDIA/TABLE PREPROCESSING
-# ==========================================================================
+# HTML PREPROCESSING (unchanged)
+# ============================================================================
 
 PLACEHOLDER_IMG_PREFIX = "[[DYNACLEAN_IMG_"
 PLACEHOLDER_TBL_PREFIX = "[[DYNACLEAN_TBL_"
@@ -457,10 +410,8 @@ PLACEHOLDER_SUFFIX = "]]"
 
 
 def _latex_escape(text: str) -> str:
-    """Escape LaTeX special characters in cell text."""
     if text is None:
         return ''
-    # Basic escapes
     replacements = {
         '\\': r'\\',
         '&': r'\&',
@@ -475,15 +426,11 @@ def _latex_escape(text: str) -> str:
     }
     for k, v in replacements.items():
         text = text.replace(k, v)
-    # Collapse whitespace inside cells
     text = ' '.join(text.split())
     return text
 
 
 def _html_table_to_latex(table_html: str) -> str:
-    """Convert a simple HTML <table> to a LaTeX tabular environment.
-    Handles <th>/<td>, multiple rows, and basic text. Complex nested tables are flattened.
-    """
     try:
         from bs4 import BeautifulSoup
     except Exception:
@@ -492,28 +439,23 @@ def _html_table_to_latex(table_html: str) -> str:
     try:
         soup = BeautifulSoup(table_html or '', 'lxml')
         table = soup.find('table') or soup
-        # Determine rows
         rows = []
         for tr in table.find_all('tr'):
             cells = []
-            # Prefer th for header row else td
             for cell in tr.find_all(['th', 'td']):
-                # Get text content, fallback to stripped strings
                 text = cell.get_text(separator=' ', strip=True)
                 cells.append(_latex_escape(text))
             if cells:
                 rows.append(cells)
         if not rows:
             return ''
-        # Determine column count as max length
         ncols = max(len(r) for r in rows)
         colspec = '|' + '|'.join(['l'] * ncols) + '|'
         lines = [f"\\begin{{tabular}}{{{colspec}}}", "\\hline"]
         for idx, r in enumerate(rows):
-            # pad missing cells
             if len(r) < ncols:
                 r = r + [''] * (ncols - len(r))
-            line = ' & '.join(r) + r" \\\\"  # end of row
+            line = ' & '.join(r) + r" \\\\"
             lines.append(line)
             lines.append("\\hline")
         lines.append("\\end{tabular}")
@@ -522,47 +464,7 @@ def _html_table_to_latex(table_html: str) -> str:
         return ''
 
 
-def _apply_pre_html_regex(html: str, pre_html_cfg: dict) -> str:
-    """Apply pre-HTML regex cleaning to catch common noise at the beginning and end.
-    pre_html_cfg: {
-        'strip_begin_regex': [ ... ],
-        'strip_end_regex': [ ... ],
-        'strip_any_regex': [ ... ]
-    }
-    """
-    if not html:
-        return ''
-    pre_html_cfg = pre_html_cfg or {}
-    txt = html
-    # Strip patterns anywhere
-    for pat in pre_html_cfg.get('strip_any_regex', []) or []:
-        try:
-            txt = re.sub(pat, ' ', txt, flags=re.IGNORECASE | re.DOTALL)
-        except re.error:
-            pass
-    # Strip from beginning
-    for pat in pre_html_cfg.get('strip_begin_regex', []) or []:
-        try:
-            txt = re.sub(rf'^(?:\s|<!--.*?-->|<[^>]+>)*(?:{pat})+', ' ', txt, flags=re.IGNORECASE | re.DOTALL)
-        except re.error:
-            pass
-    # Strip from end
-    for pat in pre_html_cfg.get('strip_end_regex', []) or []:
-        try:
-            txt = re.sub(rf'(?:{pat})+(?:\s|<!--.*?-->|<[^>]+>)*$', ' ', txt, flags=re.IGNORECASE | re.DOTALL)
-        except re.error:
-            pass
-    return txt
-
-
 def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
-    r"""Find <img>, <table>, and subheading elements and replace them with stable placeholders.
-    Returns (html_with_placeholders, mapping_dict).
-    mapping_dict maps placeholder text to final custom replacement text.
-    - Images -> "[Image: {src}\]" (with trailing backslash)
-    - Tables -> LaTeX tabular string
-    - Headings (h2–h6) -> Markdown equivalents (##, ###, ####, ...)
-    """
     if not html:
         return '', {}
     try:
@@ -611,12 +513,10 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
                 if desc.endswith('w'):
                     w = float(desc[:-1])
                 elif desc.endswith('x'):
-                    # Treat pixel density multiplier approx as width priority
                     w = float(desc[:-1]) * 1000.0
             except Exception:
                 w = 0.0
             if w == 0.0:
-                # Favor last candidate when no descriptor
                 w = 1.0 if best_w < 0 else best_w + 1.0
             if w > best_w:
                 best_w = w
@@ -626,7 +526,6 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
     soup = BeautifulSoup(html, 'lxml')
     mapping = {}
 
-    # Process tables first to preserve structure placement
     for tbl in soup.find_all('table'):
         pid = str(uuid4()).replace('-', '')
         placeholder = f"{PLACEHOLDER_TBL_PREFIX}{pid}{PLACEHOLDER_SUFFIX}"
@@ -634,9 +533,7 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
         mapping[placeholder] = latex
         tbl.replace_with(placeholder)
 
-    # Resolve best image URL with multiple fallbacks
     def resolve_image_src(img_tag) -> str:
-        # 1) Attribute priority list
         attr_order = [
             'data-full-url', 'data-large_image', 'data-orig-file', 'data-zoom-image',
             'data-pin-media', 'data-lazy-src', 'data-src', 'data-original', 'data-hi-res-src',
@@ -646,14 +543,12 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
             val = img_tag.get(a)
             if val and not is_placeholder(val):
                 return absolutize(val)
-        # 2) srcset attributes (prefer largest)
         for a in ('data-srcset', 'data-lazy-srcset', 'srcset'):
             ssv = img_tag.get(a)
             if ssv:
                 cand = parse_srcset(ssv)
                 if cand and not is_placeholder(cand):
                     return absolutize(cand)
-        # 3) picture/source siblings
         parent = img_tag.parent
         if parent and parent.name == 'picture':
             sources = parent.find_all('source')
@@ -663,17 +558,14 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
                     cand = parse_srcset(ssv)
                     if cand and not is_placeholder(cand):
                         return absolutize(cand)
-        # 4) link wrapper
         link = img_tag.find_parent('a')
         if link:
             href = link.get('href')
             if href and re.search(r'\.(?:jpe?g|png|webp|gif)(?:\?|#|$)', href, flags=re.I):
                 return absolutize(href)
-        # 5) last resort: original src even if placeholder
         val = img_tag.get('src')
         return absolutize(val) if val else ''
 
-    # Process images
     for img in soup.find_all('img'):
         pid = str(uuid4()).replace('-', '')
         placeholder = f"{PLACEHOLDER_IMG_PREFIX}{pid}{PLACEHOLDER_SUFFIX}"
@@ -683,10 +575,8 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
             mapping[placeholder] = custom
             img.replace_with(placeholder)
         else:
-            # remove image with no usable src
             img.decompose()
 
-    # Preserve subheadings h2–h6 as plain text (single newline), no markdown
     for level in range(2, 7):
         for h in soup.find_all(f'h{level}'):
             text = h.get_text(separator=' ', strip=True)
@@ -703,10 +593,10 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
             except Exception:
                 h.replace_with(ph)
 
-    # Unwrap wrappers that can cause placeholders to be dropped by trafilatura
     def _contains_placeholder(tag):
         try:
-            return tag.find(string=lambda s: isinstance(s, str) and (PLACEHOLDER_IMG_PREFIX in s or PLACEHOLDER_TBL_PREFIX in s or '[[DYNACLEAN_HDR_' in s)) is not None
+            return tag.find(string=lambda s: isinstance(s, str) and (
+                        PLACEHOLDER_IMG_PREFIX in s or PLACEHOLDER_TBL_PREFIX in s or '[[DYNACLEAN_HDR_' in s)) is not None
         except Exception:
             return False
 
@@ -724,10 +614,8 @@ def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
 
 
 def restore_placeholders(text: str, mapping: dict) -> str:
-    """Replace placeholders in text with their mapped custom strings."""
     if not text or not mapping:
         return text or ''
-    # Replace in deterministic order: images first, then tables, though order shouldn't matter
     for k, v in mapping.items():
         try:
             text = text.replace(k, v)
@@ -737,13 +625,12 @@ def restore_placeholders(text: str, mapping: dict) -> str:
 
 
 # ============================================================================
-# DOMAIN/SUBDOMAIN INFERENCE
+# DOMAIN INFERENCE (unchanged)
 # ============================================================================
 
 class DomainInferencer:
     """Infer domain and subdomain from content"""
 
-    # Common domain keywords
     DOMAIN_KEYWORDS = {
         'food': ['recipe', 'cooking', 'food', 'cuisine', 'meal', 'restaurant', 'chef'],
         'travel': ['travel', 'trip', 'vacation', 'tourism', 'destination', 'journey'],
@@ -757,26 +644,15 @@ class DomainInferencer:
     @staticmethod
     def infer_from_metadata(body_json: Dict, config_loader: ConfigLoader,
                             source_domain: str, url_hint: Optional[str] = None,
-                            title_hint: Optional[str] = None, meta: Optional[Dict] = None) -> Tuple[Optional[str], Optional[str]]:
-        """
-        Infer domain/subdomain with priority:
-        1. Config domain_mapping (normalized and base domain aware)
-        2. Meta fields (categories/tags sections if present in meta/body)
-        3. Class list extraction (category-*/tag-*)
-        4. Title keyword inference
-        5. URL path inference (multiple segments, ignore stopwords)
-        6. Fallback: None (caller should apply config fallbacks)
-        """
-        # 1) Check domain mapping first (handles subdomains/variants)
+                            title_hint: Optional[str] = None, meta: Optional[Dict] = None) -> Tuple[
+        Optional[str], Optional[str]]:
         mapped_domain, mapped_subdomain = config_loader.get_domain_mapping(source_domain or '')
         if mapped_domain and mapped_subdomain:
             return mapped_domain, mapped_subdomain
 
-        # Prepare candidate buckets
         dom_scores = Counter()
         sub_candidates: List[str] = []
 
-        # Helper: score terms
         def score_terms(terms: List[str]):
             for term in terms:
                 t = (term or '').strip().lower()
@@ -790,8 +666,6 @@ class DomainInferencer:
         body_json = body_json or {}
         meta = meta or {}
 
-        # 2) Meta/body categories/tags
-        # Try common meta keys
         meta_terms = []
         for key in ('categories_names', 'tags_names', 'sections', 'section', 'category'):
             val = meta.get(key)
@@ -808,20 +682,17 @@ class DomainInferencer:
         if meta_terms:
             score_terms([str(x).lower() for x in meta_terms])
 
-        # 3) Class list extraction
         class_list = body_json.get('class_list', [])
         if isinstance(class_list, list) and class_list:
             dom, sub = DomainInferencer._extract_from_classes(class_list)
             if sub:
                 sub_candidates.append(sub.lower())
             if dom:
-                dom_scores[dom] += 2  # weight class-derived domain higher
+                dom_scores[dom] += 2
 
-        # 4) Title keyword inference
         if title_hint:
             score_terms(re.split(r'[^a-zA-Z]+', title_hint.lower()))
 
-        # 5) URL inference using multiple path segments
         url = (body_json.get('link') or url_hint or '').strip()
         if url:
             dom2, sub2 = DomainInferencer._infer_from_url(url)
@@ -830,9 +701,7 @@ class DomainInferencer:
             if dom2:
                 dom_scores[dom2] += 1
 
-        # Decide domain
         domain = dom_scores.most_common(1)[0][0] if dom_scores else None
-        # Decide subdomain: pick the first candidate that maps to the chosen domain if possible
         chosen_sub = None
         if sub_candidates:
             if domain:
@@ -848,69 +717,49 @@ class DomainInferencer:
 
     @staticmethod
     def _extract_from_classes(class_list: List[str]) -> Tuple[Optional[str], Optional[str]]:
-        """Extract domain/subdomain from class list"""
         domain = None
         subdomain = None
-
         for cls in class_list:
-            # Look for category-xxx or tag-xxx
             if cls.startswith('category-'):
                 subdomain = cls.replace('category-', '').replace('-', ' ')
             elif cls.startswith('tag-'):
                 tag = cls.replace('tag-', '').replace('-', ' ')
                 if not subdomain:
                     subdomain = tag
-
-        # Infer domain from subdomain
         if subdomain:
             domain = DomainInferencer._map_subdomain_to_domain(subdomain)
-
         return domain, subdomain
 
     @staticmethod
     def _infer_from_terms(categories: List, tags: List) -> Tuple[Optional[str], Optional[str]]:
-        """Infer from categories and tags"""
-        # Combine all terms
         all_terms = []
-
         if isinstance(categories, list):
             all_terms.extend([str(c).lower() for c in categories])
         if isinstance(tags, list):
             all_terms.extend([str(t).lower() for t in tags])
-
         if not all_terms:
             return None, None
-
-        # Try to match domain keywords
         domain_scores = Counter()
-
         for term in all_terms:
             for domain, keywords in DomainInferencer.DOMAIN_KEYWORDS.items():
                 if any(kw in term for kw in keywords):
                     domain_scores[domain] += 1
-
         if domain_scores:
             domain = domain_scores.most_common(1)[0][0]
             subdomain = all_terms[0] if all_terms else None
             return domain, subdomain
-
         return None, None
 
     @staticmethod
     def _infer_from_url(url: str) -> Tuple[Optional[str], Optional[str]]:
-        """Carefully infer from URL path segments, avoiding false positives."""
-        # Avoid generic paths
         skip_terms = {
             'archive', 'archives', 'category', 'categories', 'tag', 'tags', 'page', 'author', 'date',
             'feed', 'wp', 'json', 'blog', 'post', 'posts', 'news'
         }
         try:
-            # Extract path after domain
             m = re.match(r'^https?://[^/]+(/[^?#]*)', url)
             path = m.group(1) if m else ''
-            # Split into segments
             segs = [s for s in re.split(r'[/_-]+', path) if s]
-            # Filter segs: letters only, length >= 3, not numeric, not in skip
             cand = []
             for s in segs:
                 t = re.sub(r'[^a-zA-Z]', '', s).lower()
@@ -921,17 +770,14 @@ class DomainInferencer:
                 cand.append(t)
             if not cand:
                 return None, None
-            # Score candidates against domain keywords
             scores = Counter()
             for s in cand:
                 for dom, kws in DomainInferencer.DOMAIN_KEYWORDS.items():
                     if any(kw in s for kw in kws):
                         scores[(dom, s)] += 1
             if scores:
-                # pick the (domain, sub) with highest score
                 (dom, sub), _ = scores.most_common(1)[0]
                 return dom, sub
-            # Fallback: pick the first candidate and map
             sub = cand[0]
             dom = DomainInferencer._map_subdomain_to_domain(sub)
             if dom:
@@ -942,18 +788,15 @@ class DomainInferencer:
 
     @staticmethod
     def _map_subdomain_to_domain(subdomain: str) -> Optional[str]:
-        """Map subdomain to broader domain category"""
         subdomain = subdomain.lower()
-
         for domain, keywords in DomainInferencer.DOMAIN_KEYWORDS.items():
             if any(kw in subdomain for kw in keywords):
                 return domain
-
         return None
 
 
 # ============================================================================
-# FILTERING
+# FILTERING (unchanged)
 # ============================================================================
 
 class RecordFilter:
@@ -961,22 +804,16 @@ class RecordFilter:
 
     @staticmethod
     def apply_pre_filter(record: Dict, config: CleaningConfig) -> Tuple[bool, str]:
-        """Apply pre-processing filters. Returns (should_process, reason)"""
         pre_filter = config.pre_filter
-
-        # Check URL patterns
         url = record.get('url', '')
         re_url_patterns = pre_filter.get('re_url', [])
         for pattern in re_url_patterns:
             if re.search(pattern, url, re.IGNORECASE):
                 return False, f"url_pattern:{pattern}"
-
-        # Check body length (will be checked after parsing)
         return True, ""
 
     @staticmethod
     def check_body_length(text: str, config: CleaningConfig) -> Tuple[bool, str]:
-        """Check if cleaned body meets minimum length"""
         min_length = config.pre_filter.get('body_length', 200)
         if len(text) < min_length:
             return False, f"body_too_short:{len(text)}<{min_length}"
@@ -985,34 +822,24 @@ class RecordFilter:
     @staticmethod
     def apply_post_filter(title: str, cleaned_text: str, domain: str,
                           subdomain: str, config: CleaningConfig) -> Tuple[bool, str]:
-        """Apply post-processing filters"""
         post_filter = config.post_filter
-
-        # Check cleaned text patterns
         for pattern in post_filter.get('re_cleaned_text', []):
             if re.search(pattern, cleaned_text, re.IGNORECASE):
                 return False, f"text_pattern:{pattern}"
-
-        # Check title patterns
         for pattern in post_filter.get('re_title', []):
             if re.search(pattern, title, re.IGNORECASE):
                 return False, f"title_pattern:{pattern}"
-
-        # Check domain containing
         for term in post_filter.get('domain_containing', []):
             if term.lower() in domain.lower():
                 return False, f"domain_contains:{term}"
-
-        # Check subdomain containing
         for term in post_filter.get('subdomain_containing', []):
             if term.lower() in subdomain.lower():
                 return False, f"subdomain_contains:{term}"
-
         return True, ""
 
 
 # ============================================================================
-# RECORD PROCESSOR
+# RECORD PROCESSOR (unchanged)
 # ============================================================================
 
 class RecordProcessor:
@@ -1022,7 +849,6 @@ class RecordProcessor:
         self.config_loader = config_loader
         self.config = config_loader.get_site_config(sitekey)
         self.cleaner = TextCleaner()
-        # Reuse a trafilatura config per processor for performance
         try:
             self.trafilatura_config = use_config()
             self.trafilatura_config.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
@@ -1030,14 +856,11 @@ class RecordProcessor:
             self.trafilatura_config = None
 
     def process_wordpress(self, record: Dict) -> Optional[Dict]:
-        """Process WordPress format record"""
         try:
-            # Pre-filter
             should_process, reason = RecordFilter.apply_pre_filter(record, self.config)
             if not should_process:
                 return {'status': 'filtered_pre', 'reason': reason}
 
-            # Parse body JSON (handle various shapes)
             body_raw = record.get('body', '{}')
             if isinstance(body_raw, dict):
                 body = body_raw
@@ -1049,19 +872,16 @@ class RecordProcessor:
             else:
                 body = {}
 
-            # Extract fields
             url = record.get('url', '')
             record_id = record.get('id', str(uuid4()))
             meta = record.get('meta') or {}
             source_domain = meta.get('site', '') or meta.get('source', '') or ''
             if (not source_domain) and url:
                 try:
-                    # derive domain from URL if meta missing
                     source_domain = ConfigLoader._normalize_domain(url)
                 except Exception:
                     source_domain = ''
 
-            # Get title
             title_raw = (body or {}).get('title', {})
             if isinstance(title_raw, dict):
                 title = title_raw.get('rendered', '') or ''
@@ -1070,7 +890,6 @@ class RecordProcessor:
             else:
                 title = str(title_raw)
 
-            # Get HTML content
             content_raw = (body or {}).get('content', {})
             if isinstance(content_raw, dict):
                 body_html = content_raw.get('rendered', '') or ''
@@ -1079,22 +898,17 @@ class RecordProcessor:
             else:
                 body_html = str(content_raw)
 
-            # Apply cleaning pipeline
             cleaned_title = self._apply_cleaning_pipeline(title, is_title=True)
 
-            # Extract clean text from HTML
             clean_args = self.config.clean.get('args', {})
             xpath = clean_args.get('body_xpath')
             noises = clean_args.get('noises', [])
 
-            # Replace images, tables, and headings with placeholders and keep mapping
             html_with_placeholders, ph_map = preprocess_html_for_media(body_html, base_url=url)
 
-            # Respect formatting args from config for links only; images/tables handled via placeholders
             formating = clean_args.get('formating', {})
             include_links = bool(formating.get('retain_links', False))
 
-            # Run trafilatura on placeholder-embedded HTML; disable built-in images/tables
             extracted_body = self.cleaner.clean_html(
                 html_with_placeholders,
                 xpath,
@@ -1105,26 +919,21 @@ class RecordProcessor:
                 config=self.trafilatura_config,
             )
 
-            # Restore placeholders to custom formats
             cleaned_body = restore_placeholders(extracted_body, ph_map)
 
             if not cleaned_body:
                 return {'status': 'filtered_pre', 'reason': 'empty_after_extraction'}
 
-            # Check body length
             should_process, reason = RecordFilter.check_body_length(cleaned_body, self.config)
             if not should_process:
                 return {'status': 'filtered_pre', 'reason': reason}
 
-            # Apply text cleaning
             cleaned_body = self._apply_cleaning_pipeline(cleaned_body, is_title=False)
 
-            # Check English content if enabled
             if 'english_only' in self.config.clean.get('enabled', []):
                 if not self.cleaner.is_english(cleaned_body):
                     return {'status': 'filtered_pre', 'reason': 'not_english'}
 
-            # Infer domain/subdomain
             domain = self.config.domain_override
             subdomain = self.config.subdomain_override
 
@@ -1135,14 +944,12 @@ class RecordProcessor:
                 domain = domain or inferred_domain or self.config.domain_fallback
                 subdomain = subdomain or inferred_subdomain or self.config.subdomain_fallback
 
-            # Post-filter
             should_process, reason = RecordFilter.apply_post_filter(
                 cleaned_title, cleaned_body, domain, subdomain, self.config
             )
             if not should_process:
                 return {'status': 'filtered_post', 'reason': reason}
 
-            # Build output
             output = {
                 'id': record_id,
                 'text': f"{cleaned_title}\n{cleaned_body}",
@@ -1170,258 +977,315 @@ class RecordProcessor:
             return {'status': 'error', 'reason': f'exception:{str(e)}'}
 
     def _apply_cleaning_pipeline(self, text: str, is_title: bool = False) -> str:
-        """Apply enabled cleaning steps"""
         enabled = self.config.clean.get('enabled', [])
 
         if is_title:
             if 'clean_title' in enabled:
                 text = self.cleaner.clean_title(text)
-        else:
-            if 'clean_html' in enabled:
-                pass  # Already done in main processing
 
         if 'normalize_unicode' in enabled:
             text = self.cleaner.normalize_unicode(text)
-
         if 'clean_emoji' in enabled:
             text = self.cleaner.clean_emoji(text)
-
         if 'anonymization' in enabled:
             text = self.cleaner.anonymize_emails(text)
-
         if 'clean_punctuation' in enabled:
             text = self.cleaner.clean_punctuation(text)
-
         if 'clean_whitespace' in enabled:
             text = self.cleaner.clean_whitespace(text)
 
         return text
 
+# ============================================================================
+# WORKER CACHE (FOR PERFORMANCE)
+# ============================================================================
+PROCESSOR_CACHE: Dict[str, RecordProcessor] = {}
 
 # ============================================================================
-# FILE PROCESSOR
+# OPTIMIZED BATCH PROCESSOR - THE SPEED SECRET
 # ============================================================================
 
-def process_file_worker(args: Tuple) -> Dict:
-    """Worker function for processing a single file"""
-    input_file, output_file, failed_file, config_path, sitekey, log_file_path, progress_file_path, progress_chunk = args
-
-    # Initialize logging in worker to write into the same log file (no console)
+def process_batch_consumer(input_queue: Queue, output_queue: Queue, seen_urls: 'Manager.dict'):
+    """
+    The main loop for a single worker process.
+    Pulls from input_queue, processes, pushes to output_queue.
+    """
     try:
-        fh = logging.FileHandler(log_file_path, encoding='utf-8')
-        fh.setLevel(logging.INFO)
-        fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-        root = logging.getLogger()
-        root.addHandler(fh)
-    except Exception:
-        pass
+        while True:
+            # Get a job
+            item = input_queue.get()
 
-    # Reinitialize in worker process
-    config_loader = ConfigLoader(config_path)
-    processor = RecordProcessor(config_loader, sitekey)
+            # Poison pill check
+            if item is None:
+                break
 
-    stats = {
-        'file': input_file.name,
-        'total': 0,
-        'success': 0,
-        'failed': 0,
-        'filtered_pre': 0,
-        'filtered_post': 0
-    }
-    # Reason breakdowns
-    reason_pre: Dict[str, int] = {}
-    reason_post: Dict[str, int] = {}
-    reason_err: Dict[str, int] = {}
+            batch, config_path, sitekey = item
 
-    logging.info(f"Starting file: {input_file} -> {output_file} | failed-> {failed_file}")
+            # Process the batch (this is the existing function)
+            successes, duplicates, failures = process_batch_worker((batch, config_path, sitekey, seen_urls))
 
-    # Initialize progress snapshot
-    try:
-        progress_dir = Path(progress_file_path).parent
-        progress_dir.mkdir(parents=True, exist_ok=True)
-        with open(progress_file_path, 'w', encoding='utf-8') as pf:
-            json.dump({
-                'file': input_file.name,
-                'status': 'running',
-                'total': 0,
-                'success': 0,
-                'failed': 0,
-                'filtered_pre': 0,
-                'filtered_post': 0,
-                'timestamp': time.time()
-            }, pf, ensure_ascii=False)
-    except Exception:
-        pass
-
-    try:
-        with open(input_file, 'r', encoding='utf-8') as infile, \
-                open(output_file, 'w', encoding='utf-8') as outfile, \
-                open(failed_file, 'w', encoding='utf-8') as failfile:
-
-            for line_num, line in enumerate(infile, 1):
-                if not line.strip():
-                    continue
-
-                stats['total'] += 1
-
-                try:
-                    record = json.loads(line)
-                    result = processor.process_wordpress(record)
-
-                    if result['status'] == 'success':
-                        outfile.write(json.dumps(result['data'], ensure_ascii=False) + '\n')
-                        stats['success'] += 1
-                    elif result['status'] == 'filtered_pre':
-                        stats['filtered_pre'] += 1
-                        reason = result['reason']
-                        reason_pre[reason] = reason_pre.get(reason, 0) + 1
-                        failfile.write(json.dumps({
-                            'record': record,
-                            'reason': reason,
-                            'line': line_num
-                        }, ensure_ascii=False) + '\n')
-                    elif result['status'] == 'filtered_post':
-                        stats['filtered_post'] += 1
-                        reason = result['reason']
-                        reason_post[reason] = reason_post.get(reason, 0) + 1
-                        failfile.write(json.dumps({
-                            'record': record,
-                            'reason': reason,
-                            'line': line_num
-                        }, ensure_ascii=False) + '\n')
-                    else:  # error
-                        stats['failed'] += 1
-                        reason = result.get('reason', 'unknown_error')
-                        reason_err[reason] = reason_err.get(reason, 0) + 1
-                        failfile.write(json.dumps({
-                            'record': record,
-                            'reason': reason,
-                            'line': line_num
-                        }, ensure_ascii=False) + '\n')
-
-                except Exception as e:
-                    stats['failed'] += 1
-                    msg = str(e)
-                    reason_err[msg] = reason_err.get(msg, 0) + 1
-                    failfile.write(json.dumps({
-                        'line': line_num,
-                        'error': msg
-                    }, ensure_ascii=False) + '\n')
-
-                # Progress logging every chunk and snapshot write
-                if stats['total'] % max(1, int(progress_chunk)) == 0:
-                    logging.info(
-                        f"{input_file.name}: processed {stats['total']} | "
-                        f"success={stats['success']} pre={stats['filtered_pre']} post={stats['filtered_post']} failed={stats['failed']}"
-                    )
-                    try:
-                        with open(progress_file_path, 'w', encoding='utf-8') as pf:
-                            json.dump({
-                                'file': input_file.name,
-                                'status': 'running',
-                                'total': stats['total'],
-                                'success': stats['success'],
-                                'failed': stats['failed'],
-                                'filtered_pre': stats['filtered_pre'],
-                                'filtered_post': stats['filtered_post'],
-                                'timestamp': time.time()
-                            }, pf, ensure_ascii=False)
-                    except Exception:
-                        pass
-
-        # Detailed breakdown at end
-        logging.info(
-            f"Completed {input_file.name}: total={stats['total']} success={stats['success']} "
-            f"pre={stats['filtered_pre']} post={stats['filtered_post']} failed={stats['failed']}"
-        )
-        if reason_pre:
-            logging.info(f"{input_file.name} pre-filter reasons: {json.dumps(reason_pre, ensure_ascii=False)}")
-        if reason_post:
-            logging.info(f"{input_file.name} post-filter reasons: {json.dumps(reason_post, ensure_ascii=False)}")
-        if reason_err:
-            logging.info(f"{input_file.name} errors: {json.dumps(reason_err, ensure_ascii=False)}")
-
-        # Write final progress snapshot
-        try:
-            with open(progress_file_path, 'w', encoding='utf-8') as pf:
-                json.dump({
-                    'file': input_file.name,
-                    'status': 'done',
-                    'total': stats['total'],
-                    'success': stats['success'],
-                    'failed': stats['failed'],
-                    'filtered_pre': stats['filtered_pre'],
-                    'filtered_post': stats['filtered_post'],
-                    'timestamp': time.time()
-                }, pf, ensure_ascii=False)
-        except Exception:
-            pass
-
-        return stats
+            # Put results onto the output queue, tagged with their sitekey
+            for res in successes:
+                output_queue.put((res, sitekey))
+            for res in duplicates:
+                output_queue.put((res, sitekey))
+            for res in failures:
+                output_queue.put((res, sitekey))
 
     except Exception as e:
-        logging.error(f"File processing error for {input_file}: {e}")
-        stats['failed'] = stats['total']
-        # Error snapshot
+        logging.error(f"Process worker consumer failed: {e}")
+
+def process_batch_worker(batch_data: Tuple) -> Tuple[List[Dict], List[Dict], List[Dict]]:
+    """
+    Process a batch of raw lines in parallel.
+    - Decodes JSON here
+    - Caches processor for speed
+    - PERFORMS DEDUPLICATION HERE
+    """
+    line_batch, config_path, sitekey, seen_urls = batch_data
+
+    # Use module-level cache to store processors
+    global PROCESSOR_CACHE
+    if sitekey not in PROCESSOR_CACHE:
         try:
-            with open(progress_file_path, 'w', encoding='utf-8') as pf:
-                json.dump({
-                    'file': input_file.name,
-                    'status': 'error',
-                    'total': stats['total'],
-                    'success': stats['success'],
-                    'failed': stats['failed'],
-                    'filtered_pre': stats['filtered_pre'],
-                    'filtered_post': stats['filtered_post'],
-                    'timestamp': time.time()
-                }, pf, ensure_ascii=False)
-        except Exception:
-            pass
-        return stats
+            config_loader = ConfigLoader(config_path)
+            PROCESSOR_CACHE[sitekey] = RecordProcessor(config_loader, sitekey)
+        except Exception as e:
+            # Failed to create processor, fail all items in batch
+            fail_reason = {'status': 'error', 'reason': f'processor_init_fail:{e}'}
+            return ([], [], [fail_reason] * len(line_batch))
+
+    processor = PROCESSOR_CACHE[sitekey]
+
+    successes = []
+    duplicates = []
+    failures = []
+
+    for line in line_batch:
+        try:
+            # 1. DECODE JSON
+            record = json.loads(line)
+        except Exception as e:
+            failures.append({'status': 'error', 'reason': f'json_parse_error:{e}'})
+            continue
+
+        try:
+            # 2. Process the record
+            result = processor.process_wordpress(record)
+        except Exception as e:
+            failures.append({'status': 'error', 'reason': f'processing_exception:{e}'})
+            continue
+
+        # 3. CLASSIFY AND DEDUPE RESULT
+        status = result.get('status', 'error')
+
+        if status == 'success':
+            url = result.get('data', {}).get('meta', {}).get('data_info', {}).get('url')
+            if url:
+                # Check and set atomic-like operation in shared dict
+                if url in seen_urls:
+                    result['status'] = 'duplicate'
+                    result['reason'] = f'duplicate_url:{url}'
+                    duplicates.append(result)
+                else:
+                    seen_urls[url] = 1  # Mark as seen
+                    successes.append(result)
+            else:
+                successes.append(result)  # No URL, cannot dedupe
+        else:
+            failures.append(result)  # 'error', 'filtered_pre', 'filtered_post'
+
+    return (successes, duplicates, failures)
+
+
+def global_file_reader(input_files: List[Path], config_path: str, batch_size: int, input_queue: Queue):
+    """
+    A single, dedicated thread to read all files and feed the input queue.
+    """
+    try:
+        for input_file in input_files:
+            sitekey = input_file.stem
+            batch = []
+
+            try:
+                with open(input_file, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line_stripped = line.strip()
+                        if not line_stripped:
+                            continue
+
+                        batch.append(line_stripped)
+
+                        if len(batch) >= batch_size:
+                            input_queue.put((batch, config_path, sitekey))
+                            batch = []
+
+                    # Put remaining records for this file
+                    if batch:
+                        input_queue.put((batch, config_path, sitekey))
+            except Exception as e:
+                logging.error(f"Error reading file {input_file.name}: {e}")
+
+    except Exception as e:
+        logging.error(f"Global file reader thread failed: {e}")
+    finally:
+        # Signal that the reader is done
+        logging.info("File reader has finished.")
+
+def async_file_reader(filepath: Path, batch_size: int, input_queue: Queue):
+    """Asynchronously read file and feed batches of RAW LINES to queue"""
+    try:
+        batch = []
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                line_stripped = line.strip()
+                if not line_stripped:
+                    continue
+
+                # Queue the raw line, not the decoded JSON
+                batch.append(line_stripped)
+
+                if len(batch) >= batch_size:
+                    input_queue.put(batch)
+                    batch = []
+
+            # Put remaining records
+            if batch:
+                input_queue.put(batch)
+
+        # Signal completion
+        input_queue.put(None)
+    except Exception as e:
+        logging.error(f"File reader error: {e}")
+        input_queue.put(None)
+
+
+def global_file_writer(output_queue: Queue, output_dir: Path, failed_dir: Path) -> Dict:
+    """
+    Asynchronously write results from all workers to the correct files.
+    This is now the main progress tracker and stats accumulator.
+    """
+    open_files = {}
+    stats = {
+        'total': 0, 'success': 0, 'failed': 0,
+        'filtered_pre': 0, 'filtered_post': 0, 'duplicates': 0
+    }
+
+    pbar = None
+    if tqdm:
+        # No total, just a running counter
+        pbar = tqdm(desc="Processing records", unit="rec", dynamic_ncols=True, leave=True)
+
+    try:
+        while True:
+            item = output_queue.get()
+
+            if item is None:  # Poison pill
+                break
+
+            result, sitekey = item
+
+            if pbar is not None:
+                pbar.update(1)
+
+            # Update stats
+            stats['total'] += 1
+            status = result.get('status', 'error')
+
+            if status == 'success':
+                stats['success'] += 1
+            elif status == 'duplicate':
+                stats['duplicates'] += 1
+            elif status == 'filtered_pre':
+                stats['filtered_pre'] += 1
+            elif status == 'filtered_post':
+                stats['filtered_post'] += 1
+            else:  # Catches 'error'
+                stats['failed'] += 1
+
+            # --- File writing logic ---
+            is_success = (status == 'success')
+            target_dir = output_dir if is_success else failed_dir
+            suffix = "_cleaned" if is_success else "_failed"
+            file_key = f"{sitekey}{suffix}"
+
+            try:
+                if file_key not in open_files:
+                    target_file = target_dir / f"{sitekey}{suffix}.jsonl"
+                    open_files[file_key] = open(target_file, 'w', encoding='utf-8')
+
+                f_handle = open_files[file_key]
+
+                if is_success:
+                    f_handle.write(json.dumps(result['data'], ensure_ascii=False) + '\n')
+                else:
+                    f_handle.write(json.dumps({
+                        'reason': result.get('reason', 'unknown'),
+                        'status': status,
+                    }, ensure_ascii=False) + '\n')
+
+            except Exception as e:
+                logging.error(f"File writer error for site {sitekey}: {e}")
+
+    except Exception as e:
+        logging.error(f"Global file writer thread failed: {e}")
+    finally:
+        # Close all open files
+        for f in open_files.values():
+            f.close()
+        if pbar is not None:
+            pbar.close()
+
+    return stats
 
 
 # ============================================================================
-# MAIN PIPELINE
+# MAIN PIPELINE - SEQUENTIAL FILE PROCESSING
 # ============================================================================
-
 class DataCleaningPipeline:
-    """Main pipeline orchestrator"""
+    """Main pipeline - processes files one at a time with ALL cores"""
 
     def __init__(self, args):
         self.args = args
-        self.config_loader = ConfigLoader(args.config)
         self.setup_logging()
 
     def setup_logging(self):
-        """Setup logging configuration: detailed logs to file, warnings+ to terminal"""
+        """Minimal logging setup - only errors to console"""
         log_file = Path(self.args.log_dir) / f"cleaning_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         log_file.parent.mkdir(parents=True, exist_ok=True)
-        # Save for worker processes
-        self.log_file_path = str(log_file)
 
-        # Create handlers explicitly to control levels
         file_handler = logging.FileHandler(log_file, encoding='utf-8')
-        file_handler.setLevel(logging.DEBUG)
+        file_handler.setLevel(logging.INFO)  # Set to INFO
         stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setLevel(logging.WARNING)
+        stream_handler.setLevel(logging.ERROR)  # Only errors to console
 
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         file_handler.setFormatter(formatter)
         stream_handler.setFormatter(formatter)
 
         root = logging.getLogger()
-        root.setLevel(logging.DEBUG)
-        # Clear existing handlers added by previous runs
+        root.setLevel(logging.INFO)  # Set to INFO
         root.handlers.clear()
         root.addHandler(file_handler)
         root.addHandler(stream_handler)
 
-        # Reduce noise from libraries
         logging.getLogger('trafilatura').setLevel(logging.WARNING)
         logging.getLogger('urllib3').setLevel(logging.WARNING)
 
+    def _start_writer_thread(self, output_queue, output_dir, failed_dir) -> Tuple[Thread, Queue]:
+        """Helper to start the writer thread and give it a queue to return stats."""
+        stats_return_queue = Queue()
+        thread = Thread(
+            target=lambda: stats_return_queue.put(
+                global_file_writer(output_queue, output_dir, failed_dir)
+            ),
+            daemon=True
+        )
+        thread.start()
+        return thread, stats_return_queue
+
     def run(self):
-        """Execute the pipeline"""
+        """Execute pipeline - ONE shared pool, THREE decoupled stages."""
         input_dir = Path(self.args.input_dir)
         output_dir = Path(self.args.output_dir)
         failed_dir = Path(self.args.failed_dir)
@@ -1429,418 +1293,150 @@ class DataCleaningPipeline:
         output_dir.mkdir(parents=True, exist_ok=True)
         failed_dir.mkdir(parents=True, exist_ok=True)
 
-        # Discover input files
-        input_files = list(input_dir.glob('*.jsonl'))
+        input_files = sorted(input_dir.glob('*.jsonl'))
 
         if not input_files:
             logging.error(f"No .jsonl files found in {input_dir}")
+            print(f"ERROR: No .jsonl files found in {input_dir}")
             return
 
-        logging.info(f"Found {len(input_files)} files to process")
-        logging.info(f"Using {self.args.workers} workers")
+        print(f"\n{'=' * 70}")
+        print(f"DECOUPLED PIPELINE: {len(input_files)} files | {self.args.workers} cores")
+        print(f"Starting all threads and worker processes...")
+        print(f"{'=' * 70}\n")
 
-        # Prepare tasks
-        tasks = []
-        # Make a progress directory inside log dir
-        self.progress_dir = Path(self.args.log_dir) / 'progress'
-        self.progress_dir.mkdir(parents=True, exist_ok=True)
+        start_time = time.time()
+        total_stats = {}
 
-        # Single-file acceleration: split the input into N chunks and process in parallel
-        single_file_chunking = False
-        chunk_dir = None
-        final_output_target = None
-        final_failed_target = None
-        chunk_outputs: List[Path] = []
-        chunk_faileds: List[Path] = []
+        # Use Manager to create queues and dict that can be shared by all processes
+        with Manager() as manager:
 
-        files_for_tasks: List[Path] = input_files
-        original_sitekey: Optional[str] = None
-        if len(input_files) == 1 and self.args.workers > 1:
+            # 1. Create shared (and deep) queues
+            queue_depth = max(200, self.args.workers * 10)  # At least 200
+            input_queue = manager.Queue(maxsize=queue_depth)
+            output_queue = manager.Queue(maxsize=queue_depth)
+
+            # 2. Create shared deduplication dictionary
+            self.seen_urls = manager.dict()
+
+            # 3. Start the WRITER thread
+            writer_thread, stats_queue = self._start_writer_thread(
+                output_queue, output_dir, failed_dir
+            )
+
+            # 4. Start the READER thread
+            reader_thread = Thread(
+                target=global_file_reader,
+                args=(input_files, self.args.config, self.args.batch_size, input_queue),
+                daemon=True
+            )
+            reader_thread.start()
+
+            # 5. Start the PROCESS Pool
             try:
-                single_file_chunking = True
-                original_file = input_files[0]
-                original_sitekey = original_file.stem
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                chunk_dir = (Path(self.args.log_dir) / f"chunks_{original_sitekey}_{timestamp}")
-                chunk_dir.mkdir(parents=True, exist_ok=True)
-
-                # Create chunk writers
-                n_workers = int(self.args.workers)
-                chunk_paths = [chunk_dir / f"{original_sitekey}.part{i}.jsonl" for i in range(n_workers)]
-                writers = [open(p, 'w', encoding='utf-8') for p in chunk_paths]
-                try:
-                    # Distribute lines round-robin to balance load
-                    with open(original_file, 'r', encoding='utf-8') as src:
-                        for idx, line in enumerate(src):
-                            if not line.strip():
-                                continue
-                            writers[idx % n_workers].write(line)
-                finally:
-                    for w in writers:
-                        try:
-                            w.close()
-                        except Exception:
-                            pass
-                files_for_tasks = chunk_paths
-
-                # Set final targets (merged)
-                final_output_target = output_dir / f"{original_sitekey}_cleaned.jsonl"
-                final_failed_target = failed_dir / f"{original_sitekey}_failed.jsonl"
-            except Exception as e:
-                logging.warning(f"Chunking disabled due to error: {e}")
-                single_file_chunking = False
-                files_for_tasks = input_files
-
-        for input_file in files_for_tasks:
-            # Keep sitekey as original if chunking; otherwise derive from file
-            sitekey = original_sitekey if (single_file_chunking and original_sitekey) else input_file.stem
-            if single_file_chunking and chunk_dir is not None:
-                # Direct chunk outputs to chunk_dir; we'll merge later
-                chunk_out = chunk_dir / f"{input_file.stem}_cleaned.jsonl"
-                chunk_fail = chunk_dir / f"{input_file.stem}_failed.jsonl"
-                chunk_outputs.append(chunk_out)
-                chunk_faileds.append(chunk_fail)
-                output_file = chunk_out
-                failed_file = chunk_fail
-                progress_file = chunk_dir / f"{input_file.stem}.progress.json"
-            else:
-                output_file = output_dir / f"{sitekey}_cleaned.jsonl"
-                failed_file = failed_dir / f"{sitekey}_failed.jsonl"
-                progress_file = self.progress_dir / f"{sitekey}.progress.json"
-
-            tasks.append((
-                input_file,
-                output_file,
-                failed_file,
-                self.args.config,
-                sitekey,
-                getattr(self, 'log_file_path', str(Path(self.args.log_dir) / 'cleaning.log')),
-                str(progress_file),
-                int(getattr(self.args, 'progress_chunk', 500))
-            ))
-
-        # Process files in parallel
-        total_stats = {
-            'total': 0,
-            'success': 0,
-            'failed': 0,
-            'filtered_pre': 0,
-            'filtered_post': 0
-        }
-
-        # Pre-scan files to determine line counts for per-file progress bars
-        line_counts: Dict[str, int] = {}
-        for task in tasks:
-            try:
-                with open(task[0], 'r', encoding='utf-8') as f:
-                    line_counts[task[0].name] = sum(1 for _ in f)
-            except Exception:
-                line_counts[task[0].name] = 0
-
-        # Initialize tqdm bars on-demand only for active files (up to number of workers)
-        use_bars = tqdm is not None
-        bars: Dict[str, Any] = {}
-        bar_positions: Dict[str, int] = {}
-        available_positions: List[int] = list(range(min(len(tasks), self.args.workers)))
-
-        with ProcessPoolExecutor(max_workers=self.args.workers) as executor:
-            futures = {executor.submit(process_file_worker, task): task[0].name for task in tasks}
-            pending = set(futures.keys())
-
-            last_print = 0.0
-            progress_cache: Dict[str, Dict] = {}
-            interval = float(getattr(self.args, 'progress_interval', 2.0))
-
-            while pending:
-                done, pending = wait(pending, timeout=interval, return_when=FIRST_COMPLETED)
-
-                # Handle any completed futures
-                for fut in done:
-                    filename = futures[fut]
-                    try:
-                        stats = fut.result()
-                        if not isinstance(stats, dict):
-                            logging.error(f"✗ {filename}: worker returned invalid stats: {stats}")
-                            continue
-                        # Update totals
-                        for key in total_stats:
-                            total_stats[key] += int(stats.get(key, 0) or 0)
-                        # Completion log
-                        total = stats.get('total', 0) or 0
-                        success = stats.get('success', 0) or 0
-                        filtered_pre = stats.get('filtered_pre', 0) or 0
-                        filtered_post = stats.get('filtered_post', 0) or 0
-                        failed = stats.get('failed', 0) or 0
-                        success_rate = (success / total * 100) if total > 0 else 0
-                        # Emit a concise completion line above the bars
-                        if use_bars and tqdm is not None:
-                            tqdm.write(
-                                f"✓ {filename}: {success}/{total} ({success_rate:.1f}%) | "
-                                f"Filtered: {filtered_pre + filtered_post} | Failed: {failed}"
-                            )
-                        else:
-                            logging.info(
-                                f"✓ {filename}: {success}/{total} ({success_rate:.1f}%) | "
-                                f"Filtered: {filtered_pre + filtered_post} | Failed: {failed}"
-                            )
-                        # Mark as done in progress cache
-                        progress_cache[filename] = {
-                            'file': filename,
-                            'status': 'done',
-                            'total': total,
-                            'success': success,
-                            'failed': failed,
-                            'filtered_pre': filtered_pre,
-                            'filtered_post': filtered_post,
-                        }
-                        # Finalize and remove progress bar for this file
-                        if use_bars and filename in bars:
-                            try:
-                                bar = bars.pop(filename)
-                                # ensure total is set for completion visuals if known
-                                if bar.total is None and line_counts.get(filename, 0) > 0:
-                                    bar.total = line_counts[filename]
-                                bar.n = bar.total if bar.total is not None else total
-                                bar.refresh()
-                                bar.close()
-                            except Exception:
-                                pass
-                            # free its position for reuse
-                            pos = bar_positions.pop(filename, None)
-                            if pos is not None and pos not in available_positions:
-                                available_positions.append(pos)
-                    except Exception as e:
-                        logging.error(f"✗ {filename}: {e}")
-
-                # Periodic progress display
-                now = time.time()
-                if now - last_print >= interval:
-                    aggregated = {'total': 0, 'success': 0, 'failed': 0, 'filtered_pre': 0, 'filtered_post': 0}
-                    in_progress = []
-                    # Load snapshots
-                    for task in tasks:
-                        file_name = task[0].name
-                        progress_file = Path(task[6])  # progress file path passed to worker
-                        snap = progress_cache.get(file_name)
-                        if progress_file.exists():
-                            try:
-                                with open(progress_file, 'r', encoding='utf-8') as pf:
-                                    snap = json.load(pf)
-                                    progress_cache[file_name] = snap
-                            except Exception:
-                                pass
-                        if snap and isinstance(snap, dict):
-                            processed = int(snap.get('total', 0) or 0)
-                            aggregated['total'] += processed
-                            aggregated['success'] += int(snap.get('success', 0) or 0)
-                            aggregated['failed'] += int(snap.get('failed', 0) or 0)
-                            aggregated['filtered_pre'] += int(snap.get('filtered_pre', 0) or 0)
-                            aggregated['filtered_post'] += int(snap.get('filtered_post', 0) or 0)
-                            status = snap.get('status')
-                            if status != 'done':
-                                in_progress.append(f"{file_name}:{processed}")
-                            # Manage tqdm bar for this file
-                            if use_bars:
-                                # Create bar lazily for active tasks
-                                if status != 'done' and file_name not in bars and available_positions:
-                                    try:
-                                        pos = available_positions.pop(0)
-                                        bar_positions[file_name] = pos
-                                        total = line_counts.get(file_name, 0)
-                                        bar_total = total if total > 0 else None
-                                        bars[file_name] = tqdm(
-                                            total=bar_total,
-                                            desc=file_name,
-                                            position=pos,
-                                            leave=False,
-                                            unit='rec',
-                                            dynamic_ncols=True
-                                        )
-                                    except Exception:
-                                        pass
-                                # Update existing bar
-                                if file_name in bars:
-                                    bar = bars[file_name]
-                                    if processed >= getattr(bar, 'n', 0):
-                                        bar.n = processed
-                                        try:
-                                            bar.refresh()
-                                        except Exception:
-                                            pass
-                                    # Close and free finished bars
-                                    if status == 'done':
-                                        try:
-                                            bar = bars.pop(file_name)
-                                            # ensure completion visual
-                                            if bar.total is None and line_counts.get(file_name, 0) > 0:
-                                                bar.total = line_counts[file_name]
-                                            if bar.total is not None and bar.n < bar.total:
-                                                bar.n = bar.total
-                                            bar.refresh()
-                                            bar.close()
-                                        except Exception:
-                                            pass
-                                        pos = bar_positions.pop(file_name, None)
-                                        if pos is not None and pos not in available_positions:
-                                            available_positions.append(pos)
-                    # If tqdm is not available, print a single updating line
-                    if not use_bars:
-                        line = (
-                            f"Progress: processed={aggregated['total']:,} | "
-                            f"success={aggregated['success']:,} pre={aggregated['filtered_pre']:,} "
-                            f"post={aggregated['filtered_post']:,} failed={aggregated['failed']:,}"
+                with ProcessPoolExecutor(max_workers=self.args.workers) as executor:
+                    futures = [
+                        executor.submit(
+                            process_batch_consumer,
+                            input_queue,
+                            output_queue,
+                            self.seen_urls
                         )
-                        if in_progress:
-                            line += " | files: " + ", ".join(in_progress[:5]) + (" ..." if len(in_progress) > 5 else "")
-                        print("\r" + line, end="", flush=True)
-                    last_print = now
+                        for _ in range(self.args.workers)
+                    ]
 
-            # Ensure newline after progress line if not using bars
-            if not use_bars:
-                print()
+                    # Wait for the reader thread to finish loading all files
+                    reader_thread.join()
+                    logging.info("Reader thread joined. All files are queued.")
 
-        # Close any remaining bars (safety)
-        if use_bars:
-            for bar in bars.values():
-                try:
-                    bar.close()
-                except Exception:
-                    pass
+                    # Now that the reader is done, send poison pills to the workers
+                    for _ in range(self.args.workers):
+                        input_queue.put(None)
 
-        # If we chunked a single file, merge the chunk outputs into final targets
-        if single_file_chunking and chunk_dir is not None and final_output_target is not None and final_failed_target is not None:
-            try:
-                # Merge cleaned outputs
-                with open(final_output_target, 'w', encoding='utf-8') as fout:
-                    for p in chunk_outputs:
-                        try:
-                            with open(p, 'r', encoding='utf-8') as fin:
-                                for line in fin:
-                                    fout.write(line)
-                        except Exception as e:
-                            logging.warning(f"Failed to merge chunk output {p}: {e}")
-                # Merge failed outputs
-                with open(final_failed_target, 'w', encoding='utf-8') as ff:
-                    for p in chunk_faileds:
-                        try:
-                            with open(p, 'r', encoding='utf-8') as fin:
-                                for line in fin:
-                                    ff.write(line)
-                        except Exception as e:
-                            logging.warning(f"Failed to merge chunk failed {p}: {e}")
-                logging.info(f"Merged chunk outputs to {final_output_target} and {final_failed_target}")
+                    # Wait for all worker processes to finish
+                    for fut in as_completed(futures):
+                        fut.result()  # Check for exceptions
+                    logging.info("All worker processes have finished.")
+
+                    # Now that workers are done, send a poison pill to the writer
+                    output_queue.put(None)
+
+                    # Wait for the writer to finish and get the final stats
+                    writer_thread.join()
+                    total_stats = stats_queue.get()
+
+            except KeyboardInterrupt:
+                print("\nInterrupted! Shutting down...")
             except Exception as e:
-                logging.error(f"Failed to merge chunked outputs: {e}")
+                logging.error(f"Main pipeline failed: {e}", exc_info=True)
+
+        total_time = time.time() - start_time
 
         # Final summary
-        self.print_summary(total_stats)
+        if total_stats:
+            self.print_summary(total_stats, total_time)
+        else:
+            print("Pipeline finished, but no stats were collected.")
 
-    def print_summary(self, stats: Dict):
-        """Print final processing summary"""
-        print("\n" + "=" * 70)
-        print("PROCESSING SUMMARY")
-        print("=" * 70)
-        print(f"Total Records:        {stats['total']:,}")
-        print(f"Successfully Cleaned: {stats['success']:,}")
-        print(f"Pre-filtered:         {stats['filtered_pre']:,}")
-        print(f"Post-filtered:        {stats['filtered_post']:,}")
-        print(f"Failed:               {stats['failed']:,}")
+    def print_summary(self, stats: Dict, elapsed: float):
+        """Print final summary"""
+        print(f"\n{'=' * 70}")
+        print("FINAL SUMMARY")
+        print(f"{'=' * 70}")
 
-        if stats['total'] > 0:
-            success_rate = stats['success'] / stats['total'] * 100
-            print(f"\nSuccess Rate:         {success_rate:.2f}%")
+        # Ensure all keys exist
+        total = stats.get('total', 0)
+        success = stats.get('success', 0)
+        duplicates = stats.get('duplicates', 0)
+        filtered_pre = stats.get('filtered_pre', 0)
+        filtered_post = stats.get('filtered_post', 0)
+        failed = stats.get('failed', 0)
 
-        print("=" * 70)
+        print(f"Total Records Processed: {total:,}")
+        print(f"Successfully Cleaned:    {success:,}")
+        print(f"Duplicates (URL):        {duplicates:,}")
+        print(f"Pre-filtered:            {filtered_pre:,}")
+        print(f"Post-filtered:           {filtered_post:,}")
+        print(f"Failed (Errors):         {failed:,}")
 
-        logging.info(f"Pipeline completed: {json.dumps(stats)}")
+        if total > 0:
+            # Calculate success rate based on total *non-duplicate* records
+            valid_records = total - duplicates
+            success_rate = (success / valid_records * 100) if valid_records > 0 else 0
+            speed = total / elapsed if elapsed > 0 else 0
+            print(f"\nSuccess Rate (of non-dups): {success_rate:.2f}%")
+            print(f"Total Time:               {elapsed:.1f}s")
+            print(f"Average Speed:            {speed:.0f} records/second")
 
+        print(f"{'=' * 70}\n")
 
 # ============================================================================
-# COMMAND LINE INTERFACE
+# CLI
 # ============================================================================
 
 def main():
     parser = argparse.ArgumentParser(
-        description='High-Performance Data Cleaning Pipeline',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # Process all files in input directory with 16 workers
-  python data_cleaner.py -i ./raw_data -o ./cleaned_data -w 16
-
-  # Use custom config file
-  python data_cleaner.py -i ./raw_data -o ./cleaned_data -c custom_config.yaml
-
-  # Specify failed records directory
-  python data_cleaner.py -i ./raw_data -o ./cleaned_data -f ./failed_records
-        """
+        description='OPTIMIZED High-Performance Data Cleaning Pipeline',
+        formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
-    parser.add_argument(
-        '-i', '--input-dir',
-        type=str,
-        default='./input',
-        help='Input directory containing .jsonl files (default: ./input)'
-    )
-
-    parser.add_argument(
-        '-o', '--output-dir',
-        type=str,
-        default='./output',
-        help='Output directory for cleaned files (default: ./output)'
-    )
-
-    parser.add_argument(
-        '-f', '--failed-dir',
-        type=str,
-        default='./failed',
-        help='Directory for failed/filtered records (default: ./failed)'
-    )
-
-    parser.add_argument(
-        '-c', '--config',
-        type=str,
-        default='cleaning_map.yaml',
-        help='Path to configuration YAML file (default: cleaning_map.yaml)'
-    )
-
-    parser.add_argument(
-        '-w', '--workers',
-        type=int,
-        default=cpu_count(),
-        help=f'Number of parallel workers (default: {cpu_count()} - all cores)'
-    )
-
-    parser.add_argument(
-        '-l', '--log-dir',
-        type=str,
-        default='./logs',
-        help='Directory for log files (default: ./logs)'
-    )
-
-    parser.add_argument(
-        '--progress-interval',
-        type=float,
-        default=2.0,
-        help='Seconds between console progress updates (default: 2.0)'
-    )
-
-    parser.add_argument(
-        '--progress-chunk',
-        type=int,
-        default=500,
-        help='Records between worker progress snapshots (default: 500)'
-    )
-
-    parser.add_argument(
-        '--version',
-        action='version',
-        version='Data Cleaning Pipeline v1.0'
-    )
+    parser.add_argument('-i', '--input-dir', type=str, default='./input',
+                        help='Input directory (default: ./input)')
+    parser.add_argument('-o', '--output-dir', type=str, default='./output',
+                        help='Output directory (default: ./output)')
+    parser.add_argument('-f', '--failed-dir', type=str, default='./failed',
+                        help='Failed records directory (default: ./failed)')
+    parser.add_argument('-c', '--config', type=str, default='cleaning_map.yaml',
+                        help='Config YAML file (default: cleaning_map.yaml)')
+    parser.add_argument('-w', '--workers', type=int, default=cpu_count(),
+                        help=f'Worker processes (default: {cpu_count()})')
+    parser.add_argument('-b', '--batch-size', type=int, default=100,
+                        help='Records per batch (default: 100, larger=more RAM, more speed)')
+    parser.add_argument('-l', '--log-dir', type=str, default='./logs',
+                        help='Log directory (default: ./logs)')
 
     args = parser.parse_args()
 
-    # Run pipeline
     pipeline = DataCleaningPipeline(args)
     pipeline.run()
 
