@@ -1,0 +1,310 @@
+domain_mapping:
+  ablossominglife.com:
+    domain: food
+    subdomain: recipes
+  allthingsthrifty.com:
+    domain: food
+    subdomain: recipe
+  almostmakesperfect.com:
+    domain: food
+    subdomain: recipe
+  ambitiouskitchen.com:
+    domain: food
+    subdomain: ambitiouskitchen
+  artsychicksrule.com:
+    domain: lifestyle
+    subdomain: decor
+  astrollthrulife.net:
+    domain: food
+    subdomain: recipe
+  atlfamilylawgroup.com:
+    domain: business
+    subdomain: family-law
+  atomicsmash.co.uk:
+    domain: technology
+    subdomain: website
+  biketips.com:
+    domain: health
+    subdomain: health
+  blesserhouse.com:
+    domain: food
+    subdomain: recipe
+  bloggizmo.com:
+    domain: technology
+    subdomain: daily
+  brepurposed.com:
+    domain: food
+    subdomain: recipe
+  browneyedbaker.com:
+    domain: food
+    subdomain: food
+  canadianhometrends.com:
+    domain: entertainment
+    subdomain: design
+  cats.com:
+    domain: travel
+    subdomain: guides
+  cleaneatingmag.com:
+    domain: food
+    subdomain: eating
+  clickbizhub.com:
+    domain: business
+    subdomain: sales tips & deals
+  cococozy.com:
+    domain: health
+    subdomain: health
+  cocolapinedesign.com:
+    domain: entertainment
+    subdomain: design
+  cookwithmanali.com:
+    domain: food
+    subdomain: cookwithmanali
+  creationsbykara.com:
+    domain: food
+    subdomain: creationsbykara
+  cuckoo4design.com:
+    domain: entertainment
+    subdomain: design
+  culinaryginger.com:
+    domain: health
+    subdomain: health
+  dabblinganddecorating.com:
+    domain: food
+    subdomain: recipe
+  decoratingden.com:
+    domain: health
+    subdomain: health
+  decorchamp.com:
+    domain: health
+    subdomain: health
+  decorhint.com:
+    domain: entertainment
+    subdomain: design
+  decorsnob.com:
+    domain: health
+    subdomain: health
+  designcafe.com:
+    domain: health
+    subdomain: health
+  diy-100ideas.com:
+    domain: health
+    subdomain: health
+  diy-tips.co.uk:
+    domain: health
+    subdomain: health
+  diyncrafts.com:
+    domain: health
+    subdomain: health
+  diyshowoff.com:
+    domain: health
+    subdomain: health
+  dragonflyfun.com:
+    domain: health
+    subdomain: health
+  dreamgreendiy.com:
+    domain: health
+    subdomain: health
+  drivenbydecor.com:
+    domain: entertainment
+    subdomain: design
+  feastingonfruit.com:
+    domain: health
+    subdomain: health
+  foxhollowcottage.com:
+    domain: health
+    subdomain: health
+  frugalconfessions.com:
+    domain: health
+    subdomain: health
+  frugalwoods.com:
+    domain: health
+    subdomain: health
+  godairyfree.org:
+    domain: health
+    subdomain: health
+  goodnewsnetwork.org:
+    domain: health
+    subdomain: health
+  homehacks.co:
+    domain: health
+    subdomain: health
+  homeimprovementideas.com:
+    domain: health
+    subdomain: health
+  housecleaningcentral.com:
+    domain: health
+    subdomain: health
+  howdoesshe.com:
+    domain: health
+    subdomain: health
+  hwtm.com:
+    domain: health
+    subdomain: health
+  itigic.com:
+    domain: health
+    subdomain: health
+  jane-athome.com:
+    domain: health
+    subdomain: health
+  katrinaleedesigns.com:
+    domain: health
+    subdomain: health
+  kitchenfunwithmy3sons.com:
+    domain: food
+    subdomain: kitchen
+  laurenslatest.com:
+    domain: food
+    subdomain: food
+  lavenderandlovage.com:
+    domain: health
+    subdomain: health
+  leafyplace.com:
+    domain: health
+    subdomain: health
+  lemonblossoms.com:
+    domain: food
+    subdomain: recipes
+  lifeasaleowife.com:
+    domain: health
+    subdomain: health
+  lifeonvirginiastreet.com:
+    domain: food
+    subdomain: recipe
+  lionsroar.com:
+    domain: health
+    subdomain: health
+  littleferrarokitchen.com:
+    domain: food
+    subdomain: kitchen
+  livesimplybyannie.com:
+    domain: health
+    subdomain: health
+  lollyjane.com:
+    domain: food
+    subdomain: recipes
+  longevityreview.com:
+    domain: health
+    subdomain: health
+  louskitchencorner.freybors.com:
+    domain: food
+    subdomain: kitchen
+  lovefoodies.com:
+    domain: food
+    subdomain: recipes
+  lovemaegan.com:
+    domain: health
+    subdomain: health
+  lyricflair.com:
+    domain: health
+    subdomain: health
+  manhattan-nest.com:
+    domain: health
+    subdomain: health
+  manjulaskitchen.com:
+    domain: food
+    subdomain: kitchen
+  marathonhandbook.com:
+    domain: health
+    subdomain: health
+  maryswholelife.com:
+    domain: food
+    subdomain: recipes
+  masalachilli.com:
+    domain: food
+    subdomain: recipes
+  michealadianedesigns.com:
+    domain: entertainment
+    subdomain: design
+  mymoneycoach.ca:
+    domain: health
+    subdomain: health
+  nutritionadvance.com:
+    domain: health
+    subdomain: nutrition
+  organizesimply.com:
+    domain: health
+    subdomain: health
+  oursouthernhomesc.com:
+    domain: food
+    subdomain: recipes
+  papernstitchblog.com:
+    domain: food
+    subdomain: recipe
+  petscribbles.com:
+    domain: health
+    subdomain: health
+  petticoatjunktion.com:
+    domain: entertainment
+    subdomain: design
+  refreshrestyle.com:
+    domain: health
+    subdomain: health
+  ruffledblog.com:
+    domain: health
+    subdomain: health
+  savingadvice.com:
+    domain: health
+    subdomain: health
+  simplyhomedecorating.com:
+    domain: health
+    subdomain: health
+  sincerelysarad.com:
+    domain: health
+    subdomain: health
+  skillsinthekitchen.com:
+    domain: food
+    subdomain: kitchen
+  snazzylittlethings.com:
+    domain: entertainment
+    subdomain: design
+  southernhospitalityblog.com:
+    domain: food
+    subdomain: cooking
+  sssedit.com:
+    domain: health
+    subdomain: health
+  stagg-design.com:
+    domain: health
+    subdomain: health
+  tampanails.com:
+    domain: health
+    subdomain: health
+  thebudgetmom.com:
+    domain: health
+    subdomain: health
+  thedesignconfidential.com:
+    domain: health
+    subdomain: health
+  thedesignfiles.net:
+    domain: health
+    subdomain: health
+  thediydreamer.com:
+    domain: entertainment
+    subdomain: design
+  thehappycatsite.com:
+    domain: health
+    subdomain: health
+  thehungryhutch.com:
+    domain: health
+    subdomain: health
+  theletteredcottage.net:
+    domain: health
+    subdomain: health
+  thepaintedhive.net:
+    domain: health
+    subdomain: health
+  therecipecritic.com:
+    domain: food
+    subdomain: recipe
+  thetravelerbd.com:
+    domain: health
+    subdomain: health
+  travelandoo.com:
+    domain: entertainment
+    subdomain: design
+  uglyducklinghouse.com:
+    domain: entertainment
+    subdomain: design
+  witanddelight.com:
+    domain: entertainment
+    subdomain: design

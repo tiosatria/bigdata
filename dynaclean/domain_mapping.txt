@@ -1,0 +1,484 @@
+domain_mapping:
+  myfussyeater.com:
+    domain: unknown
+    subdomain: myfussyeater
+  myglobalviewpoint.com:
+    domain: unknown
+    subdomain: myglobalviewpoint
+  mygourmetconnection.com:
+    domain: unknown
+    subdomain: mygourmetconnection
+  myhomierhome.com:
+    domain: lifestyle
+    subdomain: myhomierhome
+  myindianstove.com:
+    domain: unknown
+    subdomain: myindianstove
+  mykitchenstories.com.au:
+    domain: food
+    subdomain: mykitchenstories
+  mymodernmet.com:
+    domain: unknown
+    subdomain: mymodernmet
+  mymove.com:
+    domain: unknown
+    subdomain: mymove
+  mypathtozero.com:
+    domain: unknown
+    subdomain: mypathtozero
+  mypeoplepatterns.com:
+    domain: unknown
+    subdomain: mypeoplepatterns
+  myplate.gov:
+    domain: unknown
+    subdomain: myplate
+  mysocalledcraftylife.com:
+    domain: lifestyle
+    subdomain: mysocalledcraftylife
+  nadiashealthykitchen.com:
+    domain: food
+    subdomain: nadiashealthykitchen
+  nal.usda.gov:
+    domain: unknown
+    subdomain: nal
+  napo-gpc.org:
+    domain: unknown
+    subdomain: napo
+  narcolepsynetwork.org:
+    domain: business
+    subdomain: narcolepsynetwork
+  naswdc.org:
+    domain: unknown
+    subdomain: naswdc
+  natashaskitchen.com:
+    domain: food
+    subdomain: natashaskitchen
+  nathab.com:
+    domain: unknown
+    subdomain: nathab
+  nationalgallery.org.uk:
+    domain: unknown
+    subdomain: nationalgallery
+  nationaltrust.org.uk:
+    domain: unknown
+    subdomain: nationaltrust
+  naturalhandyman.com:
+    domain: unknown
+    subdomain: naturalhandyman
+  naturemed.org:
+    domain: unknown
+    subdomain: naturemed
+  naturopathic.org:
+    domain: unknown
+    subdomain: naturopathic
+  navygrain.com:
+    domain: technology
+    subdomain: navygrain
+  nchpad.org:
+    domain: unknown
+    subdomain: nchpad
+  ncoa.org:
+    domain: unknown
+    subdomain: ncoa
+  neda.org:
+    domain: unknown
+    subdomain: neda
+  needleandnest.com:
+    domain: unknown
+    subdomain: needleandnest
+  neverendingfootsteps.com:
+    domain: unknown
+    subdomain: neverendingfootsteps
+  newminimalism.com:
+    domain: unknown
+    subdomain: newminimalism
+  nimh.nih.gov:
+    domain: unknown
+    subdomain: nimh
+  niosh.cdc.gov:
+    domain: unknown
+    subdomain: niosh
+  nishamadhulika.com:
+    domain: unknown
+    subdomain: nishamadhulika
+  nkba.org:
+    domain: unknown
+    subdomain: nkba
+  nlm.nih.gov:
+    domain: unknown
+    subdomain: nlm
+  nnlm.gov:
+    domain: unknown
+    subdomain: nnlm
+  noisli.com:
+    domain: unknown
+    subdomain: noisli
+  nomadicmatt.com:
+    domain: unknown
+    subdomain: nomadicmatt
+  noom.com:
+    domain: unknown
+    subdomain: noom
+  norecipes.com:
+    domain: food
+    subdomain: norecipes
+  noregretsgypsy.com:
+    domain: unknown
+    subdomain: noregretsgypsy
+  northernterritory.com:
+    domain: unknown
+    subdomain: northernterritory
+  nourishedkitchen.com:
+    domain: food
+    subdomain: nourishedkitchen
+  novascotia.com:
+    domain: unknown
+    subdomain: novascotia
+  npr.org:
+    domain: unknown
+    subdomain: npr
+  npsr.qld.gov.au:
+    domain: unknown
+    subdomain: npsr
+  nshcoa.com:
+    domain: unknown
+    subdomain: nshcoa
+  nt.org.uk:
+    domain: unknown
+    subdomain: nt
+  nu.edu:
+    domain: unknown
+    subdomain: nu
+  nunavuttourism.com:
+    domain: travel
+    subdomain: nunavuttourism
+  nurses.org:
+    domain: unknown
+    subdomain: nurses
+  nutrifitonline.com:
+    domain: health
+    subdomain: nutrifitonline
+  nutritionix.com:
+    domain: health
+    subdomain: nutritionix
+  nutritionsource.hsph.harvard.edu:
+    domain: health
+    subdomain: nutritionsource
+  occupationaltherapy.com:
+    domain: unknown
+    subdomain: occupationaltherapy
+  oliviascuisine.com:
+    domain: food
+    subdomain: oliviascuisine
+  omadahealth.com:
+    domain: health
+    subdomain: omadahealth
+  omemade.com:
+    domain: unknown
+    subdomain: omemade
+  omnivatelehealth.com:
+    domain: health
+    subdomain: omnivatelehealth
+  onegreenplanet.org:
+    domain: unknown
+    subdomain: onegreenplanet
+  onekingslane.com:
+    domain: unknown
+    subdomain: onekingslane
+  onlinedegrees.bradley.edu:
+    domain: unknown
+    subdomain: onlinedegrees
+  onlinemba.ku.edu:
+    domain: unknown
+    subdomain: onlinemba
+  onlymyhealth.com:
+    domain: health
+    subdomain: onlymyhealth
+  opm.gov:
+    domain: unknown
+    subdomain: opm
+  oprah.com:
+    domain: unknown
+    subdomain: oprah
+  orangetheory.com:
+    domain: unknown
+    subdomain: orangetheory
+  orbitz.com:
+    domain: unknown
+    subdomain: orbitz
+  orderlypnw.com:
+    domain: unknown
+    subdomain: orderlypnw
+  organizationobsessed.com:
+    domain: unknown
+    subdomain: organizationobsessed
+  organized31.com:
+    domain: lifestyle
+    subdomain: organized
+  organizedbyjess.com:
+    domain: lifestyle
+    subdomain: organizedbyjess
+  organizedinteriors.com:
+    domain: lifestyle
+    subdomain: organizedinteriors
+  organizedish.com:
+    domain: lifestyle
+    subdomain: organizedish
+  organizedliving.com:
+    domain: lifestyle
+    subdomain: organizedliving
+  organizersincanada.com:
+    domain: lifestyle
+    subdomain: organizersincanada
+  organizewithme.net:
+    domain: lifestyle
+    subdomain: organizewithme
+  organizeyourlife.org:
+    domain: lifestyle
+    subdomain: organizeyourlife
+  orwhateveryoudo.com:
+    domain: unknown
+    subdomain: orwhateveryoudo
+  osha.gov:
+    domain: unknown
+    subdomain: osha
+  ourbestbites.com:
+    domain: unknown
+    subdomain: ourbestbites
+  ourgoodbrands.com:
+    domain: unknown
+    subdomain: ourgoodbrands
+  ourhomes.ca:
+    domain: lifestyle
+    subdomain: ourhomes
+  ourrelationship.com:
+    domain: unknown
+    subdomain: ourrelationship
+  outback-tours.com:
+    domain: travel
+    subdomain: tours
+  outsidemagazine.com:
+    domain: unknown
+    subdomain: outsidemagazine
+  overstock.com:
+    domain: unknown
+    subdomain: overstock
+  ozozokegbe.blogspot.com:
+    domain: unknown
+    subdomain: ozozokegbe
+  padhuskitchen.com:
+    domain: food
+    subdomain: padhuskitchen
+  palousemindfulness.com:
+    domain: unknown
+    subdomain: palousemindfulness
+  paperandstitch.com:
+    domain: unknown
+    subdomain: paperandstitch
+  paperflare.com:
+    domain: unknown
+    subdomain: paperflare
+  parenting-ed.org:
+    domain: unknown
+    subdomain: parenting
+  patelbros.com:
+    domain: unknown
+    subdomain: patelbros
+  path.org:
+    domain: unknown
+    subdomain: path
+  patientadvocate.org:
+    domain: unknown
+    subdomain: patientadvocate
+  patijinich.com:
+    domain: unknown
+    subdomain: patijinich
+  patisseriemakesperfect.co.uk:
+    domain: unknown
+    subdomain: patisseriemakesperfect
+  pc.gc.ca:
+    domain: unknown
+    subdomain: pc
+  pcossupport.org:
+    domain: unknown
+    subdomain: pcossupport
+  pcrm.org:
+    domain: unknown
+    subdomain: pcrm
+  peloton.com:
+    domain: unknown
+    subdomain: peloton
+  peoplekeep.com:
+    domain: unknown
+    subdomain: peoplekeep
+  perennialresource.com:
+    domain: unknown
+    subdomain: perennialresource
+  periodhomes.co.uk:
+    domain: lifestyle
+    subdomain: periodhomes
+  permaculture.org:
+    domain: unknown
+    subdomain: permaculture
+  personifyhealth.com:
+    domain: health
+    subdomain: personifyhealth
+  perudelights.com:
+    domain: unknown
+    subdomain: perudelights
+  peterwalshdesign.com:
+    domain: unknown
+    subdomain: peterwalshdesign
+  pfizer.com:
+    domain: unknown
+    subdomain: pfizer
+  pharmacist.org:
+    domain: unknown
+    subdomain: pharmacist
+  phrma.org:
+    domain: unknown
+    subdomain: phrma
+  physicaltherapy.com:
+    domain: unknown
+    subdomain: physicaltherapy
+  physioprospt.com:
+    domain: unknown
+    subdomain: physioprospt
+  pickuplimes.com:
+    domain: unknown
+    subdomain: pickuplimes
+  pierreblake.com:
+    domain: unknown
+    subdomain: pierreblake
+  pilates.com:
+    domain: unknown
+    subdomain: pilates
+  pilotplans.com:
+    domain: unknown
+    subdomain: pilotplans
+  pinchofnom.com:
+    domain: unknown
+    subdomain: pinchofnom
+  pioneerthinking.com:
+    domain: unknown
+    subdomain: pioneerthinking
+  pipingpotcurry.com:
+    domain: unknown
+    subdomain: pipingpotcurry
+  pizzazzappliques.com:
+    domain: unknown
+    subdomain: pizzazzappliques
+  plainchicken.com:
+    domain: technology
+    subdomain: plainchicken
+  planetfitness.com:
+    domain: health
+    subdomain: planetfitness
+  plannedparenthood.org:
+    domain: unknown
+    subdomain: plannedparenthood
+  plantbasednews.org:
+    domain: unknown
+    subdomain: plantbasednews
+  plantbasedrdblog.com:
+    domain: unknown
+    subdomain: plantbasedrdblog
+  plantcaretoday.com:
+    domain: unknown
+    subdomain: plantcaretoday
+  plasticfreemovement.org:
+    domain: unknown
+    subdomain: plasticfreemovement
+  pliability.com:
+    domain: unknown
+    subdomain: pliability
+  plumvillage.org:
+    domain: unknown
+    subdomain: plumvillage
+  pmc.ncbi.nlm.nih.gov:
+    domain: unknown
+    subdomain: pmc
+  podcasts.apple.com:
+    domain: unknown
+    subdomain: podcasts
+  poetryofspices.com:
+    domain: unknown
+    subdomain: poetryofspices
+  poison.org:
+    domain: unknown
+    subdomain: poison
+  polar.com:
+    domain: unknown
+    subdomain: polar
+  poppies.co.uk:
+    domain: unknown
+    subdomain: poppies
+  practo.com:
+    domain: unknown
+    subdomain: practo
+  precisionnutrition.com:
+    domain: health
+    subdomain: precisionnutrition
+  prettygreenhomes.com:
+    domain: lifestyle
+    subdomain: prettygreenhomes
+  priceline.com:
+    domain: unknown
+    subdomain: priceline
+  progressiveplantpower.com:
+    domain: unknown
+    subdomain: progressiveplantpower
+  prostateconditions.org:
+    domain: unknown
+    subdomain: prostateconditions
+  provenwinners.com:
+    domain: unknown
+    subdomain: provenwinners
+  ptrehab.ucsf.edu:
+    domain: unknown
+    subdomain: ptrehab
+  publicgoods.com:
+    domain: unknown
+    subdomain: publicgoods
+  pubmed.ncbi.nlm.nih.gov:
+    domain: unknown
+    subdomain: pubmed
+  pupswithchopsticks.com:
+    domain: unknown
+    subdomain: pupswithchopsticks
+  pureindianfoods.com:
+    domain: food
+    subdomain: pureindianfoods
+  purelypatience.com:
+    domain: unknown
+    subdomain: purelypatience
+  pzizz.com:
+    domain: unknown
+    subdomain: pzizz
+  qodeinteractive.com:
+    domain: unknown
+    subdomain: qodeinteractive
+  quebecoriginal.com:
+    domain: unknown
+    subdomain: quebecoriginal
+  rachelsrecipepantry.com:
+    domain: food
+    subdomain: rachelsrecipepantry
+  rakskitchen.net:
+    domain: food
+    subdomain: rakskitchen
+  rankandstyle.com:
+    domain: unknown
+    subdomain: rankandstyle
+  rasamalaysia.com:
+    domain: unknown
+    subdomain: rasamalaysia
+  readingmytea.com:
+    domain: unknown
+    subdomain: readingmytea
+  readingmytealeaves.com:
+    domain: unknown
+    subdomain: readingmytealeaves
+  ready.gov:
+    domain: unknown
+    subdomain: ready

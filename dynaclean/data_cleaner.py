@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, field
 from datetime import datetime
-from concurrent.futures import ProcessPoolExecutor, as_completed, wait, FIRST_COMPLETED
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED
 from multiprocessing import Manager, cpu_count
 import sys
 import os
@@ -130,7 +130,22 @@ class ConfigLoader:
                         'noises': ['//script', '//aside'],
                         'formating': {
                             'retain_table': True,
-                            'retain_image': True
+                            'retain_image': True,
+                            'retain_links': False
+                        },
+                        'pre_html': {
+                            'strip_begin_regex': [
+                                '(?:(?:<em[^>]*>[^<]{0,100}</em>\\s*){3,})',
+                                '<div[^>]*class=["\'](?:breadcrumb|breadcrumbs|site-banner|top-bar)["\'][^>]*>.*?</div>'
+                            ],
+                            'strip_end_regex': [
+                                '<div[^>]*class=["\'](?:related-posts|post-navigation|footer-widgets)["\'][^>]*>.*?</div>',
+                                '<footer[^>]*class=["\'](?:site-footer|footer)["\'][^>]*>.*?</footer>'
+                            ],
+                            'strip_any_regex': [
+                                '<div[^>]*class=["\'](?:share|social|newsletter|subscribe|cookie|gdpr)[^"\']*["\'][^>]*>.*?</div>',
+                                '<aside[^>]*>.*?</aside>'
+                            ]
                         }
                     }
                 },
@@ -208,11 +223,70 @@ class ConfigLoader:
 
         return result
 
+    @staticmethod
+    def _normalize_domain(domain: str) -> str:
+        """Normalize domain: strip scheme/port/path, lower, remove leading www."""
+        if not domain:
+            return ''
+        d = domain.strip().lower()
+        # Remove scheme
+        d = re.sub(r'^https?://', '', d)
+        # Remove path and query
+        d = d.split('/')[0]
+        # Remove port
+        d = d.split(':')[0]
+        # Strip leading www.
+        if d.startswith('www.'):
+            d = d[4:]
+        return d
+
+    @staticmethod
+    def _base_domain(domain: str) -> str:
+        """Approximate registrable base domain (handles common SLDs)."""
+        d = ConfigLoader._normalize_domain(domain)
+        if not d:
+            return ''
+        parts = d.split('.')
+        if len(parts) <= 2:
+            return d
+        # Handle common SLDs like co.uk, com.au, org.uk, gov.uk, ac.uk, co.nz
+        slds = {('co', 'uk'), ('org', 'uk'), ('gov', 'uk'), ('ac', 'uk'),
+                ('com', 'au'), ('net', 'au'), ('org', 'au'), ('co', 'nz')}
+        last2 = (parts[-2], parts[-1])
+        last3 = (parts[-3], parts[-2])
+        if last2 in slds and len(parts) >= 3:
+            return '.'.join(parts[-3:])
+        if last3 in slds and len(parts) >= 4:
+            return '.'.join(parts[-4:])
+        return '.'.join(parts[-2:])
+
     def get_domain_mapping(self, source_domain: str) -> Tuple[Optional[str], Optional[str]]:
-        """Get domain/subdomain from mapping"""
-        domain_map = self.config.get('domain_mapping', {})
-        mapping = domain_map.get(source_domain, {})
-        return mapping.get('domain'), mapping.get('subdomain')
+        """Get domain/subdomain from mapping with normalization and fallbacks."""
+        domain_map = self.config.get('domain_mapping', {}) or {}
+        if not isinstance(domain_map, dict):
+            domain_map = {}
+        cand = self._normalize_domain(source_domain)
+        candidates = [cand]
+        # Also try base domain and original key
+        base = self._base_domain(cand)
+        if base and base not in candidates:
+            candidates.append(base)
+        # Try with and without www
+        if cand and ('www.' + cand) not in candidates:
+            candidates.append('www.' + cand)
+        if base and ('www.' + base) not in candidates:
+            candidates.append('www.' + base)
+        for key in candidates:
+            if key in domain_map:
+                m = domain_map.get(key) or {}
+                return m.get('domain'), m.get('subdomain')
+        # Final attempt: iterate keys and compare normalized/base
+        for k, v in domain_map.items():
+            nk = self._normalize_domain(k)
+            if nk == cand or nk == base or self._base_domain(nk) == base:
+                m = v or {}
+                return m.get('domain'), m.get('subdomain')
+        return None, None
 
 
 # ============================================================================
@@ -265,6 +339,7 @@ class TextCleaner:
         include_tables: bool = True,
         include_images: bool = True,
         include_links: bool = False,
+        config: Any = None,
     ) -> str:
         """Extract clean text from HTML using trafilatura.
         - Supports true XPath pre-selection (not CSS).
@@ -273,8 +348,10 @@ class TextCleaner:
         if not html or not html.strip():
             return ""
 
-        config = use_config()
-        config.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
+        # Reuse provided config for performance if available
+        if config is None:
+            config = use_config()
+            config.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
 
         # Apply XPath selector if specified (use lxml)
         if xpath:
@@ -371,6 +448,295 @@ class TextCleaner:
 
 
 # ============================================================================
+# CUSTOM HTML MEDIA/TABLE PREPROCESSING
+# ==========================================================================
+
+PLACEHOLDER_IMG_PREFIX = "[[DYNACLEAN_IMG_"
+PLACEHOLDER_TBL_PREFIX = "[[DYNACLEAN_TBL_"
+PLACEHOLDER_SUFFIX = "]]"
+
+
+def _latex_escape(text: str) -> str:
+    """Escape LaTeX special characters in cell text."""
+    if text is None:
+        return ''
+    # Basic escapes
+    replacements = {
+        '\\': r'\\',
+        '&': r'\&',
+        '%': r'\%',
+        '$': r'\$',
+        '#': r'\#',
+        '_': r'\_',
+        '{': r'\{',
+        '}': r'\}',
+        '~': r'\textasciitilde{}',
+        '^': r'\textasciicircum{}',
+    }
+    for k, v in replacements.items():
+        text = text.replace(k, v)
+    # Collapse whitespace inside cells
+    text = ' '.join(text.split())
+    return text
+
+
+def _html_table_to_latex(table_html: str) -> str:
+    """Convert a simple HTML <table> to a LaTeX tabular environment.
+    Handles <th>/<td>, multiple rows, and basic text. Complex nested tables are flattened.
+    """
+    try:
+        from bs4 import BeautifulSoup
+    except Exception:
+        return table_html or ''
+
+    try:
+        soup = BeautifulSoup(table_html or '', 'lxml')
+        table = soup.find('table') or soup
+        # Determine rows
+        rows = []
+        for tr in table.find_all('tr'):
+            cells = []
+            # Prefer th for header row else td
+            for cell in tr.find_all(['th', 'td']):
+                # Get text content, fallback to stripped strings
+                text = cell.get_text(separator=' ', strip=True)
+                cells.append(_latex_escape(text))
+            if cells:
+                rows.append(cells)
+        if not rows:
+            return ''
+        # Determine column count as max length
+        ncols = max(len(r) for r in rows)
+        colspec = '|' + '|'.join(['l'] * ncols) + '|'
+        lines = [f"\\begin{{tabular}}{{{colspec}}}", "\\hline"]
+        for idx, r in enumerate(rows):
+            # pad missing cells
+            if len(r) < ncols:
+                r = r + [''] * (ncols - len(r))
+            line = ' & '.join(r) + r" \\\\"  # end of row
+            lines.append(line)
+            lines.append("\\hline")
+        lines.append("\\end{tabular}")
+        return "\n".join(lines)
+    except Exception:
+        return ''
+
+
+def _apply_pre_html_regex(html: str, pre_html_cfg: dict) -> str:
+    """Apply pre-HTML regex cleaning to catch common noise at the beginning and end.
+    pre_html_cfg: {
+        'strip_begin_regex': [ ... ],
+        'strip_end_regex': [ ... ],
+        'strip_any_regex': [ ... ]
+    }
+    """
+    if not html:
+        return ''
+    pre_html_cfg = pre_html_cfg or {}
+    txt = html
+    # Strip patterns anywhere
+    for pat in pre_html_cfg.get('strip_any_regex', []) or []:
+        try:
+            txt = re.sub(pat, ' ', txt, flags=re.IGNORECASE | re.DOTALL)
+        except re.error:
+            pass
+    # Strip from beginning
+    for pat in pre_html_cfg.get('strip_begin_regex', []) or []:
+        try:
+            txt = re.sub(rf'^(?:\s|<!--.*?-->|<[^>]+>)*(?:{pat})+', ' ', txt, flags=re.IGNORECASE | re.DOTALL)
+        except re.error:
+            pass
+    # Strip from end
+    for pat in pre_html_cfg.get('strip_end_regex', []) or []:
+        try:
+            txt = re.sub(rf'(?:{pat})+(?:\s|<!--.*?-->|<[^>]+>)*$', ' ', txt, flags=re.IGNORECASE | re.DOTALL)
+        except re.error:
+            pass
+    return txt
+
+
+def preprocess_html_for_media(html: str, base_url: str = None) -> tuple:
+    r"""Find <img>, <table>, and subheading elements and replace them with stable placeholders.
+    Returns (html_with_placeholders, mapping_dict).
+    mapping_dict maps placeholder text to final custom replacement text.
+    - Images -> "[Image: {src}\]" (with trailing backslash)
+    - Tables -> LaTeX tabular string
+    - Headings (h2–h6) -> Markdown equivalents (##, ###, ####, ...)
+    """
+    if not html:
+        return '', {}
+    try:
+        from bs4 import BeautifulSoup
+    except Exception:
+        return html, {}
+
+    from urllib.parse import urljoin
+
+    def absolutize(u: str) -> str:
+        if not u:
+            return ''
+        if base_url:
+            try:
+                return urljoin(base_url, u)
+            except Exception:
+                return u
+        return u
+
+    def is_placeholder(u: str) -> bool:
+        if not u:
+            return True
+        ul = u.strip().lower()
+        if ul.startswith('data:'):
+            return True
+        if any(tok in ul for tok in ['placeholder', 'blank', 'spacer', 'transparent']):
+            return True
+        if ul.endswith('.svg') or 'svg+xml' in ul:
+            return True
+        return False
+
+    def parse_srcset(srcset_val: str) -> str:
+        if not srcset_val:
+            return ''
+        best_url = ''
+        best_w = -1.0
+        for part in srcset_val.split(','):
+            cand = part.strip()
+            if not cand:
+                continue
+            pieces = cand.split()
+            url = pieces[0]
+            desc = pieces[1] if len(pieces) > 1 else ''
+            w = 0.0
+            try:
+                if desc.endswith('w'):
+                    w = float(desc[:-1])
+                elif desc.endswith('x'):
+                    # Treat pixel density multiplier approx as width priority
+                    w = float(desc[:-1]) * 1000.0
+            except Exception:
+                w = 0.0
+            if w == 0.0:
+                # Favor last candidate when no descriptor
+                w = 1.0 if best_w < 0 else best_w + 1.0
+            if w > best_w:
+                best_w = w
+                best_url = url
+        return best_url
+
+    soup = BeautifulSoup(html, 'lxml')
+    mapping = {}
+
+    # Process tables first to preserve structure placement
+    for tbl in soup.find_all('table'):
+        pid = str(uuid4()).replace('-', '')
+        placeholder = f"{PLACEHOLDER_TBL_PREFIX}{pid}{PLACEHOLDER_SUFFIX}"
+        latex = _html_table_to_latex(str(tbl))
+        mapping[placeholder] = latex
+        tbl.replace_with(placeholder)
+
+    # Resolve best image URL with multiple fallbacks
+    def resolve_image_src(img_tag) -> str:
+        # 1) Attribute priority list
+        attr_order = [
+            'data-full-url', 'data-large_image', 'data-orig-file', 'data-zoom-image',
+            'data-pin-media', 'data-lazy-src', 'data-src', 'data-original', 'data-hi-res-src',
+            'data-image', 'data-img', 'data-url', 'src'
+        ]
+        for a in attr_order:
+            val = img_tag.get(a)
+            if val and not is_placeholder(val):
+                return absolutize(val)
+        # 2) srcset attributes (prefer largest)
+        for a in ('data-srcset', 'data-lazy-srcset', 'srcset'):
+            ssv = img_tag.get(a)
+            if ssv:
+                cand = parse_srcset(ssv)
+                if cand and not is_placeholder(cand):
+                    return absolutize(cand)
+        # 3) picture/source siblings
+        parent = img_tag.parent
+        if parent and parent.name == 'picture':
+            sources = parent.find_all('source')
+            for s in sources:
+                ssv = s.get('srcset') or s.get('data-srcset')
+                if ssv:
+                    cand = parse_srcset(ssv)
+                    if cand and not is_placeholder(cand):
+                        return absolutize(cand)
+        # 4) link wrapper
+        link = img_tag.find_parent('a')
+        if link:
+            href = link.get('href')
+            if href and re.search(r'\.(?:jpe?g|png|webp|gif)(?:\?|#|$)', href, flags=re.I):
+                return absolutize(href)
+        # 5) last resort: original src even if placeholder
+        val = img_tag.get('src')
+        return absolutize(val) if val else ''
+
+    # Process images
+    for img in soup.find_all('img'):
+        pid = str(uuid4()).replace('-', '')
+        placeholder = f"{PLACEHOLDER_IMG_PREFIX}{pid}{PLACEHOLDER_SUFFIX}"
+        src = resolve_image_src(img)
+        if src and not is_placeholder(src):
+            custom = f"[Image: {src}\\]"
+            mapping[placeholder] = custom
+            img.replace_with(placeholder)
+        else:
+            # remove image with no usable src
+            img.decompose()
+
+    # Preserve subheadings h2–h6 as plain text (single newline), no markdown
+    for level in range(2, 7):
+        for h in soup.find_all(f'h{level}'):
+            text = h.get_text(separator=' ', strip=True)
+            if not text:
+                h.decompose()
+                continue
+            pid = str(uuid4()).replace('-', '')
+            ph = f"[[DYNACLEAN_HDR_{level}_{pid}]]"
+            mapping[ph] = f"{text}\n"
+            try:
+                p = soup.new_tag('p')
+                p.string = ph
+                h.replace_with(p)
+            except Exception:
+                h.replace_with(ph)
+
+    # Unwrap wrappers that can cause placeholders to be dropped by trafilatura
+    def _contains_placeholder(tag):
+        try:
+            return tag.find(string=lambda s: isinstance(s, str) and (PLACEHOLDER_IMG_PREFIX in s or PLACEHOLDER_TBL_PREFIX in s or '[[DYNACLEAN_HDR_' in s)) is not None
+        except Exception:
+            return False
+
+    for a in soup.find_all('a'):
+        if _contains_placeholder(a):
+            a.unwrap()
+    for n in soup.find_all('noscript'):
+        if _contains_placeholder(n):
+            n.unwrap()
+    for pic in soup.find_all(['picture', 'figure']):
+        if _contains_placeholder(pic):
+            pic.unwrap()
+
+    return str(soup), mapping
+
+
+def restore_placeholders(text: str, mapping: dict) -> str:
+    """Replace placeholders in text with their mapped custom strings."""
+    if not text or not mapping:
+        return text or ''
+    # Replace in deterministic order: images first, then tables, though order shouldn't matter
+    for k, v in mapping.items():
+        try:
+            text = text.replace(k, v)
+        except Exception:
+            continue
+    return text
+
+
+# ============================================================================
 # DOMAIN/SUBDOMAIN INFERENCE
 # ============================================================================
 
@@ -390,45 +756,95 @@ class DomainInferencer:
 
     @staticmethod
     def infer_from_metadata(body_json: Dict, config_loader: ConfigLoader,
-                            source_domain: str) -> Tuple[str, str]:
+                            source_domain: str, url_hint: Optional[str] = None,
+                            title_hint: Optional[str] = None, meta: Optional[Dict] = None) -> Tuple[Optional[str], Optional[str]]:
         """
         Infer domain/subdomain with priority:
-        1. Config override
-        2. Domain mapping
-        3. Trafilatura metadata
-        4. Class list extraction
-        5. URL inference
-        6. Fallback
+        1. Config domain_mapping (normalized and base domain aware)
+        2. Meta fields (categories/tags sections if present in meta/body)
+        3. Class list extraction (category-*/tag-*)
+        4. Title keyword inference
+        5. URL path inference (multiple segments, ignore stopwords)
+        6. Fallback: None (caller should apply config fallbacks)
         """
-        # Check domain mapping first
-        mapped_domain, mapped_subdomain = config_loader.get_domain_mapping(source_domain)
+        # 1) Check domain mapping first (handles subdomains/variants)
+        mapped_domain, mapped_subdomain = config_loader.get_domain_mapping(source_domain or '')
         if mapped_domain and mapped_subdomain:
             return mapped_domain, mapped_subdomain
 
-        # Try to extract from categories in class_list
-        class_list = body_json.get('class_list', [])
-        if isinstance(class_list, list):
-            domain, subdomain = DomainInferencer._extract_from_classes(class_list)
-            if domain and subdomain:
-                return domain, subdomain
+        # Prepare candidate buckets
+        dom_scores = Counter()
+        sub_candidates: List[str] = []
 
-        # Try categories and tags from body
+        # Helper: score terms
+        def score_terms(terms: List[str]):
+            for term in terms:
+                t = (term or '').strip().lower()
+                if not t:
+                    continue
+                for dom, kws in DomainInferencer.DOMAIN_KEYWORDS.items():
+                    if any(kw in t for kw in kws):
+                        dom_scores[dom] += 1
+                sub_candidates.append(t)
+
+        body_json = body_json or {}
+        meta = meta or {}
+
+        # 2) Meta/body categories/tags
+        # Try common meta keys
+        meta_terms = []
+        for key in ('categories_names', 'tags_names', 'sections', 'section', 'category'):
+            val = meta.get(key)
+            if isinstance(val, list):
+                meta_terms.extend([str(x) for x in val])
+            elif isinstance(val, str):
+                meta_terms.append(val)
         categories = body_json.get('categories', [])
         tags = body_json.get('tags', [])
+        if isinstance(categories, list) and categories and not all(isinstance(c, int) for c in categories):
+            meta_terms.extend([str(c) for c in categories])
+        if isinstance(tags, list) and tags and not all(isinstance(t, int) for t in tags):
+            meta_terms.extend([str(t) for t in tags])
+        if meta_terms:
+            score_terms([str(x).lower() for x in meta_terms])
 
-        if categories or tags:
-            domain, subdomain = DomainInferencer._infer_from_terms(categories, tags)
-            if domain and subdomain:
-                return domain, subdomain
+        # 3) Class list extraction
+        class_list = body_json.get('class_list', [])
+        if isinstance(class_list, list) and class_list:
+            dom, sub = DomainInferencer._extract_from_classes(class_list)
+            if sub:
+                sub_candidates.append(sub.lower())
+            if dom:
+                dom_scores[dom] += 2  # weight class-derived domain higher
 
-        # Try URL inference as last resort
-        url = body_json.get('link', '')
+        # 4) Title keyword inference
+        if title_hint:
+            score_terms(re.split(r'[^a-zA-Z]+', title_hint.lower()))
+
+        # 5) URL inference using multiple path segments
+        url = (body_json.get('link') or url_hint or '').strip()
         if url:
-            domain, subdomain = DomainInferencer._infer_from_url(url)
-            if domain and subdomain:
-                return domain, subdomain
+            dom2, sub2 = DomainInferencer._infer_from_url(url)
+            if sub2:
+                sub_candidates.append(sub2.lower())
+            if dom2:
+                dom_scores[dom2] += 1
 
-        return None, None
+        # Decide domain
+        domain = dom_scores.most_common(1)[0][0] if dom_scores else None
+        # Decide subdomain: pick the first candidate that maps to the chosen domain if possible
+        chosen_sub = None
+        if sub_candidates:
+            if domain:
+                for sc in sub_candidates:
+                    mapped = DomainInferencer._map_subdomain_to_domain(sc)
+                    if mapped == domain:
+                        chosen_sub = sc
+                        break
+            if not chosen_sub:
+                chosen_sub = sub_candidates[0]
+
+        return domain, chosen_sub
 
     @staticmethod
     def _extract_from_classes(class_list: List[str]) -> Tuple[Optional[str], Optional[str]]:
@@ -482,24 +898,47 @@ class DomainInferencer:
 
     @staticmethod
     def _infer_from_url(url: str) -> Tuple[Optional[str], Optional[str]]:
-        """Carefully infer from URL, avoiding false positives"""
+        """Carefully infer from URL path segments, avoiding false positives."""
         # Avoid generic paths
-        skip_patterns = ['archive', 'category', 'tag', 'page', 'author', 'date']
-
-        # Extract path segments
-        path_match = re.search(r'https?://[^/]+/([^/?#]+)', url)
-        if not path_match:
+        skip_terms = {
+            'archive', 'archives', 'category', 'categories', 'tag', 'tags', 'page', 'author', 'date',
+            'feed', 'wp', 'json', 'blog', 'post', 'posts', 'news'
+        }
+        try:
+            # Extract path after domain
+            m = re.match(r'^https?://[^/]+(/[^?#]*)', url)
+            path = m.group(1) if m else ''
+            # Split into segments
+            segs = [s for s in re.split(r'[/_-]+', path) if s]
+            # Filter segs: letters only, length >= 3, not numeric, not in skip
+            cand = []
+            for s in segs:
+                t = re.sub(r'[^a-zA-Z]', '', s).lower()
+                if not t or t in skip_terms or len(t) < 3:
+                    continue
+                if t.isdigit():
+                    continue
+                cand.append(t)
+            if not cand:
+                return None, None
+            # Score candidates against domain keywords
+            scores = Counter()
+            for s in cand:
+                for dom, kws in DomainInferencer.DOMAIN_KEYWORDS.items():
+                    if any(kw in s for kw in kws):
+                        scores[(dom, s)] += 1
+            if scores:
+                # pick the (domain, sub) with highest score
+                (dom, sub), _ = scores.most_common(1)[0]
+                return dom, sub
+            # Fallback: pick the first candidate and map
+            sub = cand[0]
+            dom = DomainInferencer._map_subdomain_to_domain(sub)
+            if dom:
+                return dom, sub
             return None, None
-
-        segment = path_match.group(1).lower()
-
-        # Skip if it's a generic pattern
-        if any(pattern in segment for pattern in skip_patterns):
+        except Exception:
             return None, None
-
-        # Try to map to domain
-        domain = DomainInferencer._map_subdomain_to_domain(segment)
-        return domain, segment if domain else (None, None)
 
     @staticmethod
     def _map_subdomain_to_domain(subdomain: str) -> Optional[str]:
@@ -583,6 +1022,12 @@ class RecordProcessor:
         self.config_loader = config_loader
         self.config = config_loader.get_site_config(sitekey)
         self.cleaner = TextCleaner()
+        # Reuse a trafilatura config per processor for performance
+        try:
+            self.trafilatura_config = use_config()
+            self.trafilatura_config.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
+        except Exception:
+            self.trafilatura_config = None
 
     def process_wordpress(self, record: Dict) -> Optional[Dict]:
         """Process WordPress format record"""
@@ -609,6 +1054,12 @@ class RecordProcessor:
             record_id = record.get('id', str(uuid4()))
             meta = record.get('meta') or {}
             source_domain = meta.get('site', '') or meta.get('source', '') or ''
+            if (not source_domain) and url:
+                try:
+                    # derive domain from URL if meta missing
+                    source_domain = ConfigLoader._normalize_domain(url)
+                except Exception:
+                    source_domain = ''
 
             # Get title
             title_raw = (body or {}).get('title', {})
@@ -636,20 +1087,26 @@ class RecordProcessor:
             xpath = clean_args.get('body_xpath')
             noises = clean_args.get('noises', [])
 
-            # Respect formatting args from config
+            # Replace images, tables, and headings with placeholders and keep mapping
+            html_with_placeholders, ph_map = preprocess_html_for_media(body_html, base_url=url)
+
+            # Respect formatting args from config for links only; images/tables handled via placeholders
             formating = clean_args.get('formating', {})
-            include_tables = bool(formating.get('retain_table', True))
-            include_images = bool(formating.get('retain_image', True))
             include_links = bool(formating.get('retain_links', False))
 
-            cleaned_body = self.cleaner.clean_html(
-                body_html,
+            # Run trafilatura on placeholder-embedded HTML; disable built-in images/tables
+            extracted_body = self.cleaner.clean_html(
+                html_with_placeholders,
                 xpath,
                 noises,
-                include_tables=include_tables,
-                include_images=include_images,
+                include_tables=False,
+                include_images=False,
                 include_links=include_links,
+                config=self.trafilatura_config,
             )
+
+            # Restore placeholders to custom formats
+            cleaned_body = restore_placeholders(extracted_body, ph_map)
 
             if not cleaned_body:
                 return {'status': 'filtered_pre', 'reason': 'empty_after_extraction'}
@@ -673,7 +1130,7 @@ class RecordProcessor:
 
             if not domain or not subdomain:
                 inferred_domain, inferred_subdomain = DomainInferencer.infer_from_metadata(
-                    body, self.config_loader, source_domain
+                    body, self.config_loader, source_domain, url_hint=url, title_hint=cleaned_title, meta=meta
                 )
                 domain = domain or inferred_domain or self.config.domain_fallback
                 subdomain = subdomain or inferred_subdomain or self.config.subdomain_fallback
@@ -987,11 +1444,69 @@ class DataCleaningPipeline:
         # Make a progress directory inside log dir
         self.progress_dir = Path(self.args.log_dir) / 'progress'
         self.progress_dir.mkdir(parents=True, exist_ok=True)
-        for input_file in input_files:
-            sitekey = input_file.stem  # filename without extension
-            output_file = output_dir / f"{sitekey}_cleaned.jsonl"
-            failed_file = failed_dir / f"{sitekey}_failed.jsonl"
-            progress_file = self.progress_dir / f"{sitekey}.progress.json"
+
+        # Single-file acceleration: split the input into N chunks and process in parallel
+        single_file_chunking = False
+        chunk_dir = None
+        final_output_target = None
+        final_failed_target = None
+        chunk_outputs: List[Path] = []
+        chunk_faileds: List[Path] = []
+
+        files_for_tasks: List[Path] = input_files
+        original_sitekey: Optional[str] = None
+        if len(input_files) == 1 and self.args.workers > 1:
+            try:
+                single_file_chunking = True
+                original_file = input_files[0]
+                original_sitekey = original_file.stem
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                chunk_dir = (Path(self.args.log_dir) / f"chunks_{original_sitekey}_{timestamp}")
+                chunk_dir.mkdir(parents=True, exist_ok=True)
+
+                # Create chunk writers
+                n_workers = int(self.args.workers)
+                chunk_paths = [chunk_dir / f"{original_sitekey}.part{i}.jsonl" for i in range(n_workers)]
+                writers = [open(p, 'w', encoding='utf-8') for p in chunk_paths]
+                try:
+                    # Distribute lines round-robin to balance load
+                    with open(original_file, 'r', encoding='utf-8') as src:
+                        for idx, line in enumerate(src):
+                            if not line.strip():
+                                continue
+                            writers[idx % n_workers].write(line)
+                finally:
+                    for w in writers:
+                        try:
+                            w.close()
+                        except Exception:
+                            pass
+                files_for_tasks = chunk_paths
+
+                # Set final targets (merged)
+                final_output_target = output_dir / f"{original_sitekey}_cleaned.jsonl"
+                final_failed_target = failed_dir / f"{original_sitekey}_failed.jsonl"
+            except Exception as e:
+                logging.warning(f"Chunking disabled due to error: {e}")
+                single_file_chunking = False
+                files_for_tasks = input_files
+
+        for input_file in files_for_tasks:
+            # Keep sitekey as original if chunking; otherwise derive from file
+            sitekey = original_sitekey if (single_file_chunking and original_sitekey) else input_file.stem
+            if single_file_chunking and chunk_dir is not None:
+                # Direct chunk outputs to chunk_dir; we'll merge later
+                chunk_out = chunk_dir / f"{input_file.stem}_cleaned.jsonl"
+                chunk_fail = chunk_dir / f"{input_file.stem}_failed.jsonl"
+                chunk_outputs.append(chunk_out)
+                chunk_faileds.append(chunk_fail)
+                output_file = chunk_out
+                failed_file = chunk_fail
+                progress_file = chunk_dir / f"{input_file.stem}.progress.json"
+            else:
+                output_file = output_dir / f"{sitekey}_cleaned.jsonl"
+                failed_file = failed_dir / f"{sitekey}_failed.jsonl"
+                progress_file = self.progress_dir / f"{sitekey}.progress.json"
 
             tasks.append((
                 input_file,
@@ -1022,23 +1537,11 @@ class DataCleaningPipeline:
             except Exception:
                 line_counts[task[0].name] = 0
 
-        # Initialize tqdm bars if available
+        # Initialize tqdm bars on-demand only for active files (up to number of workers)
         use_bars = tqdm is not None
         bars: Dict[str, Any] = {}
-        if use_bars:
-            for idx, task in enumerate(tasks):
-                fname = task[0].name
-                total = line_counts.get(fname, 0)
-                # If total unknown (0), let tqdm handle indefinite total
-                bar_total = total if total > 0 else None
-                bars[fname] = tqdm(
-                    total=bar_total,
-                    desc=fname,
-                    position=idx,
-                    leave=True,
-                    unit='rec',
-                    dynamic_ncols=True
-                )
+        bar_positions: Dict[str, int] = {}
+        available_positions: List[int] = list(range(min(len(tasks), self.args.workers)))
 
         with ProcessPoolExecutor(max_workers=self.args.workers) as executor:
             futures = {executor.submit(process_file_worker, task): task[0].name for task in tasks}
@@ -1069,10 +1572,17 @@ class DataCleaningPipeline:
                         filtered_post = stats.get('filtered_post', 0) or 0
                         failed = stats.get('failed', 0) or 0
                         success_rate = (success / total * 100) if total > 0 else 0
-                        logging.info(
-                            f"✓ {filename}: {success}/{total} ({success_rate:.1f}%) | "
-                            f"Filtered: {filtered_pre + filtered_post} | Failed: {failed}"
-                        )
+                        # Emit a concise completion line above the bars
+                        if use_bars and tqdm is not None:
+                            tqdm.write(
+                                f"✓ {filename}: {success}/{total} ({success_rate:.1f}%) | "
+                                f"Filtered: {filtered_pre + filtered_post} | Failed: {failed}"
+                            )
+                        else:
+                            logging.info(
+                                f"✓ {filename}: {success}/{total} ({success_rate:.1f}%) | "
+                                f"Filtered: {filtered_pre + filtered_post} | Failed: {failed}"
+                            )
                         # Mark as done in progress cache
                         progress_cache[filename] = {
                             'file': filename,
@@ -1083,15 +1593,22 @@ class DataCleaningPipeline:
                             'filtered_pre': filtered_pre,
                             'filtered_post': filtered_post,
                         }
-                        # Finalize progress bar for this file
+                        # Finalize and remove progress bar for this file
                         if use_bars and filename in bars:
-                            bar = bars[filename]
-                            if bar.total is None and line_counts.get(filename, 0) > 0:
-                                bar.total = line_counts[filename]
-                            # Ensure bar shows as complete
-                            bar.n = bar.total if bar.total is not None else total
-                            bar.refresh()
-                            bar.close()
+                            try:
+                                bar = bars.pop(filename)
+                                # ensure total is set for completion visuals if known
+                                if bar.total is None and line_counts.get(filename, 0) > 0:
+                                    bar.total = line_counts[filename]
+                                bar.n = bar.total if bar.total is not None else total
+                                bar.refresh()
+                                bar.close()
+                            except Exception:
+                                pass
+                            # free its position for reuse
+                            pos = bar_positions.pop(filename, None)
+                            if pos is not None and pos not in available_positions:
+                                available_positions.append(pos)
                     except Exception as e:
                         logging.error(f"✗ {filename}: {e}")
 
@@ -1119,14 +1636,53 @@ class DataCleaningPipeline:
                             aggregated['failed'] += int(snap.get('failed', 0) or 0)
                             aggregated['filtered_pre'] += int(snap.get('filtered_pre', 0) or 0)
                             aggregated['filtered_post'] += int(snap.get('filtered_post', 0) or 0)
-                            if snap.get('status') != 'done':
+                            status = snap.get('status')
+                            if status != 'done':
                                 in_progress.append(f"{file_name}:{processed}")
-                            # Update tqdm bar for this file
-                            if use_bars and file_name in bars:
-                                bar = bars[file_name]
-                                if processed >= bar.n:
-                                    bar.n = processed
-                                    bar.refresh()
+                            # Manage tqdm bar for this file
+                            if use_bars:
+                                # Create bar lazily for active tasks
+                                if status != 'done' and file_name not in bars and available_positions:
+                                    try:
+                                        pos = available_positions.pop(0)
+                                        bar_positions[file_name] = pos
+                                        total = line_counts.get(file_name, 0)
+                                        bar_total = total if total > 0 else None
+                                        bars[file_name] = tqdm(
+                                            total=bar_total,
+                                            desc=file_name,
+                                            position=pos,
+                                            leave=False,
+                                            unit='rec',
+                                            dynamic_ncols=True
+                                        )
+                                    except Exception:
+                                        pass
+                                # Update existing bar
+                                if file_name in bars:
+                                    bar = bars[file_name]
+                                    if processed >= getattr(bar, 'n', 0):
+                                        bar.n = processed
+                                        try:
+                                            bar.refresh()
+                                        except Exception:
+                                            pass
+                                    # Close and free finished bars
+                                    if status == 'done':
+                                        try:
+                                            bar = bars.pop(file_name)
+                                            # ensure completion visual
+                                            if bar.total is None and line_counts.get(file_name, 0) > 0:
+                                                bar.total = line_counts[file_name]
+                                            if bar.total is not None and bar.n < bar.total:
+                                                bar.n = bar.total
+                                            bar.refresh()
+                                            bar.close()
+                                        except Exception:
+                                            pass
+                                        pos = bar_positions.pop(file_name, None)
+                                        if pos is not None and pos not in available_positions:
+                                            available_positions.append(pos)
                     # If tqdm is not available, print a single updating line
                     if not use_bars:
                         line = (
@@ -1150,6 +1706,31 @@ class DataCleaningPipeline:
                     bar.close()
                 except Exception:
                     pass
+
+        # If we chunked a single file, merge the chunk outputs into final targets
+        if single_file_chunking and chunk_dir is not None and final_output_target is not None and final_failed_target is not None:
+            try:
+                # Merge cleaned outputs
+                with open(final_output_target, 'w', encoding='utf-8') as fout:
+                    for p in chunk_outputs:
+                        try:
+                            with open(p, 'r', encoding='utf-8') as fin:
+                                for line in fin:
+                                    fout.write(line)
+                        except Exception as e:
+                            logging.warning(f"Failed to merge chunk output {p}: {e}")
+                # Merge failed outputs
+                with open(final_failed_target, 'w', encoding='utf-8') as ff:
+                    for p in chunk_faileds:
+                        try:
+                            with open(p, 'r', encoding='utf-8') as fin:
+                                for line in fin:
+                                    ff.write(line)
+                        except Exception as e:
+                            logging.warning(f"Failed to merge chunk failed {p}: {e}")
+                logging.info(f"Merged chunk outputs to {final_output_target} and {final_failed_target}")
+            except Exception as e:
+                logging.error(f"Failed to merge chunked outputs: {e}")
 
         # Final summary
         self.print_summary(total_stats)
