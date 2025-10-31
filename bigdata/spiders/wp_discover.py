@@ -469,17 +469,12 @@ class WPDiscoverSpider(scrapy.Spider):
                 #                          dont_filter=True, errback=self.errback_search)
 
                 elif eng == 'yahoo':
-                    start_b = self._get_resume_value(kw, 'yahoo', 1)
-                    url = f"https://search.yahoo.com/search?p={quote_plus(kw)}&b={start_b}"
+                    url = f"https://search.yahoo.com/search?p={quote_plus(kw)}&b=1"
                     meta = {
-                        'kw': kw, 'b': start_b, 'engine': 'yahoo',
+                        'kw': kw, 'b': 1, 'engine': 'yahoo',
                         'use_proxy': False, 'bypass_cf': True
                     }
-                    page_num = ((start_b - 1) // 10) + 1
-                    if start_b > 1:
-                        self.logger.info(f"[SEARCH RESUME] YAHOO '{kw}' - resuming at page {page_num} (b={start_b})")
-                    else:
-                        self.logger.info(f"[SEARCH START] YAHOO '{kw}' - page 1")
+                    self.logger.info(f"[SEARCH START] YAHOO '{kw}' - page 1")
                     yield scrapy.Request(url, meta=meta, callback=self.parse_search_yahoo,
                                          dont_filter=True, errback=self.errback_search)
 
@@ -506,13 +501,6 @@ class WPDiscoverSpider(scrapy.Spider):
         self.logger.info(f"[SEARCH RESULT] BING '{kw}' page {page_num} - found {len(links)} links")
 
         yield from self._handle_search_links(links, kw, engine)
-
-        # Update resume state to the next offset so we don't repeat this page next session
-        try:
-            self._set_resume_value(kw, engine, max(1, offset + 50))
-            self.logger.debug(f"[STATE] Set resume for BING '{kw}' to first={max(1, offset + 50)}")
-        except Exception:
-            pass
 
         # Pagination
         if self._should_continue_pagination(kw, engine, bool(links)):
@@ -599,13 +587,6 @@ class WPDiscoverSpider(scrapy.Spider):
         self.logger.info(f"[SEARCH RESULT] YAHOO '{kw}' page {page_num} - found {len(links)} links")
 
         yield from self._handle_search_links(links, kw, engine)
-
-        # Update resume state to the next b so we don't repeat this page next session
-        try:
-            self._set_resume_value(kw, engine, max(1, b + 10))
-            self.logger.debug(f"[STATE] Set resume for YAHOO '{kw}' to b={max(1, b + 10)}")
-        except Exception:
-            pass
 
         # Pagination
         if self._should_continue_pagination(kw, engine, bool(links)):
