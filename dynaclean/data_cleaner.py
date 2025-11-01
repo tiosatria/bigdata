@@ -904,13 +904,13 @@ class RecordProcessor:
             xpath = clean_args.get('body_xpath')
             noises = clean_args.get('noises', [])
 
-            html_with_placeholders, ph_map = preprocess_html_for_media(body_html, base_url=url)
+            # html_with_placeholders, ph_map = preprocess_html_for_media(body_html, base_url=url)
 
             formating = clean_args.get('formating', {})
             include_links = bool(formating.get('retain_links', False))
 
-            extracted_body = self.cleaner.clean_html(
-                html_with_placeholders,
+            cleaned_body = self.cleaner.clean_html(
+                body_html,
                 xpath,
                 noises,
                 include_tables=False,
@@ -919,7 +919,7 @@ class RecordProcessor:
                 config=self.trafilatura_config,
             )
 
-            cleaned_body = restore_placeholders(extracted_body, ph_map)
+            # cleaned_body = restore_placeholders(extracted_body, ph_map)
 
             if not cleaned_body:
                 return {'status': 'filtered_pre', 'reason': 'empty_after_extraction'}
@@ -1080,18 +1080,9 @@ def process_batch_worker(batch_data: Tuple) -> Tuple[List[Dict], List[Dict], Lis
         status = result.get('status', 'error')
 
         if status == 'success':
-            url = result.get('data', {}).get('meta', {}).get('data_info', {}).get('url')
-            if url:
-                # Check and set atomic-like operation in shared dict
-                if url in seen_urls:
-                    result['status'] = 'duplicate'
-                    result['reason'] = f'duplicate_url:{url}'
-                    duplicates.append(result)
-                else:
-                    seen_urls[url] = 1  # Mark as seen
-                    successes.append(result)
-            else:
-                successes.append(result)  # No URL, cannot dedupe
+            successes.append(result)
+        elif status == 'duplicate':
+            duplicates.append(result)
         else:
             failures.append(result)  # 'error', 'filtered_pre', 'filtered_post'
 
@@ -1164,12 +1155,14 @@ def global_file_writer(output_queue: Queue, output_dir: Path, failed_dir: Path) 
     """
     Asynchronously write results from all workers to the correct files.
     This is now the main progress tracker and stats accumulator.
+    Also performs URL-level de-duplication to avoid cross-process contention.
     """
     open_files = {}
     stats = {
         'total': 0, 'success': 0, 'failed': 0,
         'filtered_pre': 0, 'filtered_post': 0, 'duplicates': 0
     }
+    seen_urls = set()
 
     pbar = None
     if tqdm:
@@ -1184,6 +1177,22 @@ def global_file_writer(output_queue: Queue, output_dir: Path, failed_dir: Path) 
                 break
 
             result, sitekey = item
+
+            # Perform de-duplication here (single thread, fast set lookups)
+            try:
+                if result.get('status') == 'success':
+                    url = (((result.get('data') or {}).get('meta') or {}).get('data_info') or {}).get('url')
+                    if url:
+                        if url in seen_urls:
+                            result = {
+                                'status': 'duplicate',
+                                'reason': f'duplicate_url:{url}'
+                            }
+                        else:
+                            seen_urls.add(url)
+            except Exception:
+                # If anything goes wrong, just treat as-is
+                pass
 
             if pbar is not None:
                 pbar.update(1)
@@ -1312,7 +1321,7 @@ class DataCleaningPipeline:
         with Manager() as manager:
 
             # 1. Create shared (and deep) queues
-            queue_depth = max(200, self.args.workers * 10)  # At least 200
+            queue_depth = max(1000, self.args.workers * 50)  # Deeper buffers to reduce backpressure
             input_queue = manager.Queue(maxsize=queue_depth)
             output_queue = manager.Queue(maxsize=queue_depth)
 
