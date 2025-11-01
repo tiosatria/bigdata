@@ -173,788 +173,366 @@ template_wordpress:
 
 domain_mapping:
   # Format: source_domain: {domain: category, subdomain: subcategory}
-  northwestclinic_org:
-    domain: 'health'
-    subdomain: 'medical clinic'
-  noted_collectivevoice_com:
+  101artists.com:
+      domain: 'art'
+      subdomain: 'artist resources'
+  5minutesformom.com:
+      domain: 'family'
+      subdomain: 'parenting blog'
+  acamporainteriors.com:
+      domain: 'home'
+      subdomain: 'interior design'
+  adorno.design:
+      domain: 'art'
+      subdomain: 'design gallery'
+  alicedias.com:
+      domain: 'lifestyle'
+      subdomain: 'blog'
+  alisonsnotebook.com:
+      domain: 'lifestyle'
+      subdomain: 'blog'
+  allsortsofsimple.com:
+      domain: 'lifestyle'
+      subdomain: 'minimalism'
+  alrightgotit.com:
+      domain: 'unclassified'
+      subdomain: 'general'
+  amourvert.com:
+      domain: 'fashion'
+      subdomain: 'sustainable fashion'
+  ampainsoc.org:
+      domain: 'health'
+      subdomain: 'pain medicine'
+  androidally.com:
+      domain: 'technology'
+      subdomain: 'Android'
+  anoregoncottage.com:
+      domain: 'lifestyle'
+      subdomain: 'recipes & DIY'
+  apacentrepreneur.com:
+      domain: 'business'
+      subdomain: 'entrepreneurship'
+  apinchofadventure.com:
+      domain: 'food'
+      subdomain: 'recipes'
+  archovavisuals.com:
+      domain: 'business'
+      subdomain: 'architectural rendering'
+  artchive.com:
+      domain: 'art'
+      subdomain: 'art gallery'
+  artenet.it:
+      domain: 'art'
+      subdomain: 'gallery'
+  ask.com:
+      domain: 'technology'
+      subdomain: 'search engine'
+  aspenwaste.com:
+      domain: 'home services'
+      subdomain: 'waste management'
+  atlasgames.io:
+      domain: 'gaming'
+      subdomain: 'game development'
+  avidcollectibles.com:
+      domain: 'hobbies'
+      subdomain: 'collectibles'
+  backyardhomesteadhq.com:
+      domain: 'lifestyle'
+      subdomain: 'homesteading'
+  bakingbites.com:
+      domain: 'food'
+      subdomain: 'baking'
+  balconygardenweb.com:
+      domain: 'gardening'
+      subdomain: 'container gardening'
+  beaujedesigns.com:
+      domain: 'DIY'
+      subdomain: 'crafts'
+  biglivinglittlefootprint.com:
+      domain: 'lifestyle'
+      subdomain: 'sustainability'
+  blog.ahsuite.com:
     domain: 'business'
-    subdomain: 'influencer marketing'
-  nourishmovelove_com:
-    domain: 'fitness'
-    subdomain: 'workouts'
-  nowthaticando_com:
-    domain: 'DIY'
-    subdomain: 'crafts'
-  nutriciously_com:
-    domain: 'food'
-    subdomain: 'vegan nutrition'
-  nuvkriti_com:
-    domain: 'fashion'
-    subdomain: 'sustainable fashion'
-  oasismindandbody_com:
-    domain: 'health'
-    subdomain: 'wellness'
-  ohmysander_com:
-    domain: 'DIY'
-    subdomain: 'woodworking'
-  oishya_com:
-    domain: 'food'
-    subdomain: 'Japanese kitchenware'
-  olivesfordinner_com:
-    domain: 'food'
-    subdomain: 'vegan recipes'
-  onbudgetmoms_com:
+    subdomain: 'marketing software'
+  blog.embracehomeloans.com:
     domain: 'finance'
-    subdomain: 'frugal living'
-  onecrazyhouse_com:
-    domain: 'lifestyle'
-    subdomain: 'home hacks'
-  onfra_io:
+    subdomain: 'mortgage'
+  blog.paleohacks.com:
+      domain: 'food'
+      subdomain: 'paleo recipes'
+  blogs.yoroflow.com:
     domain: 'technology'
-    subdomain: 'cloud computing'
-  online-tech-tips_com:
-    domain: 'technology'
-    subdomain: 'IT support'
-  onlinecomputertips_com:
-    domain: 'technology'
-    subdomain: 'computer help'
-  onlinetoolguides_com:
-    domain: 'home improvement'
-    subdomain: 'tool reviews'
-  orbitingweb_com:
-    domain: 'technology'
-    subdomain: 'web development'
-  oregonsbdc_org:
-    domain: 'business'
-    subdomain: 'small business development'
-  oregonworkforcepartnership_org:
-    domain: 'career'
-    subdomain: 'workforce development'
-  organicallybecca_com:
-    domain: 'lifestyle'
-    subdomain: 'natural living'
-  organizeeveryroom_com:
-    domain: 'home'
-    subdomain: 'organization'
-  orilea_com:
-    domain: 'unclassified'
-    subdomain: 'general'
-  outdoors_org:
-    domain: 'recreation'
-    subdomain: 'outdoor activities'
-  outfitonpoint_com:
-    domain: 'fashion'
-    subdomain: 'style'
-  owixiwo_com:
-    domain: 'unclassified'
-    subdomain: 'general'
-  oxfordinternationalenglish_com:
-    domain: 'education'
-    subdomain: 'English language'
-  oxfordonlineenglish_com:
-    domain: 'education'
-    subdomain: 'English language'
-  palmcasual_com:
-    domain: 'home'
-    subdomain: 'outdoor furniture'
-  panmastery_com:
-    domain: 'food'
-    subdomain: 'cookware'
-  paperflodesigns_com:
-    domain: 'DIY'
-    subdomain: 'paper crafts'
-  paulysplayhouse_com:
-    domain: 'family'
-    subdomain: "children's activities"
-  pctechmag_com:
-    domain: 'technology'
-    subdomain: 'tech news'
-  penndutchstructures_com:
-    domain: 'home improvement'
-    subdomain: 'sheds & outdoor structures'
-  perfectioncleanresults_com:
-    domain: 'home services'
-    subdomain: 'cleaning'
-  permaculturepractice_com:
-    domain: 'gardening'
-    subdomain: 'permaculture'
-  petitechefs_com:
-    domain: 'food'
-    subdomain: 'kids cooking'
-  pettech_net:
-    domain: 'pets'
-    subdomain: 'pet first aid'
-  photogenicmind_com:
-    domain: 'hobbies'
-    subdomain: 'photography'
-  planreadygo_com:
-    domain: 'travel'
-    subdomain: 'trip planning'
-  plantbasedjess_com:
-    domain: 'food'
-    subdomain: 'plant-based recipes'
-  plantbasedrecipe_com:
-    domain: 'food'
-    subdomain: 'plant-based recipes'
-  plantdaddydallas_com:
-    domain: 'gardening'
-    subdomain: 'houseplants'
-  plantpowercouple_com:
-    domain: 'food'
-    subdomain: 'vegan recipes'
-  positivebloom_com:
-    domain: 'self-improvement'
-    subdomain: 'positive thinking'
-  pouted_com:
-    domain: 'lifestyle'
-    subdomain: 'fashion & design'
-  powerofpositivity_com:
-    domain: 'self-improvement'
-    subdomain: 'positive thinking'
-  prenohq_com:
-    domain: 'education'
-    subdomain: 'learning centers'
-  prepdish_com:
-    domain: 'food'
-    subdomain: 'meal planning'
-  prototype_fashion:
-    domain: 'fashion'
-    subdomain: 'design'
-  psychnewsdaily_com:
-    domain: 'health'
-    subdomain: 'psychology news'
-  psychreg_org:
-    domain: 'health'
-    subdomain: 'psychology'
-  pulivarthigroup_com:
-    domain: 'legal'
-    subdomain: 'law firm'
-  purgula_com:
-    domain: 'home improvement'
-    subdomain: 'pergolas'
-  qappsonline_com:
-    domain: 'technology'
-    subdomain: 'software'
-  quantifysleep_com:
-    domain: 'health'
-    subdomain: 'sleep tracking'
-  quickeasycook_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  quinntechco_com:
-    domain: 'technology'
-    subdomain: 'IT services'
-  radiashealth_org:
-    domain: 'health'
-    subdomain: 'mental health'
-  rantaustudio_com:
-    domain: 'home'
-    subdomain: 'interior design'
-  readersdigest_ca:
-    domain: 'media'
-    subdomain: 'general interest'
-  realfoodrealdeals_com:
-    domain: 'food'
-    subdomain: 'frugal eating'
-  realfoodwholelife_com:
-    domain: 'food'
-    subdomain: 'healthy recipes'
-  realitypathing_com:
-    domain: 'self-improvement'
-    subdomain: 'personal development'
-  remake_world:
-    domain: 'fashion'
-    subdomain: 'sustainable fashion'
-  research_ecomakery_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  resiliencyclinic_com:
-    domain: 'health'
-    subdomain: 'mental health'
-  resumespice_com:
-    domain: 'career'
-    subdomain: 'resume writing'
-  resumeway_com:
-    domain: 'career'
-    subdomain: 'resume writing'
-  romeing_it:
-    domain: 'travel'
-    subdomain: 'Rome'
-  runningonrealfood_com:
-    domain: 'food'
-    subdomain: 'vegan recipes'
-  rustic-crafts_com:
-    domain: 'DIY'
-    subdomain: 'crafts'
-  safetypedia_com:
-    domain: 'business'
-    subdomain: 'workplace safety'
-  sagementalwellness_com:
-    domain: 'health'
-    subdomain: 'mental health'
-  saltyskitchen_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  sanjosementalhealth_org:
-    domain: 'health'
-    subdomain: 'mental health'
-  savorandsavvy_com:
-    domain: 'finance'
-    subdomain: 'frugal living'
-  savorandsmile_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  sawdustgirl_com:
-    domain: 'DIY'
-    subdomain: 'woodworking'
-  sawshub_com:
-    domain: 'home improvement'
-    subdomain: 'tool reviews'
-  schoolhabits_com:
-    domain: 'education'
-    subdomain: 'study skills'
-  seattlewire_com:
-    domain: 'media'
-    subdomain: 'local news'
-  selfsufficiencyfrugalliving_com:
-    domain: 'lifestyle'
-    subdomain: 'homesteading'
-  sewfrenchcrossstitch_com:
-    domain: 'DIY'
-    subdomain: 'cross-stitch'
-  sewingers_com:
-    domain: 'DIY'
-    subdomain: 'sewing'
-  sewingforaliving_com:
-    domain: 'DIY'
-    subdomain: 'sewing business'
-  sewingfromhome_com:
-    domain: 'DIY'
-    subdomain: 'sewing'
-  sewingmachinefun_com:
-    domain: 'DIY'
-    subdomain: 'sewing'
-  sewingsociety_com:
-    domain: 'DIY'
-    subdomain: 'sewing'
-  shabbyartboutique_com:
-    domain: 'DIY'
-    subdomain: 'crafts & decor'
-  shansmart_store:
+    subdomain: 'workflow automation'
+  brosix.com:
+      domain: 'technology'
+      subdomain: 'team communication'
+  budget101.com:
+      domain: 'finance'
+      subdomain: 'frugal living'
+  canastarules.org:
+      domain: 'hobbies'
+      subdomain: 'card games'
+  chameleonwoodcrafting.com:
+      domain: 'DIY'
+      subdomain: 'woodworking'
+  changingsocial.com:
+      domain: 'business'
+      subdomain: 'technology training'
+  chefsavvy.com:
+      domain: 'food'
+      subdomain: 'recipes'
+  citynaturopathic.ca:
+      domain: 'health'
+      subdomain: 'naturopathic medicine'
+  classtechtips.com:
+      domain: 'education'
+      subdomain: 'edtech'
+  classycareergirl.com:
+      domain: 'career'
+      subdomain: "women's careers"
+  cleangreensimple.com:
+      domain: 'lifestyle'
+      subdomain: 'sustainability'
+  cleverlaundry.com:
+      domain: 'home services'
+      subdomain: 'laundry'
+  codecarbon.com:
+      domain: 'technology'
+      subdomain: 'software'
+  codespaces.com:
+      domain: 'technology'
+      subdomain: 'software development'
+  community.thriveglobal.com:
+      domain: 'health'
+      subdomain: 'wellness'
+  counselingwellnesspgh.com:
+      domain: 'health'
+      subdomain: 'mental health'
+  courses.turkishcouncil.org:
+      domain: 'education'
+      subdomain: 'Turkish language'
+  craftmakerpro.com:
+      domain: 'business'
+      subdomain: 'craft business'
+  craftulate.com:
+      domain: 'DIY'
+      subdomain: 'kids crafts'
+  craftydiyers.com:
+      domain: 'DIY'
+      subdomain: 'crafts'
+  creativehomemaking.com:
+      domain: 'lifestyle'
+      subdomain: 'home management'
+  cuisineatlas.com:
+      domain: 'food'
+      subdomain: 'global recipes'
+  customany.com:
     domain: 'shopping'
-    subdomain: 'e-commerce'
-  sharksmind_com:
-    domain: 'business'
-    subdomain: 'entrepreneurship'
-  shetravelschic_com:
-    domain: 'travel'
-    subdomain: 'blog'
-  shetriedwhat_com:
-    domain: 'lifestyle'
-    subdomain: 'blog'
-  sideshow_com:
+    subdomain: 'custom products'
+  dailyfashiontrends.com:
+      domain: 'fashion'
+      subdomain: 'style'
+  dailywritingtips.com:
+      domain: 'education'
+      subdomain: 'writing'
+  dataquest.io:
+      domain: 'education'
+      subdomain: 'data science'
+  dayatree.com:
+      domain: 'health'
+      subdomain: 'wellness'
+  decorguider.com:
+      domain: 'home'
+      subdomain: 'decor'
+  diabeticgourmet.com:
+    domain: 'food'
+    subdomain: 'diabetic recipes'
+  dianthomas.com:
+      domain: 'lifestyle'
+      subdomain: 'blog'
+  dirobots.com:
+      domain: 'technology'
+      subdomain: 'robotics'
+  diyideas.org:
+      domain: 'DIY'
+      subdomain: 'crafts'
+  dnsstuff.com:
+      domain: 'technology'
+      subdomain: 'network tools'
+  dollartreecraft.org:
+    domain: 'DIY'
+    subdomain: 'crafts'
+  downtothewire.net.au:
+      domain: 'business'
+      subdomain: 'IT services'
+  drchandrilchugh.com:
+      domain: 'health'
+      subdomain: 'neurology'
+  dressdreamers.com:
+      domain: 'fashion'
+      subdomain: 'style'
+  driversdrift.com:
+      domain: 'automotive'
+      subdomain: 'blog'
+  ecomasteryproject.com:
+      domain: 'environment'
+      subdomain: 'ecology'
+  eduww.net:
+      domain: 'education'
+      subdomain: 'online learning'
+  ehs.com:
+      domain: 'business'
+      subdomain: 'environmental health & safety'
+  electraradioti.com:
+      domain: 'lifestyle'
+      subdomain: 'blog'
+  elevationhandmade.com:
+      domain: 'DIY'
+      subdomain: 'crafts'
+  eluxemagazine.com:
+      domain: 'lifestyle'
+      subdomain: 'sustainable luxury'
+  energytheory.com:
+      domain: 'health'
+      subdomain: 'wellness'
+  enlightio.com:
+      domain: 'education'
+      subdomain: 'online learning'
+  environment.co:
+      domain: 'environment'
+      subdomain: 'sustainability'
+  erinspain.com:
+      domain: 'lifestyle'
+      subdomain: 'DIY & decor'
+  essentialguru.org:
+      domain: 'health'
+      subdomain: 'essential oils'
+  farmhouseguide.com:
+      domain: 'home'
+      subdomain: 'farmhouse decor'
+  feedandfarm.org:
+      domain: 'agriculture'
+      subdomain: 'farming'
+  feelingnifty.com:
+      domain: 'DIY'
+      subdomain: 'crafts'
+  fixitsmartly.com:
+      domain: 'home improvement'
+      subdomain: 'DIY'
+  florgeous.com:
+      domain: 'gardening'
+      subdomain: 'flowers'
+  fluentarabic.net:
+      domain: 'education'
+      subdomain: 'Arabic language'
+  flyrise.io:
+      domain: 'career'
+      subdomain: 'job search'
+  foe.tips:
+      domain: 'gaming'
+      subdomain: 'Forge of Empires'
+  foodandjourneys.net:
+      domain: 'travel'
+      subdomain: 'food'
+  foodhow.com:
+      domain: 'food'
+      subdomain: 'cooking tips'
+  foodiemag.co.za:
+      domain: 'food'
+      subdomain: 'magazine'
+  foodindustryhub.com:
+      domain: 'business'
+      subdomain: 'food industry'
+  foodmanifest.com:
+      domain: 'food'
+      subdomain: 'recipes'
+  foodrevolution.org:
+      domain: 'food'
+      subdomain: 'healthy eating'
+  foodsafety.org:
+      domain: 'food'
+      subdomain: 'food safety'
+  foodtestingindia.com:
+      domain: 'business'
+      subdomain: 'food testing'
+  foolproofbaking.com:
+      domain: 'food'
+      subdomain: 'baking'
+  formulabotanica.com:
+      domain: 'education'
+      subdomain: 'organic skincare'
+  fosterreprohealth.org:
+      domain: 'health'
+      subdomain: 'reproductive health'
+  foundersmag.com:
+      domain: 'business'
+      subdomain: 'entrepreneurship'
+  fourgenerationsoneroof.com:
+      domain: 'home'
+      subdomain: 'interior design'
+  foxylabny.com:
+      domain: 'beauty'
+      subdomain: 'skincare'
+  freewoodworkingplan.com:
+      domain: 'DIY'
+      subdomain: 'woodworking'
+  frenchcountrycottage.net:
+      domain: 'home'
+      subdomain: 'French country decor'
+  frenchcreekfarmhouse.com:
+      domain: 'home'
+      subdomain: 'farmhouse decor'
+  freshfarms.com:
+      domain: 'food'
+      subdomain: 'grocery'
+  fromfrugaltofree.com:
+      domain: 'finance'
+      subdomain: 'personal finance'
+  frugalmomguide.com:
+      domain: 'finance'
+      subdomain: 'frugal living'
+  fs.blog:
+      domain: 'self-improvement'
+      subdomain: 'mental models'
+  funwithwoodworking.com:
+      domain: 'DIY'
+      subdomain: 'woodworking'
+  futureeducationmagazine.com:
+      domain: 'education'
+      subdomain: 'magazine'
+  gadgetreview.com:
+      domain: 'technology'
+      subdomain: 'gadget reviews'
+  gamepur.com:
+      domain: 'gaming'
+      subdomain: 'news & guides'
+  gamer.org:
+      domain: 'gaming'
+      subdomain: 'blog'
+  gamertagzero.com:
+      domain: 'gaming'
+      subdomain: 'blog'
+  gamezo.gg:
+      domain: 'gaming'
+      subdomain: 'news & guides'
+  garagecabinets.com:
+      domain: 'home improvement'
+      subdomain: 'garage storage'
+  garagehobbyist.com:
     domain: 'hobbies'
-    subdomain: 'collectibles'
-  simplelivingonrepeat_com:
-    domain: 'lifestyle'
-    subdomain: 'minimalism'
-  simplepurposefulliving_com:
-    domain: 'lifestyle'
-    subdomain: 'minimalism'
-  simplespaces_net:
-    domain: 'home'
-    subdomain: 'organization'
-  simplycanning_com:
-    domain: 'food'
-    subdomain: 'canning'
-  simplyfamilyrecipes_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  simplylifebybri_com:
-    domain: 'lifestyle'
-    subdomain: 'blog'
-  simplypsychology_org:
-    domain: 'education'
-    subdomain: 'psychology'
-  sixtyandme_com:
-    domain: 'lifestyle'
-    subdomain: 'seniors'
-  skillindiahub_com:
-    domain: 'education'
-    subdomain: 'skill development'
-  skillsuccess_com:
-    domain: 'education'
-    subdomain: 'online courses'
-  sleepresearchfoundation_com:
-    domain: 'health'
-    subdomain: 'sleep'
-  sleepreviewmag_com:
-    domain: 'health'
-    subdomain: 'sleep medicine'
-  smartechmolabs_com:
-    domain: 'technology'
-    subdomain: 'smart home'
-  smarthomemuse_com:
-    domain: 'technology'
-    subdomain: 'smart home'
-  socialbee_com:
-    domain: 'technology'
-    subdomain: 'social media management'
-  socialfans4_me:
-    domain: 'business'
-    subdomain: 'social media marketing'
-  soilscents_com:
-    domain: 'gardening'
-    subdomain: 'soil'
-  solutions4sleep_com:
-    domain: 'health'
-    subdomain: 'sleep'
-  solutionsuggest_com:
-    domain: 'technology'
-    subdomain: 'B2B software'
-  sophiamavridi_com:
-    domain: 'lifestyle'
-    subdomain: 'blog'
-  sourceofsources_com:
-    domain: 'reference'
-    subdomain: 'general'
-  spartancapitalgroup_com:
-    domain: 'finance'
-    subdomain: 'investment'
-  spca_org:
-    domain: 'pets'
-    subdomain: 'animal welfare'
-  spicetraveller_com:
-    domain: 'travel'
-    subdomain: 'food'
-  spiegato_com:
-    domain: 'reference'
-    subdomain: 'explanations'
-  splashoftaste_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  staceyssimplemeals_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  startupadviceguy_com:
-    domain: 'business'
-    subdomain: 'startups'
-  steadrush_com:
-    domain: 'technology'
-    subdomain: 'digital marketing'
-  story_motherhood_com_my:
-    domain: 'family'
-    subdomain: 'parenting'
-  strangecharmed_com:
-    domain: 'lifestyle'
-    subdomain: 'productivity'
-  stuartslandscaping_com:
-    domain: 'home services'
-    subdomain: 'landscaping'
-  studeospaces_com:
-    domain: 'home'
-    subdomain: 'interior design'
-  styl-inc_com:
-    domain: 'fashion'
-    subdomain: 'styling'
-  stylebaggage_com:
-    domain:Dressing Area:
-    domain: 'fashion'
-    subdomain: 'blog'
-  stylebysavina_com:
-    domain: 'fashion'
-    subdomain: 'sustainable fashion'
-  stylecaster_com:
-    domain: 'fashion'
-    subdomain: 'style'
-  success_com:
-    domain: 'self-improvement'
-    subdomain: 'business'
-  successfullysustainable_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  sunitsolutions_ca:
-    domain: 'technology'
-    subdomain: 'IT services'
-  superstaff_com:
-    domain: 'business'
-    subdomain: 'outsourcing'
-  supportyourtech_com:
-    domain: 'technology'
-    subdomain: 'tech support'
-  surefirelocal_com:
-    domain: 'business'
-    subdomain: 'local marketing'
-  sustainabilitycubed_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  sustainablebusinesstoolkit_com:
-    domain: 'business'
-    subdomain: 'sustainability'
-  sveltemag_com:
-    domain: 'fashion'
-    subdomain: 'magazine'
-  talkbitz_com:
-    domain: 'technology'
-    subdomain: 'tech news'
-  tammileetips_com:
-    domain: 'lifestyle'
-    subdomain: 'food & travel'
-  tastesdelicious_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  tastetarka_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  taylorfarms_com:
-    domain: 'food'
-    subdomain: 'salads'
-  teachthought_com:
-    domain: 'education'
-    subdomain: 'teaching'
-  techrockstars_com:
-    domain:Location:
-    domain: 'technology'
-    subdomain: 'tech news'
-  techyv_com:
-    domain: 'technology'
-    subdomain: 'tech support'
-  theabilitytoolbox_com:
-    domain: 'health'
-    subdomain: 'disability resources'
-  theanimalcare_org:
-    domain: 'pets'
-    subdomain: 'animal welfare'
-  theartyteacher_com:
-    domain: 'education'
-    subdomain: 'art'
-  theatlasheart_com:
-    domain: 'travel'
-    subdomain: 'blog'
-  thebananadiaries_com:
-    domain: 'food'
-    subdomain: 'vegan baking'
-  thecoastaloak_com:
-    domain: 'home'
-    subdomain: 'decor'
-  theconsciousinsider_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  thecookingfacts_com:
-    domain: 'food'
-    subdomain: 'cooking tips'
-  thecooldown_com:
-    domain:Opening Paragraph:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  thecreativeshour_com:
-    domain: 'art'
-    subdomain: 'design'
-  thedecorvault_blog:
-    domain: 'home'
-    subdomain: 'decor'
-  thedollarstretcher_com:
-    domain: 'finance'
-    subdomain: 'frugal living'
-  theenlightenmentjourney_com:
-    domain: 'spirituality'
-    subdomain: 'self-improvement'
-  thefamilyvacationguide_com:
-    domain: 'travel'
-    subdomain: 'family travel'
-  thefiltery_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainable products'
-  thefinancialgeek_com:
-    domain: 'finance'
-    subdomain: 'personal finance'
-  thefmextra_com:
-    domain: 'gaming'
-    subdomain: 'Football Manager'
-  thefrugalbite_com:
-    domain: 'food'
-    subdomain: 'budget recipes'
-  thefrugalfarmgirl_com:
-    domain: 'lifestyle'
-    subdomain: 'frugal living'
-  thefrugalsouth_com:
-    domain: 'finance'
-    subdomain: 'frugal living'
-  thegamersguides_com:
-    domain: 'gaming'
-    subdomain: 'guides'
-  thegardengrazer_com:
-    domain: 'food'
-    subdomain: 'plant-based recipes'
-  thegingeredwhisk_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  thegirlonbloor_com:
-    domain: 'food'
-    subdomain: 'healthy recipes'
-  thegreenhubonline_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  theherbprof_com:
-    domain: 'health'
-    subdomain: 'herbalism'
-  thehomemenders_com:
-    domain: 'home services'
-    subdomain: 'handyman'
-  theliterarycompass_com:
-    domain: 'culture'
-    subdomain: 'books'
-  themechanicdoctor_com:
-    domain: 'automotive'
-    subdomain: 'auto repair'
-  thenestingchronicles_org:
-    domain: 'lifestyle'
-    subdomain: 'blog'
-  thensf_org:
-    domain: 'science'
-    subdomain: 'research funding'
-  thepracticalplanter_com:
-    domain: 'gardening'
-    subdomain: 'houseplants'
-  theprepared_com:
-    domain: 'lifestyle'
-    subdomain: 'preparedness'
-  therealfooddietitians_com:
-    domain: 'food'
-    subdomain: 'healthy recipes'
-  theresidentially_com:
-    domain: 'home'
-    subdomain: 'decor'
-  theresumeclinic_com:
-    domain: 'career'
-    subdomain: 'resume writing'
-  thesewingloftblog_com:
-    domain: 'DIY'
-    subdomain: 'sewing'
-  thesolospoon_com:
-    domain: 'food'
-    subdomain: 'recipes for one'
-  thetechylife_com:
-    domain: 'technology'
-    subdomain: 'tech news'
-  thethoughtfulgamer_com:
-    domain: 'hobbies'
-    subdomain: 'board games'
-  thethriftyapartment_com:
-    domain:Opening Paragraph:
-    domain: 'home'
-    subdomain: 'decor'
-  thevou_com:
-    domain: 'fashion'
-    subdomain: 'sustainable style'
-  thisevergreenhome_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  threephrase_com:
-    domain: 'business'
-    subdomain: 'electrical engineering'
-  thrivingcenterofpsych_com:
-    domain: 'health'
-    subdomain: 'mental health'
-  time-management_org:
-    domain: 'self-improvement'
-    subdomain: 'time management'
-  tinyworkshops_com:
-    domain: 'education'
-    subdomain: 'online courses'
-  tlcgarden_com:
-    domain: 'gardening'
-    subdomain: 'plant care'
-  todays-dates_com:
-    domain: 'reference'
-    subdomain: 'time & date'
-  toolsinaction_com:
-    domain: 'home improvement'
-    subdomain: 'tool reviews'
-  topgamingtips_com:
-    domain: 'gaming'
-    subdomain: 'guides'
-  toplinemd_com:
-    domain: 'health'
-    subdomain: 'medical services'
-  tra_extension_colostate_edu:
-    domain: 'education'
-    subdomain: 'university extension'
-  tracyssewingstudio_com:
-    domain: 'DIY'
-    subdomain: 'sewing'
-  traditionalcookingschool_com:
-    domain: 'food'
-    subdomain: 'traditional cooking'
-  travelanddestinations_com:
-    domain: 'travel'
-    subdomain: 'blog'
-  traveldonesimple_com:
-    domain: 'travel'
-    subdomain: 'tips'
-  travelfashiongirl_com:
-    domain: 'travel'
-    subdomain: 'fashion'
-  travelswithtalek_com:
-    domain: 'travel'
-    subdomain: 'blog'
-  treadingmyownpath_com:
-    domain: 'lifestyle'
-    subdomain: 'zero waste'
-  trembelingart_com:
-    domain: 'art'
-    subdomain: 'tutorials'
-  trendsetteralist_com:
-    domain:Key Features:
-    domain: 'fashion'
-    subdomain: 'style'
-  trendyfashionguide_com:
-    domain: 'fashion'
-    subdomain: 'style'
-  triptomotherhood_com:
-    domain: 'family'
-    subdomain: 'parenting'
-  trvst_world:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  trystressmanagement_com:
-    domain: 'health'
-    subdomain: 'stress management'
-  twinscience_com:
-    domain: 'education'
-    subdomain: 'STEM'
-  u-pull-it_com:
-    domain: 'automotive'
-    subdomain: 'auto parts'
-  uark_pressbooks_pub:
-    domain: 'education'
-    subdomain: 'university'
-  umatechnology_org:
-    domain: 'technology'
-    subdomain: 'IT training'
-  upcyclemystuff_com:
-    domain: 'DIY'
-    subdomain: 'upcycling'
-  upcyclethisdiythat_com:
-    domain: 'DIY'
-    subdomain: 'upcycling'
-  utia_tennessee_edu:
-    domain: 'education'
-    subdomain: 'agriculture'
-  vectorsleepclinic_com:
-    domain: 'health'
-    subdomain: 'sleep'
-  vegancocotte_com:
-    domain:Rules:
-    domain: 'food'
-    subdomain: 'vegan recipes'
-  veggums_com:
-    domain: 'health'
-    subdomain: 'supplements'
-  vertu_com:
-    domain: 'technology'
-    subdomain: 'luxury phones'
-  veryeasymakeup_com:
-    domain: 'beauty'
-    subdomain: 'makeup'
-  verywellmindset_com:
-  Ambiance:
-    domain: 'health'
-    subdomain: 'mental health'
-  vintageboothpro_com:
-    domain: 'business'
-    subdomain: 'photo booth'
-  vintagelifestyle_com:
-    domain: 'lifestyle'
-    subdomain: 'vintage'
-  visualartspassage_com:
-    domain: 'education'
-    subdomain: 'art'
-  vogue_in:
-    domain: 'fashion'
-    subdomain: 'magazine'
-  wallethacks_com:
-    domain: 'finance'
-    subdomain: 'personal finance'
-  wanderlustmagazine_com:
-    domain: 'travel'
-    subdomain: 'magazine'
-  wealthywomanfinance_com:
-    domain: 'finance'
-    subdomain: 'personal finance'
-  weareteachers_com:
-    domain: 'education'
-    subdomain: 'teaching'
-  web_blackbirdskincare_com:
-    domain: 'beauty'
-    subdomain: 'skincare'
-  welcometohoustontx_us:
-    domain: 'travel'
-    subdomain: 'Houston'
-  westernyouthservices_org:
-    domain: 'health'
-    subdomain: "children's mental health"
-  whatisgreenliving_com:
-    domain: 'lifestyle'
-    subdomain: 'sustainability'
-  wholeliving_com:
-    domain: 'lifestyle'
-    subdomain: 'wellness'
-  wholenewmom_com:
-    domain: 'health'
-    subdomain: 'natural living'
-  wiseowlmarketing_com:
-    domain: 'business'
-    subdomain: 'marketing'
-  womansworld_com:
-    domain: 'lifestyle'
-    subdomain: 'magazine'
-  woodsmithspirit_com:
-    domain: 'DIY'
-    subdomain:Example:
-    subdomain: 'woodworking'
-  woodworkly_com:
-    domain: 'DIY'
-    subdomain: 'woodworking'
-  wordstream_com:
-    domain: 'business'
-    subdomain: 'digital marketing'
-  work2bewell_org:
-    domain: 'health'
-    subdomain: 'mental health'
-  workandmoney_com:
-    domain: 'finance'
-    subdomain: 'career'
-  wrenchway_com:
-    domain: 'career'
-    subdomain: 'automotive technicians'
-  yellowhead_com:
-    domain: 'business'
-    subdomain: 'marketing'
-  yorlenyscleaningservice_com:
-    domain: 'home services'
-    subdomain: 'cleaning'
-  youngwomenshealth_org:
-    domain: 'health'
-    subdomain: "women's health"
-  yourspacebylucie_com:
-    domain: 'home'
-    subdomain: 'organization'
-  yummyinspirations_net:
-    domain: 'food'
-    subdomain: 'recipes'
-  yumytasty_com:
-    domain: 'food'
-    subdomain: 'recipes'
-  zanniee_com:
-    domain: 'lifestyle'
-    subdomain: 'blog'
-  zentrosy_com:
-    domain: 'unclassified'
-    subdomain: 'general'
-  zhangcatherine_com:
-    domain: 'lifestyle'
-    subdomain: 'blog'
+    subdomain: 'garage hobbies'
+  garden.eco:
+      domain: 'gardening'
+      subdomain: 'sustainable gardening'
+  gatheringdreams.com:
+      domain: 'self-improvement'
+      subdomain: 'personal development'
+  gearpatrol.com:
+      domain: 'lifestyle'
+      subdomain: 'product reviews'
+  geekmode.blog:
+      domain: 'technology'
+      subdomain: 'blog'
 
 # ============================================================================
 # SITE MAPPING - Site-specific configurations

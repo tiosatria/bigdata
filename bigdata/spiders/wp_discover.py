@@ -23,83 +23,135 @@ class WPDiscoverSpider(scrapy.Spider):
         'CLOSESPIDER_PAGECOUNT': 0,  # Disable page count limit
     }
 
+    # DEFAULT_TOPICS = [
+    #     # Home & Living
+    #     'home cleaning tips',
+    #     'stain removal hacks',
+    #     'home organization tips',
+    #     'home storage solutions',
+    #     'tips & tricks',
+    #     'decluttering tips',
+    #     'home decor ideas',
+    #     'practical life tips',
+    #     'daily life tips',
+    #     'DIY project',
+    #     'home diy project',
+    #     'gardening tips and tricks',
+    #     'landscaping tips',
+    #     'best landscaping tips',
+    #     'best plant care',
+    #     'home maintenance and repair'
+    # ]
+
     DEFAULT_TOPICS = [
-        # Home & Living
-        'home cleaning tips stain removal hacks',
-        'organization storage solutions decluttering',
-        'interior design home decor ideas',
-        'furniture restoration DIY projects',
-        'gardening plant care landscaping',
-        'home maintenance repair tutorials',
-
-        # Cooking & Food
-        'cooking recipes meal prep ideas',
-        'baking tips dessert recipes',
-        'food preservation canning freezing',
-        'kitchen hacks cooking techniques',
-        'healthy eating nutrition tips',
-        'budget meals frugal cooking',
-        'international cuisine ethnic recipes',
-        'vegan vegetarian plant-based recipes',
-
-        # Health & Wellness
-        'natural remedies home treatments',
-        'fitness workout routines exercise',
-        'mental health self-care wellness',
-        'nutrition diet healthy lifestyle',
-        'beauty skincare natural products',
-        'sleep improvement relaxation techniques',
-        'stress management mindfulness meditation',
-
-        # DIY & Crafts
-        'handmade crafts DIY tutorials',
-        'woodworking projects plans',
-        'sewing patterns clothing alterations',
-        'upcycling repurposing creative reuse',
-        'jewelry making beading crafts',
-        'painting drawing art techniques',
-        'home improvement renovation DIY',
- 
-        # Lifestyle & Personal
-        'parenting tips child development',
-        'pregnancy baby care newborn',
-        'pet care training animal health',
-        'personal finance budgeting saving',
-        'productivity time management hacks',
-        'relationship advice communication tips',
-        'travel tips destination guides',
-
-        # Technology & Digital
-        'tech tips computer troubleshooting',
-        'smartphone apps productivity tools',
-
-        # Fashion & Style
-        'fashion trends style guides',
-        'wardrobe essentials outfit ideas',
-        'sustainable fashion ethical clothing',
-        'makeup tutorials beauty tips',
-
-        # Education & Learning
-        'study tips learning techniques',
-        'online courses skill development',
-        'language learning resources',
-        'book reviews reading recommendations',
-
-        # Entertainment & Hobbies
-        'gaming tips strategies guides',
-        'collectibles hobby ideas',
-
-        # Business & Career
-        'entrepreneurship startup advice',
-        'resume writing job search tips',
-        'small business marketing ideas',
-
-        # Miscellaneous
-        'life hacks productivity tips',
-        'seasonal tips holiday ideas',
-        'sustainability eco-friendly living',
-        'minimalism simple living',
+        'simple living tips',
+        'DIY guides',
+        'home repair tips',
+        'how to repair your home',
+        'habit improvement',
+        'complete food recipes',
+        'large collection of food recipes',
+        'diy home project',
+        'gardening guides',
+        'self help guides',
+        'hygiene tips & guides',
+        'beauty tips & guides',
+        'cleaning tips & guides',
+        'practical home maintenance tips',
+        'home maintenance guides',
+        'cooking techniques',
+        'cooking guides',
+        'money tips & guides',
+        'home cooking tips & guides',
     ]
+
+    # DEFAULT_TOPICS = [
+    #     'cooking recipes',
+    #     'baking tips',
+    #     'food preservation tips',
+    #     'healthy eating tips & guide',
+    #     'life tips & guide',
+    #     'best cuisine recipes',
+    #     'best cuisine',
+    #     'crafting tips',
+    #     'craft tips & guides',
+    #     'fashion trends guides',
+    #     'hygiene tips & guides',
+    #     'makeup tips & guide',
+    #     'simple living tips & guides',
+    #     'life hacks',
+    #     'how to & diy',
+    #     'gardening tips & guides',
+    #     'gardening guides',
+    #     'self improvement tips & guides'
+    # ]
+
+    # DEFAULT_TOPICS = [
+    #     'cooking recipes',
+    #     'baking tips',
+    #     'food preservation tips',
+    #     'healthy eating tips & guide',
+    #     'life tips & guide',
+    #     'best cuisine recipes',
+    #     'best cuisine',
+    #     'crafting tips',
+    #     'craft tips & guides',
+    #     'fashion trends guides',
+    #     'hygiene tips & guides',
+    #     'makeup tips & guide',
+    #     'simple living tips & guides',
+    #     'life hacks',
+    #     'how to & diy',
+    #     'gardening tips & guides',
+    #     'gardening guides',
+    #     'self improvement tips & guides'
+    # ]
+
+    # DEFAULT_TOPICS = [
+    #     'cooking recipes meal prep ideas',
+    #     'baking tips dessert recipes',
+    #     'food preservation canning freezing',
+    #     'kitchen hacks cooking techniques',
+    #     'healthy eating nutrition tips',
+    #     'budget meals frugal cooking',
+    #     'international cuisine ethnic recipes',
+    #     'vegan vegetarian plant-based recipes',
+    #     'natural remedies home treatments',
+    #     'fitness workout routines exercise',
+    #     'mental health self-care wellness',
+    #     'nutrition diet healthy lifestyle',
+    #     'beauty skincare natural products',
+    #     'sleep improvement relaxation techniques',
+    #     'stress management mindfulness meditation',
+    #     'handmade crafts DIY tutorials',
+    #     'woodworking projects plans',
+    #     'sewing patterns clothing alterations',
+    #     'upcycling repurposing creative reuse',
+    #     'jewelry making beading crafts',
+    #     'painting drawing art techniques',
+    #     'home improvement renovation DIY',
+    #     'parenting tips child development',
+    #     'pregnancy baby care newborn',
+    #     'pet care training animal health',
+    #     'personal finance budgeting saving',
+    #     'productivity time management hacks',
+    #     'relationship advice communication tips',
+    #     'travel tips destination guides',
+    #     'fashion trends style guides',
+    #     'wardrobe essentials outfit ideas',
+    #     'sustainable fashion ethical clothing',
+    #     'makeup tutorials beauty tips',
+    #     'study tips learning techniques',
+    #     'online courses skill development',
+    #     'language learning resources',
+    #     'book reviews reading recommendations',
+    #     'collectibles hobby ideas',
+    #     'small business marketing ideas',
+    #     'life hacks productivity tips',
+    #     'seasonal tips holiday ideas',
+    #     'sustainability living tips',
+    #     'minimalism simple living',
+    # ]
 
     def __init__(self,
                  search_words: str = None,
@@ -170,6 +222,8 @@ class WPDiscoverSpider(scrapy.Spider):
             'domains_discovered': 0,
             'wp_sites_confirmed': 0,
         }
+        # Deduplicate SERP probe schedules (redirector URLs like bing.com/ck/a)
+        self.serp_probe_seen: Set[str] = set()
 
         # Persistent pagination state
         self.state_dir = os.path.join('crawl_state')
@@ -237,6 +291,16 @@ class WPDiscoverSpider(scrapy.Spider):
         except Exception as e:
             self.logger.error(f"[STATE] Failed to set resume value for {key}: {e}")
 
+    def _is_search_host(self, host: str) -> bool:
+        if not host:
+            return False
+        h = host.lower()
+        bad_suffixes = (
+            'duckduckgo.com', 'bing.com', 'google.com', 'yahoo.com', 'msn.com',
+            'r.msn.com', 'search.yahoo.com', 'r.search.yahoo.com'
+        )
+        return any(h == sfx or h.endswith('.' + sfx) for sfx in bad_suffixes)
+
     def _normalize_domain(self, url_like: str) -> str:
         """Return a clean domain (netloc) from a URL or text."""
         if not url_like:
@@ -282,11 +346,7 @@ class WPDiscoverSpider(scrapy.Spider):
             return ''
 
         # Ignore search engine hosts
-        bad_suffixes = (
-            '.duckduckgo.com', '.bing.com', '.google.com', '.yahoo.com',
-            'duckduckgo.com', 'bing.com', 'google.com', 'yahoo.com'
-        )
-        if any(netloc == sfx or netloc.endswith(sfx) for sfx in bad_suffixes):
+        if self._is_search_host(netloc):
             return ''
 
         return netloc
@@ -485,6 +545,57 @@ class WPDiscoverSpider(scrapy.Spider):
         engine = request.meta.get('engine', 'unknown')
         self.logger.error(f"[SEARCH ERROR] {engine.upper()} '{kw}' - {failure.value}")
 
+    # ------------- SERP Probe (fallback for undecoded redirect links) -------------
+    def parse_serp_probe(self, response: scrapy.http.Response):
+        kw = response.meta.get('kw')
+        engine = response.meta.get('engine')
+        orig_href = response.meta.get('orig_href')
+        final_url = response.url or ''
+
+        # Try to decode further from final_url in case it is still a redirect-style URL
+        decoded = self._extract_target_from_serp(final_url) or final_url
+        dom = self._normalize_domain(decoded)
+        if not dom:
+            # Still not a usable target
+            self.logger.info(f"[PROBE RESULT] {engine.upper()} '{kw}' - unresolved redirect: {final_url} (from {orig_href})")
+            return
+
+        # Skip known/duplicate domains
+        if dom in self.existing_domains or dom in self.already_output or dom in self.discovered:
+            self.logger.info(f"[PROBE RESULT] {engine.upper()} '{kw}' - known/duplicate domain skipped: {dom}")
+            return
+
+        # Schedule WordPress verification
+        self.discovered.add(dom)
+        self.stats['domains_discovered'] += 1
+        api_url = self._build_wp_posts_url(dom)
+        meta = {
+            'candidate_domain': dom,
+            'use_proxy': True,
+            'bypass_cf': False,
+            'body_type': 'json/wordpress/probe',
+            'kw': kw,
+            'engine': engine,
+        }
+        self.pending_verifications += 1
+        self.logger.info(f"[VERIFY SCHEDULED] {engine.upper()} '{kw}' (via PROBE) -> {dom} | backlog={self.pending_verifications}")
+        return scrapy.Request(
+            api_url,
+            headers=self._default_headers(),
+            meta=meta,
+            callback=self.parse_verify_wp,
+            errback=self.errback_verify_wp,
+            dont_filter=True,
+            priority=100,
+        )
+
+    def errback_serp_probe(self, failure):
+        request = failure.request
+        kw = request.meta.get('kw')
+        engine = request.meta.get('engine')
+        orig_href = request.meta.get('orig_href')
+        self.logger.error(f"[PROBE ERROR] {engine.upper() if engine else engine} '{kw}' - {orig_href} | {failure.value}")
+
     # ------------- Search Parsers -------------
     def parse_search_bing(self, response: scrapy.http.Response):
         kw = response.meta.get('kw')
@@ -634,25 +745,37 @@ class WPDiscoverSpider(scrapy.Spider):
                 return s
 
         def _maybe_b64_decode(s: str) -> str:
-            """Try urlsafe and standard base64 decoding if not already http."""
+            """Try to decode base64-wrapped targets. Supports urlsafe and standard base64, and trims common prefixes.
+            Also attempts to decode from the first 'aHR0' (base64 for 'http') occurrence when present.
+            """
             try:
                 import base64
                 ss = s.strip()
                 if not ss or ss.lower().startswith('http'):
                     return ss
-                # urlsafe first
-                pad = (-len(ss)) % 4
-                if pad:
-                    ss_padded = ss + ('=' * pad)
-                else:
-                    ss_padded = ss
-                for decoder in (base64.urlsafe_b64decode, base64.b64decode):
-                    try:
-                        decoded = decoder(ss_padded.encode('ascii', errors='ignore')).decode('utf-8', errors='ignore')
-                        if decoded:
-                            return decoded
-                    except Exception:
-                        pass
+                candidates = []
+                # Raw value as-is
+                candidates.append(ss)
+                # If it contains base64 for 'http' (aHR0), try from that point
+                idx = ss.find('aHR0')
+                if idx != -1:
+                    candidates.append(ss[idx:])
+                # Some redirect params prepend a single letter/number before base64 (e.g., 'a' or 'a1')
+                if len(ss) > 1 and ss[1:].startswith('aHR0'):
+                    candidates.append(ss[1:])
+                if len(ss) > 2 and ss[2:].startswith('aHR0'):
+                    candidates.append(ss[2:])
+                for cand in candidates:
+                    # Pad to multiple of 4
+                    pad = (-len(cand)) % 4
+                    cand_padded = cand + ('=' * pad if pad else '')
+                    for decoder in (base64.urlsafe_b64decode, base64.b64decode):
+                        try:
+                            decoded = decoder(cand_padded.encode('ascii', errors='ignore')).decode('utf-8', errors='ignore')
+                            if decoded and decoded.strip():
+                                return decoded.strip()
+                        except Exception:
+                            continue
                 return s
             except Exception:
                 return s
@@ -777,6 +900,7 @@ class WPDiscoverSpider(scrapy.Spider):
         filtered_duplicate = 0
         sample_search_host_href = None
         sample_invalid_href = None
+        probes_scheduled = 0
 
         for href in links:
             # Extract real target
@@ -790,10 +914,22 @@ class WPDiscoverSpider(scrapy.Spider):
                     host = (pu.netloc or pu.path or '').lower()
                 except Exception:
                     host = ''
-                if host.endswith(('duckduckgo.com','bing.com','google.com','yahoo.com','msn.com','r.msn.com','search.yahoo.com','r.search.yahoo.com')):
+                if self._is_search_host(host):
                     filtered_search_hosts += 1
                     if sample_search_host_href is None:
                         sample_search_host_href = href
+                    # Schedule a lightweight probe to resolve the redirect to its final URL
+                    probe_url = href if re.match(r'^https?://', href, flags=re.I) else ('https://' + href if href.startswith('//') else ('https://' + href))
+                    if probe_url not in self.serp_probe_seen:
+                        self.serp_probe_seen.add(probe_url)
+                        probes_scheduled += 1
+                        probe_meta = {'kw': kw, 'engine': engine, 'orig_href': href, 'use_proxy': False, 'bypass_cf': True}
+                        yield scrapy.Request(probe_url,
+                                             meta=probe_meta,
+                                             callback=self.parse_serp_probe,
+                                             errback=self.errback_serp_probe,
+                                             dont_filter=True,
+                                             priority=80)
                 else:
                     filtered_non_http += 1
                     if sample_invalid_href is None:
