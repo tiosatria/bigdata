@@ -174,308 +174,308 @@ template_wordpress:
 domain_mapping:
   # Format: source_domain: {domain: category, subdomain: subcategory}
   northwestclinic.org:
-      domain: 'health'
-      subdomain: 'medical clinic'
+    domain: 'health'
+    subdomain: 'medical clinic'
   noted.collectivevoice.com:
-      domain: 'business'
-      subdomain: 'influencer marketing'
+    domain: 'business'
+    subdomain: 'influencer marketing'
   nourishmovelove.com:
-      domain: 'fitness'
-      subdomain: 'workouts'
+    domain: 'fitness'
+    subdomain: 'workouts'
   nowthaticando.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
+    domain: 'DIY'
+    subdomain: 'crafts'
   nutriciously.com:
-      domain: 'food'
-      subdomain: 'vegan nutrition'
+    domain: 'food'
+    subdomain: 'vegan nutrition'
   nuvkriti.com:
-      domain: 'fashion'
-      subdomain: 'sustainable fashion'
+    domain: 'fashion'
+    subdomain: 'sustainable fashion'
   oasismindandbody.com:
-      domain: 'health'
-      subdomain: 'wellness'
+    domain: 'health'
+    subdomain: 'wellness'
   ohmysander.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
+    domain: 'DIY'
+    subdomain: 'woodworking'
   oishya.com:
-      domain: 'food'
-      subdomain: 'Japanese kitchenware'
+    domain: 'food'
+    subdomain: 'Japanese kitchenware'
   olivesfordinner.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
+    domain: 'food'
+    subdomain: 'vegan recipes'
   onbudgetmoms.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
+    domain: 'finance'
+    subdomain: 'frugal living'
   onecrazyhouse.com:
-      domain: 'lifestyle'
-      subdomain: 'home hacks'
+    domain: 'lifestyle'
+    subdomain: 'home hacks'
   onfra.io:
-      domain: 'technology'
-      subdomain: 'cloud computing'
+    domain: 'technology'
+    subdomain: 'cloud computing'
   online-tech-tips.com:
-      domain: 'technology'
-      subdomain: 'IT support'
+    domain: 'technology'
+    subdomain: 'IT support'
   onlinecomputertips.com:
-      domain: 'technology'
-      subdomain: 'computer help'
+    domain: 'technology'
+    subdomain: 'computer help'
   onlinetoolguides.com:
     domain: 'home improvement'
     subdomain: 'tool reviews'
   orbitingweb.com:
-      domain: 'technology'
-      subdomain: 'web development'
+    domain: 'technology'
+    subdomain: 'web development'
   oregonsbdc.org:
-      domain: 'business'
-      subdomain: 'small business development'
+    domain: 'business'
+    subdomain: 'small business development'
   oregonworkforcepartnership.org:
-      domain: 'career'
-      subdomain: 'workforce development'
+    domain: 'career'
+    subdomain: 'workforce development'
   organicallybecca.com:
-      domain: 'lifestyle'
-      subdomain: 'natural living'
+    domain: 'lifestyle'
+    subdomain: 'natural living'
   organizeeveryroom.com:
-      domain: 'home'
-      subdomain: 'organization'
+    domain: 'home'
+    subdomain: 'organization'
   orilea.com:
-      domain: 'unclassified'
-      subdomain: 'general'
+    domain: 'unclassified'
+    subdomain: 'general'
   outdoors.org:
-      domain: 'recreation'
-      subdomain: 'outdoor activities'
+    domain: 'recreation'
+    subdomain: 'outdoor activities'
   outfitonpoint.com:
-      domain: 'fashion'
-      subdomain: 'style'
+    domain: 'fashion'
+    subdomain: 'style'
   owixiwo.com:
-      domain: 'unclassified'
-      subdomain: 'general'
+    domain: 'unclassified'
+    subdomain: 'general'
   oxfordinternationalenglish.com:
-      domain: 'education'
-      subdomain: 'English language'
+    domain: 'education'
+    subdomain: 'English language'
   oxfordonlineenglish.com:
-      domain: 'education'
-      subdomain: 'English language'
+    domain: 'education'
+    subdomain: 'English language'
   palmcasual.com:
-      domain: 'home'
-      subdomain: 'outdoor furniture'
+    domain: 'home'
+    subdomain: 'outdoor furniture'
   panmastery.com:
-      domain: 'food'
-      subdomain: 'cookware'
+    domain: 'food'
+    subdomain: 'cookware'
   paperflodesigns.com:
-      domain: 'DIY'
-      subdomain: 'paper crafts'
+    domain: 'DIY'
+    subdomain: 'paper crafts'
   paulysplayhouse.com:
-      domain: 'family'
-      subdomain: 'children's activities'
+    domain: 'family'
+    subdomain: "children's activities"
   pctechmag.com:
-      domain: 'technology'
-      subdomain: 'tech news'
+    domain: 'technology'
+    subdomain: 'tech news'
   penndutchstructures.com:
-      domain: 'home improvement'
-      subdomain: 'sheds & outdoor structures'
+    domain: 'home improvement'
+    subdomain: 'sheds & outdoor structures'
   perfectioncleanresults.com:
-      domain: 'home services'
-      subdomain: 'cleaning'
+    domain: 'home services'
+    subdomain: 'cleaning'
   permaculturepractice.com:
-      domain: 'gardening'
-      subdomain: 'permaculture'
+    domain: 'gardening'
+    subdomain: 'permaculture'
   petitechefs.com:
-      domain: 'food'
-      subdomain: 'kids cooking'
+    domain: 'food'
+    subdomain: 'kids cooking'
   pettech.net:
-      domain: 'pets'
-      subdomain: 'pet first aid'
+    domain: 'pets'
+    subdomain: 'pet first aid'
   photogenicmind.com:
-      domain: 'hobbies'
-      subdomain: 'photography'
+    domain: 'hobbies'
+    subdomain: 'photography'
   planreadygo.com:
-      domain: 'travel'
-      subdomain: 'trip planning'
+    domain: 'travel'
+    subdomain: 'trip planning'
   plantbasedjess.com:
-      domain: 'food'
-      subdomain: 'plant-based recipes'
+    domain: 'food'
+    subdomain: 'plant-based recipes'
   plantbasedrecipe.com:
-      domain: 'food'
-      subdomain: 'plant-based recipes'
+    domain: 'food'
+    subdomain: 'plant-based recipes'
   plantdaddydallas.com:
-      domain: 'gardening'
-      subdomain: 'houseplants'
+    domain: 'gardening'
+    subdomain: 'houseplants'
   plantpowercouple.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
+    domain: 'food'
+    subdomain: 'vegan recipes'
   positivebloom.com:
-      domain: 'self-improvement'
-      subdomain: 'positive thinking'
+    domain: 'self-improvement'
+    subdomain: 'positive thinking'
   pouted.com:
-      domain: 'lifestyle'
-      subdomain: 'fashion & design'
+    domain: 'lifestyle'
+    subdomain: 'fashion & design'
   powerofpositivity.com:
-      domain: 'self-improvement'
-      subdomain: 'positive thinking'
+    domain: 'self-improvement'
+    subdomain: 'positive thinking'
   prenohq.com:
-      domain: 'education'
-      subdomain: 'learning centers'
+    domain: 'education'
+    subdomain: 'learning centers'
   prepdish.com:
-      domain: 'food'
-      subdomain: 'meal planning'
+    domain: 'food'
+    subdomain: 'meal planning'
   prototype.fashion:
-      domain: 'fashion'
-      subdomain: 'design'
+    domain: 'fashion'
+    subdomain: 'design'
   psychnewsdaily.com:
     domain: 'health'
     subdomain: 'psychology news'
   psychreg.org:
-      domain: 'health'
-      subdomain: 'psychology'
+    domain: 'health'
+    subdomain: 'psychology'
   pulivarthigroup.com:
-      domain: 'legal'
-      subdomain: 'law firm'
+    domain: 'legal'
+    subdomain: 'law firm'
   purgula.com:
-      domain: 'home improvement'
-      subdomain: 'pergolas'
+    domain: 'home improvement'
+    subdomain: 'pergolas'
   qappsonline.com:
-      domain: 'technology'
-      subdomain: 'software'
+    domain: 'technology'
+    subdomain: 'software'
   quantifysleep.com:
-      domain: 'health'
-      subdomain: 'sleep tracking'
+    domain: 'health'
+    subdomain: 'sleep tracking'
   quickeasycook.com:
-      domain: 'food'
-      subdomain: 'recipes'
+    domain: 'food'
+    subdomain: 'recipes'
   quinntechco.com:
-      domain: 'technology'
-      subdomain: 'IT services'
+    domain: 'technology'
+    subdomain: 'IT services'
   radiashealth.org:
-      domain: 'health'
-      subdomain: 'mental health'
+    domain: 'health'
+    subdomain: 'mental health'
   rantaustudio.com:
-      domain: 'home'
-      subdomain: 'interior design'
+    domain: 'home'
+    subdomain: 'interior design'
   readersdigest.ca:
-      domain: 'media'
-      subdomain: 'general interest'
+    domain: 'media'
+    subdomain: 'general interest'
   realfoodrealdeals.com:
-      domain: 'food'
-      subdomain: 'frugal eating'
+    domain: 'food'
+    subdomain: 'frugal eating'
   realfoodwholelife.com:
-      domain: 'food'
-      subdomain: 'healthy recipes'
+    domain: 'food'
+    subdomain: 'healthy recipes'
   realitypathing.com:
-      domain: 'self-improvement'
-      subdomain: 'personal development'
+    domain: 'self-improvement'
+    subdomain: 'personal development'
   remake.world:
-      domain: 'fashion'
-      subdomain: 'sustainable fashion'
+    domain: 'fashion'
+    subdomain: 'sustainable fashion'
   research.ecomakery.com:
     domain: 'lifestyle'
     subdomain: 'sustainability'
   resiliencyclinic.com:
-      domain: 'health'
-      subdomain: 'mental health'
+    domain: 'health'
+    subdomain: 'mental health'
   resumespice.com:
-      domain: 'career'
-      subdomain: 'resume writing'
+    domain: 'career'
+    subdomain: 'resume writing'
   resumeway.com:
-      domain: 'career'
-      subdomain: 'resume writing'
+    domain: 'career'
+    subdomain: 'resume writing'
   romeing.it:
-      domain: 'travel'
-      subdomain: 'Rome'
+    domain: 'travel'
+    subdomain: 'Rome'
   runningonrealfood.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
+    domain: 'food'
+    subdomain: 'vegan recipes'
   rustic-crafts.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
+    domain: 'DIY'
+    subdomain: 'crafts'
   safetypedia.com:
-      domain: 'business'
-      subdomain: 'workplace safety'
+    domain: 'business'
+    subdomain: 'workplace safety'
   sagementalwellness.com:
-      domain: 'health'
-      subdomain: 'mental health'
+    domain: 'health'
+    subdomain: 'mental health'
   saltyskitchen.com:
-      domain: 'food'
-      subdomain: 'recipes'
+    domain: 'food'
+    subdomain: 'recipes'
   sanjosementalhealth.org:
-      domain: 'health'
-      subdomain: 'mental health'
+    domain: 'health'
+    subdomain: 'mental health'
   savorandsavvy.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
+    domain: 'finance'
+    subdomain: 'frugal living'
   savorandsmile.com:
-      domain: 'food'
-      subdomain: 'recipes'
+    domain: 'food'
+    subdomain: 'recipes'
   sawdustgirl.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
+    domain: 'DIY'
+    subdomain: 'woodworking'
   sawshub.com:
-      domain: 'home improvement'
-      subdomain: 'tool reviews'
+    domain: 'home improvement'
+    subdomain: 'tool reviews'
   schoolhabits.com:
-      domain: 'education'
-      subdomain: 'study skills'
+    domain: 'education'
+    subdomain: 'study skills'
   seattlewire.com:
     domain: 'media'
     subdomain: 'local news'
   selfsufficiencyfrugalliving.com:
-      domain: 'lifestyle'
-      subdomain: 'homesteading'
+    domain: 'lifestyle'
+    subdomain: 'homesteading'
   sewfrenchcrossstitch.com:
-      domain: 'DIY'
-      subdomain: 'cross-stitch'
+    domain: 'DIY'
+    subdomain: 'cross-stitch'
   sewingers.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
+    domain: 'DIY'
+    subdomain: 'sewing'
   sewingforaliving.com:
-      domain: 'DIY'
-      subdomain: 'sewing business'
+    domain: 'DIY'
+    subdomain: 'sewing business'
   sewingfromhome.com:
     domain: 'DIY'
     subdomain: 'sewing'
   sewingmachinefun.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
+    domain: 'DIY'
+    subdomain: 'sewing'
   sewingsociety.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
+    domain: 'DIY'
+    subdomain: 'sewing'
   shabbyartboutique.com:
-      domain: 'DIY'
-      subdomain: 'crafts & decor'
+    domain: 'DIY'
+    subdomain: 'crafts & decor'
   shansmart.store:
-      domain: 'shopping'
-      subdomain: 'e-commerce'
+    domain: 'shopping'
+    subdomain: 'e-commerce'
   sharksmind.com:
-      domain: 'business'
-      subdomain: 'entrepreneurship'
+    domain: 'business'
+    subdomain: 'entrepreneurship'
   shetravelschic.com:
-      domain: 'travel'
-      subdomain: 'blog'
+    domain: 'travel'
+    subdomain: 'blog'
   shetriedwhat.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
+    domain: 'lifestyle'
+    subdomain: 'blog'
   sideshow.com:
-      domain: 'hobbies'
-      subdomain: 'collectibles'
+    domain: 'hobbies'
+    subdomain: 'collectibles'
   simplelivingonrepeat.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
+    domain: 'lifestyle'
+    subdomain: 'minimalism'
   simplepurposefulliving.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
+    domain: 'lifestyle'
+    subdomain: 'minimalism'
   simplespaces.net:
-      domain: 'home'
-      subdomain: 'organization'
+    domain: 'home'
+    subdomain: 'organization'
   simplycanning.com:
-      domain: 'food'
-      subdomain: 'canning'
+    domain: 'food'
+    subdomain: 'canning'
   simplyfamilyrecipes.com:
-      domain: 'food'
-      subdomain: 'recipes'
+    domain: 'food'
+    subdomain: 'recipes'
   simplylifebybri.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
+    domain: 'lifestyle'
+    subdomain: 'blog'
   simplypsychology.org:
-      domain: 'education'
-      subdomain: 'psychology'
+    domain: 'education'
+    subdomain: 'psychology'
 
 # ============================================================================
 # SITE MAPPING - Site-specific configurations
