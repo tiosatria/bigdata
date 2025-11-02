@@ -173,1375 +173,3776 @@ template_wordpress:
 
 domain_mapping:
   # Format: source_domain: {domain: category, subdomain: subcategory}
-  techbloat.com:
-      domain: 'technology'
-      subdomain: 'blog'
-  thefashionspot.com:
-      domain: 'fashion'
-      subdomain: 'magazine'
-  searchengineland.com:
-      domain: 'business guides'
-      subdomain: 'SEO guides'
-  strongmocha.com:
-      domain: 'fitness'
-      subdomain: 'coffee'
-  tinybeans.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  kitchensterling.com:
-      domain: 'home'
-      subdomain: 'kitchen'
-  under30ceo.com:
-      domain: 'business guides'
-      subdomain: 'entrepreneurship'
-  influencermarketinghub.com:
-      domain: 'business guides'
-      subdomain: 'influencer marketing'
-  tidyhomeguide.com:
-      domain: 'home'
-      subdomain: 'organization'
-  themighty.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  tinybatchcooking.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  thefashionisto.com:
-      domain: 'fashion'
-      subdomain: "men's style"
-  androidguys.com:
-      domain: 'technology'
-      subdomain: 'Android'
-  thenerddaily.com:
-      domain: 'culture'
-      subdomain: 'entertainment news'
-  churchm.ag:
-      domain: 'religion'
-      subdomain: 'church media'
-  yournextshoes.com:
-      domain: 'fashion'
-      subdomain: 'shoes'
-  themodestman.com:
-      domain: 'fashion'
-      subdomain: "men's style"
-  industryleadersmagazine.com:
-      domain: 'business guides'
-      subdomain: 'magazine'
-  trendyuniverse.com:
-      domain: 'lifestyle'
-      subdomain: 'trends'
-  corporette.com:
-      domain: 'fashion'
-      subdomain: 'workwear'
-  gameplay.tips:
-      domain: 'gaming'
-      subdomain: 'guides'
-  smallbiztrends.com:
-      domain: 'business guides'
-      subdomain: 'small business'
-  solveyourtech.com:
-      domain: 'technology'
-      subdomain: 'tech support'
-  hungrycookskitchen.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  smbceo.com:
-      domain: 'business guides'
-      subdomain: 'small business'
-  dishpairing.com:
-      domain: 'food'
-      subdomain: 'food science'
-  thebostondaybook.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  improveworkspace.com:
-      domain: 'business guides'
-      subdomain: 'office setup'
-  mommyish.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  woodworkersjournal.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  sizzleroom.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  melskitchencafe.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  stylesatlife.com:
-      domain: 'lifestyle'
-      subdomain: 'fashion & beauty'
-  thestartupmag.com:
-      domain: 'business guides'
-      subdomain: 'startups'
-  women-club.online:
-      domain: 'lifestyle'
-      subdomain: "women's style"
-  skyryedesign.com:
-      domain: 'home'
-      subdomain: 'interior design'
-  thecafesucrefarine.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  yournextresume.com:
-      domain: 'career'
-      subdomain: 'resume writing'
-  thereciperebel.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  suite101.com:
-      domain: 'culture'
-      subdomain: 'magazine'
-  technipages.com:
-      domain: 'technology'
-      subdomain: 'tech support'
-  tabletmonkeys.com:
-      domain: 'technology'
-      subdomain: 'tablet reviews'
-  mommyshomecooking.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  dinneratthezoo.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  entrepreneurshipinabox.com:
-      domain: 'business guides'
-      subdomain: 'entrepreneurship'
-  secretlifeofmom.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  twocityvegans.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  scienceofpeople.com:
-      domain: 'self-improvement'
-      subdomain: 'psychology'
-  streetwisejournal.com:
-      domain: 'media'
-      subdomain: 'news'
-  thepinkgoose.com:
-      domain: 'fashion'
-      subdomain: 'boutique'
-  thefashionography.com:
-      domain: 'fashion'
-      subdomain: 'photography'
-  lisasstampstudio.com:
-      domain: 'DIY'
-      subdomain: 'card making'
-  whimsyandspice.com:
-      domain: 'food'
-      subdomain: 'baking'
-  insteading.com:
-      domain: 'lifestyle'
-      subdomain: 'homesteading'
-  kathysvegankitchen.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  allrecipesbeginner.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  tablestl.com:
-      domain: 'food'
-      subdomain: 'restaurant'
-  messforless.net:
-      domain: 'family'
-      subdomain: 'parenting & crafts'
-  theinspiringjournal.com:
-      domain: 'self-improvement'
-      subdomain: 'motivation'
-  worldofvegan.com:
-      domain: 'food'
-      subdomain: 'veganism'
-  lakelandcurrents.com:
-      domain: 'media'
-      subdomain: 'local news'
-  makeitdairyfree.com:
-      domain: 'food'
-      subdomain: 'dairy-free recipes'
-  teacheducator.com:
-      domain: 'education'
-      subdomain: 'teaching'
-  blog.mindvalley.com:
-      domain: 'self-improvement'
-      subdomain: 'personal development'
-  thedatascientist.com:
-      domain: 'technology'
-      subdomain: 'data science'
-  thegamingmecca.com:
-      domain: 'gaming'
-      subdomain: 'blog'
-  somewhatsimple.com:
-      domain: 'lifestyle'
-      subdomain: 'recipes & crafts'
-  theadultman.com:
-      domain: 'fashion'
-      subdomain: "men's style"
-  sarahscucinabella.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  homeevaly.com:
-      domain: 'home'
-      subdomain: 'decor'
-  flavorfullrecipes.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  muybuenoblog.com:
-      domain: 'food'
-      subdomain: 'Mexican recipes'
-  misya.info:
-      domain: 'food'
-      subdomain: 'Italian recipes'
-  everydaycheapskate.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  mycolombianrecipes.com:
-      domain: 'food'
-      subdomain: 'Colombian recipes'
-  slapdashmom.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  sonsofuniverse.com:
-      domain: 'unclassified'
-      subdomain: 'general'
-  cookingorgeous.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  stepbystepbusiness.com:
-      domain: 'business guides'
-      subdomain: 'startups'
-  beads.co:
-      domain: 'DIY'
-      subdomain: 'beads'
-  trustmymechanic.com:
-      domain: 'automotive'
-      subdomain: 'auto repair'
-  melissajanelee.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  urbanmamaz.com:
-      domain: 'family'
-      subdomain: 'baby products'
-  worldinsidepictures.com:
-      domain: 'culture'
-      subdomain: 'photography'
-  melaniejadedesign.com:
-      domain: 'home'
-      subdomain: 'interior design'
-  cyberogism.com:
-      domain: 'technology'
-      subdomain: 'cybersecurity'
-  thecleaneatingcouple.com:
-      domain: 'food'
-      subdomain: 'healthy recipes'
-  housebouse.com:
-      domain: 'home'
-      subdomain: 'blog'
-  simplyfrugal.ca:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  homeisd.com:
-      domain: 'home'
-      subdomain: 'decor'
-  happymoneysaver.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  theworldpursuit.com:
-      domain: 'travel'
-      subdomain: 'adventure travel'
-  thewritepractice.com:
-      domain: 'career'
-      subdomain: 'writing'
-  livinggreenandfrugally.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  shoppeblack.us:
-      domain: 'shopping'
-      subdomain: 'Black-owned businesses'
-  homemydesign.com:
-      domain: 'home'
-      subdomain: 'interior design'
-  zigzagonearth.com:
-      domain: 'travel'
-      subdomain: 'blog'
-  nomadswithapurpose.com:
-      domain: 'travel'
-      subdomain: 'family travel'
-  mymoneycottage.com:
-      domain: 'finance'
-      subdomain: 'personal finance'
-  mexicoinmykitchen.com:
-      domain: 'food'
-      subdomain: 'Mexican recipes'
-  laylashine.com:
-      domain: 'fashion'
-      subdomain: 'blog'
-  ministryofcurry.com:
-      domain: 'food'
-      subdomain: 'Indian recipes'
-  40plusstyle.com:
-      domain: 'fashion'
-      subdomain: 'style over 40'
-  twokooksinthekitchen.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  plannthat.com:
-      domain: 'technology'
-      subdomain: 'social media management'
-  thefoodietakesflight.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  shaneandsimple.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  maryswholelife.com:
-      domain: 'food'
-      subdomain: 'healthy recipes'
-  thehumbledhomemaker.com:
-      domain: 'lifestyle'
-      subdomain: 'home management'
-  livingwellspendingless.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  thriftylesley.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  yoast.com:
-      domain: 'business guides'
-      subdomain: 'SEO guides'
-  vintagedancer.com:
-      domain: 'fashion'
-      subdomain: 'vintage style'
-  nourishedbynic.com:
-      domain: 'health'
-      subdomain: 'nutrition'
-  sweetsavoryandsteph.com:
-      domain: 'food'
-      subdomain: 'healthy recipes'
-  myquietkitchen.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  ouroilyhouse.com:
-      domain: 'lifestyle'
-      subdomain: 'natural living'
-  sweepsouth.com:
-      domain: 'home services'
-      subdomain: 'cleaning'
-  renovated.com:
-      domain: 'home improvement'
-      subdomain: 'renovation'
-  advicescout.com:
-      domain: 'business guides'
-      subdomain: 'reviews'
-  suburbansimplicity.com:
-      domain: 'lifestyle'
-      subdomain: 'food & home'
-  zardyplants.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  thecrazycraftlady.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  blockapps.net:
-      domain: 'technology'
-      subdomain: 'blockchain'
-  worthingcourtblog.com:
-      domain: 'home'
-      subdomain: 'DIY & decor'
-  sweetandsavory.co:
-      domain: 'food'
-      subdomain: 'recipes'
-  upswingpoker.com:
-      domain: 'hobbies'
-      subdomain: 'poker'
-  ticktocktech.com:
-    domain: 'repair'
-    subdomain: 'computer repair'
-  diyscraftsy.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  tailwindapp.com:
-      domain: 'business guides'
-      subdomain: 'social media marketing'
-  earth5r.org:
-      domain: 'non-profit'
-      subdomain: 'environmentalism'
-  wellnessbum.com:
-      domain: 'health'
-      subdomain: 'wellness'
-  thebalancednutritionist.com:
-      domain: 'health'
-      subdomain: 'nutrition'
-  ourhomemadeeasy.com:
-      domain: 'lifestyle'
-      subdomain: 'recipes & crafts'
-  hawksem.com:
-      domain: 'business guides'
-      subdomain: 'digital marketing'
-  woodworkingworld.org:
-    domain: 'practical skills'
-    subdomain: 'woodworking'
-  cookedandloved.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  andreasnotebook.com:
-      domain: 'DIY'
-      subdomain: 'sewing & crafts'
-  hairmdindia.com:
-      domain: 'health'
-      subdomain: 'hair treatment'
-  theecohub.com:
-    domain: 'life'
-    subdomain: 'sustainability'
-  simplysimplestamping.com:
-      domain: 'DIY'
-      subdomain: 'card making'
-  munchiesandmunchkins.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  impactwizards.com:
-      domain: 'business guides'
-      subdomain: 'social impact'
-  kitchenscholar.com:
-      domain: 'food'
-      subdomain: 'cooking tips'
-  tivazo.com:
-      domain: 'unclassified'
-      subdomain: 'general'
-  craft-art.com:
-      domain: 'home improvement'
-      subdomain: 'wood countertops'
-  worldofwoodcraft.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  styleyouroccasion.com:
-      domain: 'fashion'
-      subdomain: 'style'
-  kippiathome.com:
+
+  1gamerdash.com:
+    domain: 'gaming'
+    subdomain: 'gaming news & reviews'
+  1stpersonaldevelopment.com:
+    domain: 'self improvement'
+    subdomain: 'personal development'
+  2-10.com:
+    domain: 'real estate'
+    subdomain: 'home warranty'
+  2thesunnyside.com:
+    domain: 'lifestyle'
+    subdomain: 'home & family'
+  2ulaundry.com:
+    domain: 'services'
+    subdomain: 'laundry & dry cleaning'
+  9to5google.com:
+    domain: 'technology'
+    subdomain: 'google news & updates'
+  30daychallengedude.com:
+    domain: 'self improvement'
+    subdomain: 'challenges & habits'
+  52perfectdays.com:
+    domain: 'travel'
+    subdomain: 'travel guides'
+  104homestead.com:
     domain: 'home'
-    subdomain: 'decor'
-  unity.edu:
-      domain: 'education guides'
-      subdomain: 'university'
-  wellkeptwallet.com:
-      domain: 'finance'
-      subdomain: 'personal finance'
-  jaejohns.com:
-      domain: 'art'
-      subdomain: 'design'
-  iqpartners.com:
-      domain: 'business guides'
-      subdomain: 'recruiting'
-  thelanguagegarage.com:
-      domain: 'education'
-      subdomain: 'language learning'
-  themilliondollarmama.com:
-      domain: 'finance'
-      subdomain: 'side hustles'
-  theantiquedjourney.com:
-      domain: 'shopping'
-      subdomain: 'antiques'
-  sarah-tucker.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  wholefoodfor7.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  thelittlefrugalhouse.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  greenhealthycooking.com:
-      domain: 'food'
-      subdomain: 'healthy recipes'
-  everythingetsy.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  showit.com:
-      domain: 'technology'
-      subdomain: 'website builder'
-  thegreenloot.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  chasingfoxes.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  simplifycreateinspire.com:
-      domain: 'lifestyle'
-      subdomain: 'organization & DIY'
-  restartmed.com:
-      domain: 'health'
-      subdomain: 'thyroid'
-  migrationology.com:
-      domain: 'travel'
-      subdomain: 'food'
-  selfsufficientprojects.com:
-      domain: 'lifestyle'
-      subdomain: 'homesteading'
-  tallysolutions.com:
-      domain: 'technology'
-      subdomain: 'business software'
-  sustainablereview.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  web-hobbies.com:
-      domain: 'hobbies'
-      subdomain: 'general'
-  theabsolutefoodie.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  greenecodream.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  sewcraftyme.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  offgridharmony.com:
-      domain: 'lifestyle'
-      subdomain: 'off-grid living'
-  foodprint.org:
-      domain: 'food'
-      subdomain: 'sustainability'
-  freezermeals101.com:
-      domain: 'food'
-      subdomain: 'meal prep'
-  smartnextup.com:
-      domain: 'technology'
-      subdomain: 'tech news'
-  simplepurebeauty.com:
-      domain: 'beauty'
-      subdomain: 'natural skincare'
-  sewingtimes.net:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  thriveworks.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  welcometothescene.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  ballenblogger.com:
-      domain: 'business guides'
-      subdomain: 'blogging'
-  silverbobbin.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  somethingborrowedpdx.com:
-      domain: 'weddings'
-      subdomain: 'rentals'
-  vtfurnitureworks.com:
-      domain: 'home'
-      subdomain: 'furniture'
-  mindtools.com:
-      domain: 'career'
-      subdomain: 'management skills'
-  jenniraincloud.com:
-      domain: 'beauty'
-      subdomain: 'DIY skincare'
-  thegentlealbum.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  myplantbasedfamily.com:
-      domain: 'food'
-      subdomain: 'plant-based recipes'
-  theartisticmind.com:
-      domain: 'art'
-      subdomain: 'creativity'
-  uopeople.edu:
-      domain: 'education'
-      subdomain: 'university'
-  listotic.com:
-      domain: 'lifestyle'
-      subdomain: 'home hacks'
-  fabulous50s.com:
-      domain: 'lifestyle'
-      subdomain: 'women over 50'
-  smartliving365.com:
-      domain: 'lifestyle'
-      subdomain: 'conscious living'
-  antimaximalist.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
-  drawpaintacademy.com:
-      domain: 'art'
-      subdomain: 'painting'
-  workweeklunch.com:
-      domain: 'food'
-      subdomain: 'meal prep'
-  ventureharbour.com:
-      domain: 'business guides'
-      subdomain: 'marketing'
-  mydiasporakitchen.com:
-      domain: 'food'
-      subdomain: 'African recipes'
-  thevgnway.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  organizingmoms.com:
-      domain: 'home'
-      subdomain: 'organization'
-  foodprepguide.com:
-      domain: 'food'
-      subdomain: 'meal prep'
-  sitbacklounge.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  wildlifeartstore.com:
-      domain: 'art'
-      subdomain: 'wildlife art'
-  woodworkingplanshq.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  veganavenue.com:
-      domain: 'food'
-      subdomain: 'veganism'
-  woodworkingtoolkit.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  streamscheme.com:
-      domain: 'gaming'
-      subdomain: 'streaming'
-  vlhhealth.com:
-      domain: 'health'
-      subdomain: 'wellness'
-  styledegree.sg:
-      domain: 'home'
-      subdomain: 'organization'
-  messyvegancook.com:
-      domain: 'food'
-      subdomain: 'vegan recipes'
-  theskincarewhisperer.com:
-      domain: 'beauty'
-      subdomain: 'skincare'
-  thehomesteadchallenge.com:
-      domain: 'lifestyle'
-      subdomain: 'homesteading'
-  thehappylovedlife.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  stylendesigns.com:
-      domain: 'home'
-      subdomain: 'interior design'
-  thetravelbible.com:
-      domain: 'travel'
-      subdomain: 'guides'
-  theinspiredtreehouse.com:
-      domain: 'family'
-      subdomain: 'pediatric therapy'
-  decorwitheva.com:
-      domain: 'home'
-      subdomain: 'decor'
-  weshare.net:
-      domain: 'technology'
-      subdomain: 'file sharing'
-  artycraftycrew.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  serenitytalks.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  soulfoodcooking101.com:
-      domain: 'food'
-      subdomain: 'soul food'
-  blog.edu123.in:
-      domain: 'education'
-      subdomain: 'blog'
-  staceyhomemaker.com:
-      domain: 'lifestyle'
-      subdomain: 'food & home'
-  sewwoodsy.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  sustainablehomemag.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  islandoriginsmag.com:
-      domain: 'culture'
-      subdomain: 'Caribbean'
-  upmetrics.co:
-      domain: 'technology'
-      subdomain: 'business software'
-  lifetreeplanner.com:
-      domain: 'lifestyle'
-      subdomain: 'planners'
-  shopinroom.com:
-      domain: 'home'
-      subdomain: 'decor'
-  theroamingfork.com:
-      domain: 'travel'
-      subdomain: 'food'
-  tangyhouse.com:
-      domain: 'home'
-      subdomain: 'blog'
-  withthewoodruffs.com:
-      domain: 'lifestyle'
-      subdomain: 'family blog'
-  starttech.vc:
-      domain: 'finance'
-      subdomain: 'venture capital'
-  girljustdiy.com:
-      domain: 'DIY'
-      subdomain: 'home improvement'
-  kaplanpathways.com:
-      domain: 'education'
-      subdomain: 'university placement'
-  theselfsufficientliving.com:
-      domain: 'lifestyle'
-      subdomain: 'homesteading'
-  fluentfilipino.com:
-      domain: 'education'
-      subdomain: 'Filipino language'
-  homeheartcraft.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  torrenglabs.com:
-      domain: 'technology'
-      subdomain: 'software'
-  theitalyedit.com:
-      domain: 'travel'
-      subdomain: 'Italy'
-  tpd.edu.au:
-      domain: 'education'
-      subdomain: 'professional development'
-  counsellingcollective.net:
-      domain: 'health'
-      subdomain: 'mental health'
-  mindfulmomma.com:
-      domain: 'lifestyle'
-      subdomain: 'natural living'
-  wastedtalentinc.com:
-      domain: 'art'
-      subdomain: 'design'
-  vibrantskinbar.com:
-      domain: 'beauty'
-      subdomain: 'skincare'
-  goodwillncw.org:
-      domain: 'non-profit'
-      subdomain: 'goodwill'
-  therefined.co:
-      domain: 'fashion'
-      subdomain: 'style'
-  thecleaningmommy.com:
-      domain: 'home'
-      subdomain: 'cleaning'
-  repaircafe.org:
-      domain: 'non-profit'
-      subdomain: 'sustainability'
-  fullymediterranean.com:
-      domain: 'food'
-      subdomain: 'Mediterranean recipes'
-  livetheminimalistlifestyle.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
-  letslearntosew.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  yoursustainableguide.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  songbirdblog.com:
-      domain: 'home'
-      subdomain: 'DIY & decor'
-  tedwoodplans.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  therecipebuffet.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  sustainability.shiksha:
-      domain: 'education'
-      subdomain: 'sustainability'
-  wellbeingscounselling.ca:
-      domain: 'health'
-      subdomain: 'mental health'
-  theflavorvortex.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  thesagesaver.com:
-      domain: 'finance'
-      subdomain: 'personal finance'
-  tableo.com:
-      domain: 'technology'
-      subdomain: 'restaurant software'
-  rightinbox.com:
-      domain: 'technology'
-      subdomain: 'email productivity'
-  herfinland.com:
-      domain: 'travel'
-      subdomain: 'Finland'
-  unclutteredsimplicity.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
-  whatawonderfulworld.guide:
-      domain: 'travel'
-      subdomain: 'blog'
-  livingyourseniorlife.com:
-      domain: 'health'
-      subdomain: 'senior living'
-  zerowasteliving.net:
-      domain: 'lifestyle'
-      subdomain: 'zero waste'
-  zerowastememoirs.com:
-      domain: 'lifestyle'
-      subdomain: 'zero waste'
-  sugarfreesprinkles.com:
-      domain: 'food'
-      subdomain: 'sugar-free recipes'
-  theneonteaparty.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  thecaninehealthnut.com:
-      domain: 'pets'
-      subdomain: 'dog nutrition'
-  craftwarehouse.com:
-      domain: 'shopping'
-      subdomain: 'craft supplies'
-  sprintkitchen.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  smartmoneyhabits.com:
-      domain: 'finance'
-      subdomain: 'personal finance'
-  biologyease.com:
-      domain: 'education'
-      subdomain: 'biology'
-  undoubtedgrace.com:
-      domain: 'religion'
-      subdomain: 'Christianity'
-  workonpeak.org:
-      domain: 'career'
-      subdomain: 'job search'
-  vekge.com:
-      domain: 'unclassified'
-      subdomain: 'general'
-  hub.techoneglobal.com:
-      domain: 'technology'
-      subdomain: 'IT services'
-  typesofartstyles.com:
-      domain: 'art'
-      subdomain: 'art history'
-  rootsaid.com:
-      domain: 'gardening'
-      subdomain: 'blog'
-  mentalhealthfirstaid.org:
-      domain: 'health'
-      subdomain: 'mental health'
-  whatisshewearing.com:
-  domain: 'fashion'
-  subdomain:Message:
-  subdomain: 'style'
-  mhfa.org:
-      domain: 'health'
-      subdomain: 'mental health'
-  myplaceishome.com:
-      domain: 'home'
-      subdomain: 'decor'
-  lifehackmethod.com:
-      domain: 'self-improvement'
-      subdomain: 'productivity'
-  ptaourchildren.org:
-      domain: 'non-profit'
-      subdomain: 'education'
-  thygesenapparel.com:
-      domain: 'business guides'
-      subdomain: 'apparel manufacturing'
-  empoweredsinglemoms.com:
-      domain: 'family'
-      subdomain: 'single parenting'
-  zenora.app:
-      domain: 'technology'
-      subdomain: 'app'
-  beadclublounge.com:
-      domain: 'DIY'
-      subdomain: 'jewelry making'
-  thekreativelife.com:
-      domain: 'lifestyle'
-      subdomain: 'DIY & food'
-  breakthetwitch.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
-  strivemag.com:
-      domain: 'business guides'
-      subdomain: 'entrepreneurship'
-  skillscompetencescanada.com:
-      domain: 'skills'
-      subdomain: 'skilled trades'
-  sweettoothteaching.com:
-      domain: 'education'
-      subdomain: 'teaching'
-  theeleganceedit.com:
-      domain: 'fashion'
-      subdomain: 'style'
-  sewdirect.com:
-    domain: 'skills'
+    subdomain: 'homesteading'
+  247calculator.com:
+    domain: 'tools'
+    subdomain: 'online calculators'
+  302properties.com:
+    domain: 'real estate'
+    subdomain: 'property management'
+  ablissfulnest.com:
+    domain: 'home'
+    subdomain: 'decor & lifestyle'
+  aboutaustralia.com:
+    domain: 'travel'
+    subdomain: 'australia travel'
+  absolutemgmt.com:
+    domain: 'real estate'
+    subdomain: 'property management'
+  abundanceofflavor.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  academiabees.com:
+    domain: 'education'
+    subdomain: 'beekeeping'
+  addalittleadventure.com:
+    domain: 'lifestyle'
+    subdomain: 'party & celebration ideas'
+  adhdgoat.com:
+    domain: 'health'
+    subdomain: 'adhd resources'
+  adultingstartshere.com:
+    domain: 'self improvement'
+    subdomain: 'adulting guides'
+  afarmgirlsdabbles.com:
+    domain: 'food'
+    subdomain: 'recipes & lifestyle'
+  afoodloverskitchen.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking tips'
+  afrifoodnetwork.com:
+    domain: 'food'
+    subdomain: 'african cuisine'
+  agrifarming.in:
+    domain: 'agriculture'
+    subdomain: 'farming guides'
+  agrolearner.com:
+    domain: 'agriculture'
+    subdomain: 'farming education'
+  ahealthysliceoflife.com:
+    domain: 'health'
+    subdomain: 'healthy living & recipes'
+  ahit.com:
+    domain: 'education'
+    subdomain: 'home inspection training'
+  ahsgardening.org:
+    domain: 'gardening'
+    subdomain: 'horticulture resources'
+  aikagi-jpn.com:
+    domain: 'business'
+    subdomain: 'japanese services'
+  airaceheatingandcooling.com:
+    domain: 'services'
+    subdomain: 'hvac'
+  airfryers.net:
+    domain: 'appliances'
+    subdomain: 'air fryer guides'
+  ajgwillfixit.com:
+    domain: 'services'
+    subdomain: 'handyman'
+  alcasthq.com:
+    domain: 'gaming'
+    subdomain: 'elder scrolls online builds'
+  algorithmman.com:
+    domain: 'technology'
+    subdomain: 'algorithms & coding'
+  alleycat.org:
+    domain: 'nonprofit'
+    subdomain: 'animal welfare'
+  allfreecrafts.com:
+    domain: 'crafts'
+    subdomain: 'diy projects'
+  allinbrand.com:
+    domain: 'business'
+    subdomain: 'branding & marketing'
+  alltastesgerman.com:
+    domain: 'food'
+    subdomain: 'german recipes'
+  alltimedesign.com:
+    domain: 'design'
+    subdomain: 'graphic design services'
+  almonddental.com:
+    domain: 'health'
+    subdomain: 'dentistry'
+  altarofgaming.com:
+    domain: 'gaming'
+    subdomain: 'gaming guides'
+  alyssafontaine.com:
+    domain: 'business'
+    subdomain: 'real estate'
+  amazingmemovement.com:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  americancontingency.com:
+    domain: 'community'
+    subdomain: 'preparedness'
+  americanhomemsr.com:
+    domain: 'home'
+    subdomain: 'home maintenance'
+  amish-heritage.org:
+    domain: 'culture'
+    subdomain: 'amish lifestyle & recipes'
+  ancestralpantryinnovations.com:
+    domain: 'food'
+    subdomain: 'traditional recipes'
+  angelarosehome.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  animalbehaviorcollege.com:
+    domain: 'education'
+    subdomain: 'animal training'
+  animascorp.com:
+    domain: 'business'
+    subdomain: 'corporate services'
+  annaeverywhere.com:
+    domain: 'travel'
+    subdomain: 'travel blog'
+  annainthekitchen.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  annearundelfire.org:
+    domain: 'public services'
+    subdomain: 'fire department'
+  anthonyarms.com:
+    domain: 'business'
+    subdomain: 'firearms sales'
+  aparthotel.com:
+    domain: 'travel'
+    subdomain: 'apartment hotels'
+  aplaceforanimals.com:
+    domain: 'pets'
+    subdomain: 'animal care'
+  applavia.com:
+    domain: 'technology'
+    subdomain: 'apps & software'
+  applegreencottage.com:
+    domain: 'crafts'
+    subdomain: 'sewing & diy'
+  arabmls.org:
+    domain: 'real estate'
+    subdomain: 'multiple listing service'
+  arzyelbuilds.com:
+    domain: 'gaming'
+    subdomain: 'elder scrolls online builds'
+  askthebuilder.com:
+    domain: 'home'
+    subdomain: 'diy & construction'
+  askwellhealth.com:
+    domain: 'health'
+    subdomain: 'wellness advice'
+  assemblysmart.com:
+    domain: 'services'
+    subdomain: 'furniture assembly'
+  athenadiakos.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  atimprovements.com:
+    domain: 'home'
+    subdomain: 'home improvement'
+  atlaneandhigh.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  atlantic.net:
+    domain: 'technology'
+    subdomain: 'cloud hosting'
+  audiobookaddicts.com:
+    domain: 'entertainment'
+    subdomain: 'audiobook reviews'
+  austinallergist.com:
+    domain: 'health'
+    subdomain: 'allergy treatment'
+  authenticallydel.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  avahr.com:
+    domain: 'business'
+    subdomain: 'hr solutions'
+  awakemindful.com:
+    domain: 'self improvement'
+    subdomain: 'mindfulness'
+  awedeco.com:
+    domain: 'home'
+    subdomain: 'decor ideas'
+  awesomeinventions.com:
+    domain: 'lifestyle'
+    subdomain: 'inventions & gadgets'
+  azrust.com:
+    domain: 'home'
+    subdomain: 'metal restoration'
+  backpacker.com:
+    domain: 'travel'
+    subdomain: 'backpacking guides'
+  backyarddigs.com:
+    domain: 'home'
+    subdomain: 'outdoor & backyard projects'
+  backyardgardener.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  backyardgardenlover.com:
+    domain: 'gardening'
+    subdomain: 'garden inspiration'
+  bakealish.com:
+    domain: 'food'
+    subdomain: 'baking recipes'
+  bakeandsavor.com:
+    domain: 'food'
+    subdomain: 'baking & cooking'
+  bakeitwithlove.com:
+    domain: 'food'
+    subdomain: 'baking recipes'
+  bakeschool.com:
+    domain: 'food'
+    subdomain: 'baking education'
+  bakinghow.com:
+    domain: 'food'
+    subdomain: 'baking guides'
+  barnorama.com:
+    domain: 'entertainment'
+    subdomain: 'viral content'
+  basicexceltutorial.com:
+    domain: 'education'
+    subdomain: 'excel tutorials'
+  baywise.org:
+    domain: 'gardening'
+    subdomain: 'bay-friendly gardening'
+  beautaza.com:
+    domain: 'beauty'
+    subdomain: 'skincare & cosmetics'
+  beauticate.com:
+    domain: 'beauty'
+    subdomain: 'beauty tips & lifestyle'
+  beautify.tips:
+    domain: 'beauty'
+    subdomain: 'beauty advice'
+  beauty-forum.com.pl:
+    domain: 'beauty'
+    subdomain: 'beauty community'
+  beauty-tips.net:
+    domain: 'beauty'
+    subdomain: 'beauty tips'
+  beautymone.com:
+    domain: 'beauty'
+    subdomain: 'makeup & skincare'
+  becomingminimalist.com:
+    domain: 'lifestyle'
+    subdomain: 'minimalism'
+  beesandroses.com:
+    domain: 'gardening'
+    subdomain: 'garden tips'
+  behindthescenesmakeup.com:
+    domain: 'beauty'
+    subdomain: 'makeup artistry'
+  believeinmind.com:
+    domain: 'self improvement'
+    subdomain: 'mental wellness'
+  belletag.com:
+    domain: 'beauty'
+    subdomain: 'fashion & beauty'
+  bellflowerlifestyle.com:
+    domain: 'lifestyle'
+    subdomain: 'home & lifestyle'
+  benrose.org:
+    domain: 'nonprofit'
+    subdomain: 'senior services'
+  bestairfryer.net:
+    domain: 'appliances'
+    subdomain: 'air fryer reviews'
+  bestinhood.com:
+    domain: 'business guides'
+    subdomain: 'local services reviews'
+  bestosrsguides.com:
+    domain: 'gaming'
+    subdomain: 'osrs guides'
+  bestrecipesofindia.com:
+    domain: 'food'
+    subdomain: 'indian recipes'
+  bethebudget.com:
+    domain: 'finance'
+    subdomain: 'budgeting & saving'
+  beyonddentalcare.com:
+    domain: 'health'
+    subdomain: 'dentistry'
+  bfranklincrafts.com:
+    domain: 'crafts'
+    subdomain: 'arts & crafts supplies'
+  bhg.com.au:
+    domain: 'home'
+    subdomain: 'better homes & gardens'
+  biblejournalingdigitally.com:
+    domain: 'religion'
+    subdomain: 'bible journaling'
+  bigeasydemolition.com:
+    domain: 'services'
+    subdomain: 'demolition'
+  bigincomeparadise.com:
+    domain: 'business'
+    subdomain: 'online income'
+  billboard.com:
+    domain: 'entertainment'
+    subdomain: 'music industry'
+  biofusionnest.com:
+    domain: 'health'
+    subdomain: 'wellness & supplements'
+  biteki.com:
+    domain: 'beauty'
+    subdomain: 'japanese beauty'
+  bizwarriors.com:
+    domain: 'business'
+    subdomain: 'entrepreneurship forum'
+  bkvenergy.com:
+    domain: 'energy'
+    subdomain: 'natural gas'
+  blackspotguitars.com:
+    domain: 'music'
+    subdomain: 'guitars & instruments'
+  blix.gg:
+    domain: 'gaming'
+    subdomain: 'esports news'
+  blog.amigofoods.com:
+    domain: 'food'
+    subdomain: 'latin food blog'
+  blog.cuw.edu:
+    domain: 'education'
+    subdomain: 'university blog'
+  blog.eternal3d.com:
+    domain: 'technology'
+    subdomain: '3d design blog'
+  blog.fame.edu.my:
+    domain: 'education'
+    subdomain: 'college blog'
+  blog.goalsontrack.com:
+    domain: 'self improvement'
+    subdomain: 'goal setting'
+  blog.justfoodfordogs.com:
+    domain: 'pets'
+    subdomain: 'dog nutrition'
+  blog.nationwide.com:
+    domain: 'finance'
+    subdomain: 'insurance blog'
+  blog.poweredtemplate.com:
+    domain: 'business'
+    subdomain: 'templates & design'
+  blog.stampinup.com:
+    domain: 'crafts'
+    subdomain: 'stamping & crafts'
+  blog.ted.com:
+    domain: 'education'
+    subdomain: 'ideas & talks'
+  blogs.dickinson.edu:
+    domain: 'education'
+    subdomain: 'university blogs'
+  bloomingexpert.com:
+    domain: 'gardening'
+    subdomain: 'plant care'
+  bloomscape.com:
+    domain: 'gardening'
+    subdomain: 'indoor plants'
+  bloomyheaven.com:
+    domain: 'gardening'
+    subdomain: 'flower gardening'
+  blossomheartquilts.com:
+    domain: 'crafts'
+    subdomain: 'quilting'
+  blueskyathome.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  bmwinsights.com:
+    domain: 'business'
+    subdomain: 'market insights'
+  boatdriving.org:
+    domain: 'education'
+    subdomain: 'boating safety'
+  bobsrepair.com:
+    domain: 'services'
+    subdomain: 'home repair'
+  bodyartguru.com:
+    domain: 'lifestyle'
+    subdomain: 'tattoos & body art'
+  bodymind.com:
+    domain: 'health'
+    subdomain: 'holistic wellness'
+  bookmypainting.com:
+    domain: 'art'
+    subdomain: 'custom paintings'
+  bookoffoods.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  boondockingrecipes.com:
+    domain: 'food'
+    subdomain: 'camping recipes'
+  botswana-experience.com:
+    domain: 'travel'
+    subdomain: 'botswana safaris'
+  boundbyflame.com:
+    domain: 'gaming'
+    subdomain: 'video game'
+  bradsugars.com:
+    domain: 'business'
+    subdomain: 'entrepreneurship'
+  brainpickings.org:
+    domain: 'education'
+    subdomain: 'literature & philosophy'
+  bransheets.com:
+    domain: 'business'
+    subdomain: 'financial documents'
+  brightfuturespsychiatry.com:
+    domain: 'health'
+    subdomain: 'psychiatry services'
+  britishrecipesbook.co.uk:
+    domain: 'food'
+    subdomain: 'british recipes'
+  browsewellness.com:
+    domain: 'health'
+    subdomain: 'wellness resources'
+  bsdi-bd.org:
+    domain: 'nonprofit'
+    subdomain: 'development organization'
+  bsmhft.nhs.uk:
+    domain: 'health'
+    subdomain: 'mental health services'
+  budgetsmadeeasy.com:
+    domain: 'finance'
+    subdomain: 'budgeting tips'
+  budgettraveller.org:
+    domain: 'travel'
+    subdomain: 'budget travel'
+  builders-surplus.com:
+    domain: 'home'
+    subdomain: 'building materials'
+  buildingmoxie.com:
+    domain: 'home'
+    subdomain: 'home improvement'
+  businesstalkmagazine.com:
+    domain: 'business'
+    subdomain: 'business news'
+  busybutcooking.com:
+    domain: 'food'
+    subdomain: 'quick recipes'
+  bvintagestyle.com:
+    domain: 'lifestyle'
+    subdomain: 'vintage fashion'
+  byjus.com:
+    domain: 'education'
+    subdomain: 'online learning'
+  c-difficile-treatment.com:
+    domain: 'health'
+    subdomain: 'infection treatment'
+  cakemehometonight.com:
+    domain: 'food'
+    subdomain: 'baking recipes'
+  cakere.com:
+    domain: 'finance'
+    subdomain: 'credit reports'
+  cal-star.com:
+    domain: 'public services'
+    subdomain: 'air medical services'
+  cambridgeculinary.com:
+    domain: 'education'
+    subdomain: 'culinary school'
+  camperfaqs.com:
+    domain: 'travel'
+    subdomain: 'rv & camper guides'
+  camperoutdoor.com:
+    domain: 'travel'
+    subdomain: 'outdoor camping'
+  campingforfoodies.com:
+    domain: 'food'
+    subdomain: 'camping recipes'
+  caninebible.com:
+    domain: 'pets'
+    subdomain: 'dog care'
+  canineweekly.com:
+    domain: 'pets'
+    subdomain: 'large dog breeds'
+  capturetheatlas.com:
+    domain: 'travel'
+    subdomain: 'photography & travel'
+  carboncostume.com:
+    domain: 'entertainment'
+    subdomain: 'costume guides'
+  careergirlmeets.com:
+    domain: 'career'
+    subdomain: 'career advice'
+  careerimpressions.ca:
+    domain: 'career'
+    subdomain: 'resume writing'
+  carelink.org:
+    domain: 'health'
+    subdomain: 'senior care'
+  caringseniorservice.com:
+    domain: 'health'
+    subdomain: 'senior care services'
+  carlcheo.com:
+    domain: 'technology'
+    subdomain: 'tech guides'
+  carpet-rug.org:
+    domain: 'home'
+    subdomain: 'carpet industry'
+  cassiefairy.com:
+    domain: 'lifestyle'
+    subdomain: 'fashion & crafts'
+  cats.com:
+    domain: 'pets'
+    subdomain: 'cat care'
+  ccyd.co.uk:
+    domain: 'nonprofit'
+    subdomain: 'youth development'
+  centerpointlandscaping.com:
+    domain: 'home'
+    subdomain: 'landscaping services'
+  cgmagonline.com:
+    domain: 'entertainment'
+    subdomain: 'gaming & media'
+  chainsawjournal.com:
+    domain: 'tools'
+    subdomain: 'chainsaw & power tools'
+  chaylorandmads.com:
+    domain: 'lifestyle'
+    subdomain: 'home & crafts'
+  chefpanko.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  chicstylecollective.com:
+    domain: 'fashion'
+    subdomain: 'style guides'
+  childrenfirstamerica.org:
+    domain: 'nonprofit'
+    subdomain: 'child advocacy'
+  chinamarketadvisor.com:
+    domain: 'business'
+    subdomain: 'china market insights'
+  chovi.com:
+    domain: 'food'
+    subdomain: 'sauces & condiments'
+  chrisbailey.com:
+    domain: 'self improvement'
+    subdomain: 'productivity'
+  christianeducatorsacademy.com:
+    domain: 'education'
+    subdomain: 'christian online school'
+  church.org:
+    domain: 'religion'
+    subdomain: 'church directory'
+  citronhygiene.com:
+    domain: 'services'
+    subdomain: 'hygiene solutions'
+  civitasseniorliving.com:
+    domain: 'health'
+    subdomain: 'senior living'
+  claimsmate.com:
+    domain: 'services'
+    subdomain: 'insurance claims help'
+  clankitchen.com:
+    domain: 'food'
+    subdomain: 'kitchen product reviews'
+  classicdrycleaner.com:
+    domain: 'services'
+    subdomain: 'dry cleaning'
+  cleanandtidyliving.com:
+    domain: 'home'
+    subdomain: 'organization & cleaning'
+  cleancookingcaitlin.com:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  cleanersland.com:
+    domain: 'services'
+    subdomain: 'cleaning services'
+  cleanerstalk.com:
+    domain: 'home'
+    subdomain: 'cleaning tips'
+  cleanmama.com:
+    domain: 'home'
+    subdomain: 'cleaning & organization'
+  cleanmastermind.com:
+    domain: 'business'
+    subdomain: 'cleaning business tips'
+  clevelandwaterandfire.com:
+    domain: 'services'
+    subdomain: 'restoration services'
+  closetandstorageconcepts.com:
+    domain: 'home'
+    subdomain: 'closet design'
+  closetmusthaves.com:
+    domain: 'fashion'
+    subdomain: 'closet essentials'
+  closetslasvegas.com:
+    domain: 'home'
+    subdomain: 'closet design'
+  cmshomesllc.com:
+    domain: 'real estate'
+    subdomain: 'home building'
+  cnc-uae.com:
+    domain: 'business'
+    subdomain: 'construction services'
+  cntw.nhs.uk:
+    domain: 'health'
+    subdomain: 'mental health services'
+  coastal-dermatology.com:
+    domain: 'health'
+    subdomain: 'dermatology'
+  cocinarecetasfaciles.com:
+    domain: 'food'
+    subdomain: 'spanish recipes'
+  cocinavital.mx:
+    domain: 'food'
+    subdomain: 'mexican recipes'
+  cocoonhomeservices.com:
+    domain: 'services'
+    subdomain: 'home maintenance'
+  cole13.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  comehomewithbonniejean.com:
+    domain: 'lifestyle'
+    subdomain: 'home & family'
+  communitygardensofsantaclarita.org:
+    domain: 'gardening'
+    subdomain: 'community gardens'
+  comparitech.com:
+    domain: 'technology'
+    subdomain: 'tech reviews & comparisons'
+  completecomfortfoods.com:
+    domain: 'food'
+    subdomain: 'comfort food recipes'
+  completefoodcompany.com:
+    domain: 'food'
+    subdomain: 'food services'
+  completelydelicious.com:
+    domain: 'food'
+    subdomain: 'baking & recipes'
+  completestoragesolutions.com.au:
+    domain: 'home'
+    subdomain: 'storage solutions'
+  concretequestions.com:
+    domain: 'home'
+    subdomain: 'concrete & construction'
+  considerable.com:
+    domain: 'lifestyle'
+    subdomain: 'retirement & aging'
+  cook.me:
+    domain: 'food'
+    subdomain: 'recipes'
+  cookathomemom.com:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  cookingday.net:
+    domain: 'food'
+    subdomain: 'recipes & cooking tips'
+  cookingwithkatiecross.com:
+    domain: 'food'
+    subdomain: 'recipes & lifestyle'
+  cooktoria.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  costimates.com:
+    domain: 'home'
+    subdomain: 'cost estimates'
+  courierbeauty.com:
+    domain: 'beauty'
+    subdomain: 'beauty products'
+  coveti.com:
+    domain: 'fashion'
+    subdomain: 'luxury fashion'
+  craftbasics.net:
+    domain: 'crafts'
+    subdomain: 'diy crafts'
+  craftingpulse.com:
+    domain: 'crafts'
+    subdomain: 'crafting inspiration'
+  craftychica.com:
+    domain: 'crafts'
+    subdomain: 'arts & crafts'
+  creategreatplaces.com:
+    domain: 'home'
+    subdomain: 'urban planning & design'
+  creativemealplanning.com:
+    domain: 'food'
+    subdomain: 'meal planning'
+  crediful.com:
+    domain: 'finance'
+    subdomain: 'credit & loans'
+  creteform.com:
+    domain: 'construction'
+    subdomain: 'concrete forms'
+  crosscountrymortgage.com:
+    domain: 'finance'
+    subdomain: 'mortgage lending'
+  crownlinen.net:
+    domain: 'services'
+    subdomain: 'linen services'
+  culinarycrossover.com:
+    domain: 'food'
+    subdomain: 'culinary fusion'
+  cultivatinggreenspaces.com:
+    domain: 'gardening'
+    subdomain: 'urban gardening'
+  curiosidades.com:
+    domain: 'entertainment'
+    subdomain: 'fun facts'
+  curiosidadessobre.es:
+    domain: 'education'
+    subdomain: 'curiosities & knowledge'
+  cvformat.io:
+    domain: 'career'
+    subdomain: 'resume templates'
+  dafunda.com:
+    domain: 'entertainment'
+    subdomain: 'gaming & pop culture'
+  dailydish.co.uk:
+    domain: 'food'
+    subdomain: 'recipes'
+  dailydogfoodrecipes.com:
+    domain: 'pets'
+    subdomain: 'dog food recipes'
+  dailyinspiredlife.com:
+    domain: 'self improvement'
+    subdomain: 'inspiration & lifestyle'
+  dailylifetips.pro:
+    domain: 'self improvement'
+    subdomain: 'life tips'
+  damonburton.com:
+    domain: 'business'
+    subdomain: 'seo consulting'
+  daretogrowrich.com:
+    domain: 'finance'
+    subdomain: 'wealth building'
+  dbtselfhelp.com:
+    domain: 'health'
+    subdomain: 'mental health resources'
+  deadline.com:
+    domain: 'entertainment'
+    subdomain: 'hollywood news'
+  deanbokhari.com:
+    domain: 'self improvement'
+    subdomain: 'personal development'
+  decisionmakershub.com:
+    domain: 'business'
+    subdomain: 'leadership & management'
+  delishknowledge.com:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  demilked.com:
+    domain: 'design'
+    subdomain: 'art & design inspiration'
+  dentalhygieneassociation.com:
+    domain: 'health'
+    subdomain: 'dental hygiene'
+  desertgardenguide.com:
+    domain: 'gardening'
+    subdomain: 'desert gardening'
+  desertlandscapinglasvegas.com:
+    domain: 'home'
+    subdomain: 'landscaping services'
+  designideasguide.com:
+    domain: 'design'
+    subdomain: 'home & lifestyle design'
+  designingalifefantastic.com:
+    domain: 'self improvement'
+    subdomain: 'lifestyle design'
+  designtobuildblog.com:
+    domain: 'home'
+    subdomain: 'construction & design'
+  desivibe.com:
+    domain: 'entertainment'
+    subdomain: 'south asian culture'
+  dianfarmer.com:
+    domain: 'gardening'
+    subdomain: 'homesteading & gardening'
+  digitei.com:
+    domain: 'technology'
+    subdomain: 'digital marketing'
+  dinosaurmama.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  disneytouristblog.com:
+    domain: 'travel'
+    subdomain: 'disney travel guides'
+  distinctivedesignstoragesolutions.com:
+    domain: 'home'
+    subdomain: 'storage design'
+  diy-guides.com:
+    domain: 'home'
+    subdomain: 'diy guides'
+  diybunker.com:
+    domain: 'home'
+    subdomain: 'diy projects'
+  diycruiseports.com:
+    domain: 'travel'
+    subdomain: 'cruise port guides'
+  diyhomegenius.com:
+    domain: 'home'
+    subdomain: 'diy home improvement'
+  diyhomesteading101.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  diypaintingtips.com:
+    domain: 'home'
+    subdomain: 'painting tips'
+  doctorshealthpress.com:
+    domain: 'health'
+    subdomain: 'medical news'
+  dominguezfirm.com:
+    domain: 'legal'
+    subdomain: 'law firm'
+  domino.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  dotesports.com:
+    domain: 'gaming'
+    subdomain: 'esports news'
+  downtoearthfertilizer.com:
+    domain: 'gardening'
+    subdomain: 'fertilizers'
+  doyleloghomeservices.com:
+    domain: 'home'
+    subdomain: 'log home services'
+  dreamalittlebigger.com:
+    domain: 'crafts'
+    subdomain: 'diy & crafts'
+  drewandjonathan.com:
+    domain: 'home'
+    subdomain: 'property brothers projects'
+  drhomefixer.com:
+    domain: 'home'
+    subdomain: 'home repair'
+  drkaursdentalranchi.com:
+    domain: 'health'
+    subdomain: 'dentistry'
+  drpitcairn.com:
+    domain: 'health'
+    subdomain: 'holistic veterinary care'
+  drsonneveld.com:
+    domain: 'health'
+    subdomain: 'dental services'
+  dugiguides.com:
+    domain: 'gaming'
+    subdomain: 'world of warcraft guides'
+  duramaxbp.com:
+    domain: 'construction'
+    subdomain: 'building products'
+  durmonski.com:
+    domain: 'self improvement'
+    subdomain: 'personal development'
+  e-architect.com:
+    domain: 'design'
+    subdomain: 'architecture'
+  early.app:
+    domain: 'finance'
+    subdomain: 'investment app'
+  ease.com:
+    domain: 'business'
+    subdomain: 'benefits & hr software'
+  easycleancook.com:
+    domain: 'food'
+    subdomain: 'easy recipes'
+  easyfamilyrecipes.com:
+    domain: 'food'
+    subdomain: 'family recipes'
+  easyhometips.org:
+    domain: 'home'
+    subdomain: 'home improvement tips'
+  easypapercrafts.com:
+    domain: 'crafts'
+    subdomain: 'paper crafts'
+  easypeasyslowcook.com:
+    domain: 'food'
+    subdomain: 'slow cooker recipes'
+  eathealthyisgood.com:
+    domain: 'health'
+    subdomain: 'healthy eating'
+  eatproteins.com:
+    domain: 'health'
+    subdomain: 'protein nutrition'
+  ecocation.org:
+    domain: 'travel'
+    subdomain: 'eco tourism'
+  ecotsy.com:
+    domain: 'home'
+    subdomain: 'eco-friendly products'
+  ecowworld.com:
+    domain: 'environment'
+    subdomain: 'sustainability'
+  eduwiseup.com:
+    domain: 'education'
+    subdomain: 'learning resources'
+  einatkessler.com:
+    domain: 'crafts'
+    subdomain: 'scrapbooking & crafts'
+  elder.org:
+    domain: 'health'
+    subdomain: 'elder care'
+  elearningart.com:
+    domain: 'education'
+    subdomain: 'elearning graphics'
+  elementaryassessments.com:
+    domain: 'education'
+    subdomain: 'school assessments'
+  elephantenergy.com:
+    domain: 'health'
+    subdomain: 'wellness coaching'
+  elizabethmadethis.com:
+    domain: 'crafts'
+    subdomain: 'sewing & diy'
+  elliementalhealth.com:
+    domain: 'health'
+    subdomain: 'mental health services'
+  elliestraveltips.com:
+    domain: 'travel'
+    subdomain: 'travel tips'
+  ellisjamesdesigns.com:
+    domain: 'fashion'
+    subdomain: 'travel accessories'
+  emeraldhillcollective.com:
+    domain: 'lifestyle'
+    subdomain: 'community & wellness'
+  emetaction.org:
+    domain: 'nonprofit'
+    subdomain: 'jewish advocacy'
+  empoweryourwellness.online:
+    domain: 'health'
+    subdomain: 'wellness & fitness'
+  engineering.com:
+    domain: 'technology'
+    subdomain: 'engineering news'
+  englishan.com:
+    domain: 'education'
+    subdomain: 'english learning'
+  englishgardencare.com:
+    domain: 'gardening'
+    subdomain: 'garden care'
+  entunebh.com:
+    domain: 'business'
+    subdomain: 'corporate services'
+  environet.com.ph:
+    domain: 'environment'
+    subdomain: 'environmental services'
+  es.gizmodo.com:
+    domain: 'technology'
+    subdomain: 'tech news (spanish)'
+  essentialoilhaven.com:
+    domain: 'health'
+    subdomain: 'essential oils'
+  essentialrepairs.com:
+    domain: 'services'
+    subdomain: 'home repairs'
+  esthetician.org:
+    domain: 'beauty'
+    subdomain: 'esthetician resources'
+  etown.org:
+    domain: 'entertainment'
+    subdomain: 'music & radio'
+  eu-startups.com:
+    domain: 'business'
+    subdomain: 'startup news'
+  everspruceapp.com:
+    domain: 'home'
+    subdomain: 'organization app'
+  everydaycleaningideas.com:
+    domain: 'home'
+    subdomain: 'cleaning tips'
+  everydayhomerepairs.com:
+    domain: 'home'
+    subdomain: 'diy home repairs'
+  everydaypie.com:
+    domain: 'food'
+    subdomain: 'pie recipes'
+  everylastrecipe.com:
+    domain: 'food'
+    subdomain: 'recipe collection'
+  examples-of.net:
+    domain: 'education'
+    subdomain: 'examples & templates'
+  exhaleathome.com:
+    domain: 'health'
+    subdomain: 'wellness at home'
+  extremehowto.com:
+    domain: 'home'
+    subdomain: 'diy guides'
+  ezehow.com:
+    domain: 'education'
+    subdomain: 'how-to guides'
+  ezrsgold.com:
+    domain: 'gaming'
+    subdomain: 'osrs gold marketplace'
+  f1destinations.com:
+    domain: 'travel'
+    subdomain: 'formula 1 travel guides'
+  fabricfits.com:
+    domain: 'fashion'
+    subdomain: 'fabric & clothing'
+  fabulesslyfrugal.com:
+    domain: 'finance'
+    subdomain: 'frugal living'
+  familyfocusblog.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  farandwide.com:
+    domain: 'travel'
+    subdomain: 'travel guides'
+  farmanddairy.com:
+    domain: 'agriculture'
+    subdomain: 'farming news'
+  farmonaut.com:
+    domain: 'agriculture'
+    subdomain: 'satellite farming'
+  farrellpediatrics.com:
+    domain: 'health'
+    subdomain: 'pediatrics'
+  fashionforum.dk:
+    domain: 'fashion'
+    subdomain: 'fashion industry'
+  fbla.org:
+    domain: 'education'
+    subdomain: 'business student association'
+  fcdrycleaners.com:
+    domain: 'services'
+    subdomain: 'dry cleaning'
+  festivalturf.com:
+    domain: 'home'
+    subdomain: 'artificial turf'
+  findingzest.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & recipes'
+  firstlendingonline.com:
+    domain: 'finance'
+    subdomain: 'loans & lending'
+  fitnesspamphlet.com:
+    domain: 'health'
+    subdomain: 'fitness resources'
+  fitnigerian.com:
+    domain: 'health'
+    subdomain: 'fitness & nutrition'
+  fittoservegroup.com:
+    domain: 'health'
+    subdomain: 'keto recipes'
+  flandersfamily.info:
+    domain: 'lifestyle'
+    subdomain: 'family blog'
+  flaremagazine.co.uk:
+    domain: 'entertainment'
+    subdomain: 'fashion & lifestyle magazine'
+  flavorycooking.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  fleurfoodie.com:
+    domain: 'food'
+    subdomain: 'food blogging'
+  flgardening.com:
+    domain: 'gardening'
+    subdomain: 'florida gardening'
+  flowerpatchfarmhouse.com:
+    domain: 'gardening'
+    subdomain: 'garden & diy projects'
+  foodandbeverageserviceknowledge.com:
+    domain: 'education'
+    subdomain: 'food & beverage service training'
+  foodbankiowa.org:
+    domain: 'nonprofit'
+    subdomain: 'food bank'
+  foodbeast.com:
+    domain: 'food'
+    subdomain: 'food news & culture'
+  foodsensenow.com:
+    domain: 'health'
+    subdomain: 'nutrition & wellness'
+  foodserviceindia.com:
+    domain: 'food'
+    subdomain: 'food service industry'
+  foodsmartcolorado.colostate.edu:
+    domain: 'education'
+    subdomain: 'nutrition education'
+  foodtrotter.com:
+    domain: 'food'
+    subdomain: 'global cuisine'
+  forbusybees.com:
+    domain: 'lifestyle'
+    subdomain: 'productivity & tips'
+  forethouse.com:
+    domain: 'fashion'
+    subdomain: 'sustainable fashion'
+  forktospoon.com:
+    domain: 'food'
+    subdomain: 'air fryer & instant pot recipes'
+  fortheloveofcooking.net:
+    domain: 'food'
+    subdomain: 'recipes'
+  fortheloveofsimple.com:
+    domain: 'lifestyle'
+    subdomain: 'simple living'
+  fourminutebooks.com:
+    domain: 'education'
+    subdomain: 'book summaries'
+  franceadventurer.com:
+    domain: 'travel'
+    subdomain: 'france travel guides'
+  franklincovey.com:
+    domain: 'business'
+    subdomain: 'leadership & productivity training'
+  freeappsforme.com:
+    domain: 'technology'
+    subdomain: 'mobile app reviews'
+  frenchskincare.com:
+    domain: 'beauty'
+    subdomain: 'french skincare'
+  frenchstyle.co:
+    domain: 'fashion'
+    subdomain: 'french fashion'
+  freshmommyblog.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  fridabemighty.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & motherhood'
+  fromhousetohome.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  frugalandthriving.com.au:
+    domain: 'finance'
+    subdomain: 'frugal living'
+  frugalfamily.co.uk:
+    domain: 'finance'
+    subdomain: 'family budgeting'
+  frugalfriendspodcast.com:
+    domain: 'finance'
+    subdomain: 'personal finance podcast'
+  frugalgardening.com:
+    domain: 'gardening'
+    subdomain: 'budget gardening'
+  fursnpaws.com:
+    domain: 'pets'
+    subdomain: 'pet care'
+  gabberdashery.com:
+    domain: 'fashion'
+    subdomain: 'clothing & accessories'
+  gadgetstouse.com:
+    domain: 'technology'
+    subdomain: 'gadget reviews'
+  game.guide:
+    domain: 'gaming'
+    subdomain: 'game guides'
+  gameranx.com:
+    domain: 'gaming'
+    subdomain: 'gaming news & reviews'
+  gamerempire.net:
+    domain: 'gaming'
+    subdomain: 'game guides'
+  gamersmentor.com:
+    domain: 'gaming'
+    subdomain: 'gaming tutorials'
+  gameshedge.com:
+    domain: 'gaming'
+    subdomain: 'gaming news'
+  gameskeys.net:
+    domain: 'gaming'
+    subdomain: 'game keys & reviews'
+  gameskinny.com:
+    domain: 'gaming'
+    subdomain: 'gaming articles'
+  gamezebo.com:
+    domain: 'gaming'
+    subdomain: 'mobile & casual games'
+  gamingelephant.com:
+    domain: 'gaming'
+    subdomain: 'gaming guides'
+  gamingonphone.com:
+    domain: 'gaming'
+    subdomain: 'mobile gaming'
+  garden-guy.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  garden.com:
+    domain: 'gardening'
+    subdomain: 'gardening resources'
+  gardenbeast.com:
+    domain: 'gardening'
+    subdomain: 'plant care & gardening'
+  gardenerpick.com:
+    domain: 'gardening'
+    subdomain: 'gardening product reviews'
+  gardenersmag.com:
+    domain: 'gardening'
+    subdomain: 'gardening magazine'
+  gardenforbeginners.com:
+    domain: 'gardening'
+    subdomain: 'beginner gardening'
+  gardenfunction.com:
+    domain: 'gardening'
+    subdomain: 'garden design & care'
+  gardening.cals.cornell.edu:
+    domain: 'education'
+    subdomain: 'gardening resources'
+  gardeningchores.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  gardeningelsa.com:
+    domain: 'gardening'
+    subdomain: 'gardening blog'
+  gardeningflow.com:
+    domain: 'gardening'
+    subdomain: 'gardening guides'
+  gardeninghobbies.com:
+    domain: 'gardening'
+    subdomain: 'hobby gardening'
+  gardeninginside.com:
+    domain: 'gardening'
+    subdomain: 'indoor gardening'
+  gardeningsoul.com:
+    domain: 'gardening'
+    subdomain: 'gardening inspiration'
+  gardeningtips.in:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  gardeningwithskip.com:
+    domain: 'gardening'
+    subdomain: 'gardening advice'
+  gardeninsider.org:
+    domain: 'gardening'
+    subdomain: 'gardening resources'
+  gardenluminoustales.com:
+    domain: 'gardening'
+    subdomain: 'garden stories'
+  gardensavvy.com:
+    domain: 'gardening'
+    subdomain: 'gardening marketplace'
+  gardenseason.com:
+    domain: 'gardening'
+    subdomain: 'seasonal gardening'
+  gardentabs.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  geek.pizza:
+    domain: 'technology'
+    subdomain: 'tech & geek culture'
+  gentwenty.com:
+    domain: 'lifestyle'
+    subdomain: 'millennial lifestyle'
+  getbusygardening.com:
+    domain: 'gardening'
+    subdomain: 'diy gardening'
+  getdroidtips.com:
+    domain: 'technology'
+    subdomain: 'android tips'
+  getemi.pk:
+    domain: 'finance'
+    subdomain: 'loan services'
+  gethealthyu.com:
+    domain: 'health'
+    subdomain: 'fitness & wellness'
+  getzhandyman.com:
+    domain: 'services'
+    subdomain: 'handyman services'
+  gfloutdoors.com:
+    domain: 'outdoors'
+    subdomain: 'gardening & landscaping'
+  gimmedelicious.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  girlandthekitchen.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking tips'
+  giyplants.com:
+    domain: 'gardening'
+    subdomain: 'plant care'
+  glamourboutique.com:
+    domain: 'fashion'
+    subdomain: 'crossdressing & fashion'
+  glebekitchen.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  globalradar360.com:
+    domain: 'business'
+    subdomain: 'compliance & risk management'
+  gnomadhome.com:
+    domain: 'travel'
+    subdomain: 'van life & nomadic living'
+  goaging.org:
+    domain: 'health'
+    subdomain: 'aging resources'
+  gocleaningmaids.com:
+    domain: 'services'
+    subdomain: 'cleaning services'
+  gogreenzero.com:
+    domain: 'environment'
+    subdomain: 'zero waste living'
+  goodcirclemarketing.com:
+    domain: 'business'
+    subdomain: 'marketing services'
+  goodexistence.com:
+    domain: 'lifestyle'
+    subdomain: 'wellness & mindfulness'
+  goodfoodtoeat.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  goodliife.com:
+    domain: 'lifestyle'
+    subdomain: 'personal growth'
+  gotinyspace.com:
+    domain: 'home'
+    subdomain: 'tiny living'
+  gpapac.com:
+    domain: 'business'
+    subdomain: 'political action committee'
+  graceandlightness.com:
+    domain: 'lifestyle'
+    subdomain: 'wellness & positivity'
+  graduateprogram.org:
+    domain: 'education'
+    subdomain: 'graduate programs'
+  grandmastricks.com:
+    domain: 'lifestyle'
+    subdomain: 'household tips'
+  gravelisting.com:
+    domain: 'business'
+    subdomain: 'real estate listings'
+  grayingwithgrace.com:
+    domain: 'health'
+    subdomain: 'senior living'
+  graystoneig.com:
+    domain: 'finance'
+    subdomain: 'investment group'
+  greaterbostonpm.com:
+    domain: 'real estate'
+    subdomain: 'property management'
+  greatsenioryears.com:
+    domain: 'health'
+    subdomain: 'senior lifestyle'
+  greenchildmagazine.com:
+    domain: 'lifestyle'
+    subdomain: 'eco parenting'
+  greenchoicelifestyle.com:
+    domain: 'environment'
+    subdomain: 'sustainable living'
+  greenrodentrestoration.com:
+    domain: 'services'
+    subdomain: 'pest control'
+  greenygardener.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  gritandgraceful.com:
+    domain: 'lifestyle'
+    subdomain: 'personal growth'
+  growingfamilybenefits.com:
+    domain: 'finance'
+    subdomain: 'family benefits & insurance'
+  growingfruits.com:
+    domain: 'gardening'
+    subdomain: 'fruit growing'
+  growinginthegarden.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  growit.wiki:
+    domain: 'gardening'
+    subdomain: 'plant database'
+  growthsummary.com:
+    domain: 'education'
+    subdomain: 'book summaries'
+  grumpygreen.cricket:
+    domain: 'sports'
+    subdomain: 'cricket news'
+  guide2wdw.com:
+    domain: 'travel'
+    subdomain: 'disney world guides'
+  guided.news:
+    domain: 'news'
+    subdomain: 'curated news'
+  guycounseling.com:
+    domain: 'health'
+    subdomain: 'men’s mental health'
+  gwynsfoxynest.com:
+    domain: 'lifestyle'
+    subdomain: 'home & crafts'
+  gynecologyguru.com:
+    domain: 'health'
+    subdomain: 'gynecology resources'
+  hagengrowth.com:
+    domain: 'business'
+    subdomain: 'growth consulting'
+  handlinghomelife.com:
+    domain: 'home'
+    subdomain: 'organization & cleaning'
+  handsoccupied.com:
+    domain: 'crafts'
+    subdomain: 'knitting & diy'
+  handymanhowto.com:
+    domain: 'home'
+    subdomain: 'handyman guides'
+  handymantips.org:
+    domain: 'home'
+    subdomain: 'diy handyman tips'
+  happiom.com:
+    domain: 'self improvement'
+    subdomain: 'productivity & lifestyle'
+  happysimpleliving.com:
+    domain: 'lifestyle'
+    subdomain: 'simple living'
+  harbourbreezehome.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  harkraft.com:
+    domain: 'home'
+    subdomain: 'storage & organization'
+  harmonyhomeconcepts.com:
+    domain: 'home'
+    subdomain: 'home design'
+  hative.com:
+    domain: 'design'
+    subdomain: 'creative ideas'
+  hausandhand.com:
+    domain: 'home'
+    subdomain: 'diy & crafts'
+  hbs.net:
+    domain: 'business'
+    subdomain: 'business services'
+  headphonesty.com:
+    domain: 'technology'
+    subdomain: 'audio reviews'
+  healingpharma.in:
+    domain: 'health'
+    subdomain: 'pharmaceuticals'
+  healoopedia.com:
+    domain: 'health'
+    subdomain: 'medical information'
+  healthguide.ng:
+    domain: 'health'
+    subdomain: 'health guides'
+  healthinnowest.net:
+    domain: 'health'
+    subdomain: 'healthcare services'
+  healthtriangle.org:
+    domain: 'education'
+    subdomain: 'health education'
+  healthyeatingresearch.org:
+    domain: 'health'
+    subdomain: 'nutrition research'
+  healthyfoodcreation.fr:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  healthygreensavvy.com:
+    domain: 'health'
+    subdomain: 'eco wellness'
+  healthyusa.us:
+    domain: 'health'
+    subdomain: 'health & wellness'
+  hearthandvine.com:
+    domain: 'home'
+    subdomain: 'diy & gardening'
+  heartscontentfarmhouse.com:
+    domain: 'food'
+    subdomain: 'recipes & homesteading'
+  heatherhandmade.com:
+    domain: 'crafts'
+    subdomain: 'sewing & diy'
+  heavenlyhouseplants.com:
+    domain: 'gardening'
+    subdomain: 'indoor plants'
+  help.peacedoorball.blog:
+    domain: 'nonprofit'
+    subdomain: 'peace & community blog'
+  hendrixair.com:
+    domain: 'services'
+    subdomain: 'hvac'
+  herbivoremuscle.com:
+    domain: 'health'
+    subdomain: 'vegan fitness'
+  heyitsfree.net:
+    domain: 'finance'
+    subdomain: 'free deals & offers'
+  heytherehome.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  highspeedoptions.com:
+    domain: 'technology'
+    subdomain: 'internet service providers'
+  hintsofgreen.com:
+    domain: 'gardening'
+    subdomain: 'plant care & gardening'
+  hinzcooking.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  hoaic.com:
+    domain: 'business'
+    subdomain: 'insurance services'
+  hobbybiker.com:
+    domain: 'lifestyle'
+    subdomain: 'motorcycling'
+  holleewoodhair.com:
+    domain: 'beauty'
+    subdomain: 'hair care & styling'
+  home-designing.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  homeaddict.io:
+    domain: 'home'
+    subdomain: 'home lifestyle'
+  homebuyerwallet.com:
+    domain: 'finance'
+    subdomain: 'home buying resources'
+  homecarecontractors.com:
+    domain: 'services'
+    subdomain: 'home improvement contractors'
+  homecookbasics.com:
+    domain: 'food'
+    subdomain: 'cooking basics'
+  homecookingcollective.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking community'
+  homedecoric.com:
+    domain: 'home'
+    subdomain: 'decor ideas'
+  homedude.co:
+    domain: 'home'
+    subdomain: 'home improvement'
+  homeimprovementgeek.com:
+    domain: 'home'
+    subdomain: 'diy home improvement'
+  homeimprovementtips.co:
+    domain: 'home'
+    subdomain: 'home improvement tips'
+  homeimprovementzine.com:
+    domain: 'home'
+    subdomain: 'home improvement magazine'
+  homekeep.com:
+    domain: 'home'
+    subdomain: 'home maintenance'
+  homemadeourway.com:
+    domain: 'home'
+    subdomain: 'diy & crafts'
+  homepressurecooking.com:
+    domain: 'food'
+    subdomain: 'pressure cooker recipes'
+  homeshowradio.com:
+    domain: 'home'
+    subdomain: 'home improvement radio'
+  homesteadingfamily.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  homeviable.com:
+    domain: 'home'
+    subdomain: 'cleaning & maintenance'
+  homeworkshawaii.com:
+    domain: 'education'
+    subdomain: 'tutoring services'
+  homezillo.com:
+    domain: 'real estate'
+    subdomain: 'property listings'
+  homlydesign.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  honestlyadhd.com:
+    domain: 'health'
+    subdomain: 'adhd resources'
+  horderly.com:
+    domain: 'home'
+    subdomain: 'organization services'
+  horizonhouseworks.com:
+    domain: 'home'
+    subdomain: 'remodeling services'
+  horizonlandscapeinc.com:
+    domain: 'home'
+    subdomain: 'landscaping services'
+  houseplantadvisor.com:
+    domain: 'gardening'
+    subdomain: 'houseplant care'
+  houseplantalley.com:
+    domain: 'gardening'
+    subdomain: 'houseplant tips'
+  houseplantauthority.com:
+    domain: 'gardening'
+    subdomain: 'indoor plants'
+  houseplantjournal.com:
+    domain: 'gardening'
+    subdomain: 'houseplant care'
+  housepractical.com:
+    domain: 'home'
+    subdomain: 'practical home tips'
+  housereimagined.com:
+    domain: 'home'
+    subdomain: 'home design'
+  housework.com:
+    domain: 'home'
+    subdomain: 'household management'
+  howchoo.com:
+    domain: 'technology'
+    subdomain: 'tech tutorials'
+  howtobuildit.org:
+    domain: 'home'
+    subdomain: 'diy building projects'
+  howtodiyeverything.com:
+    domain: 'home'
+    subdomain: 'diy guides'
+  howtogetorganizedathome.com:
+    domain: 'home'
+    subdomain: 'organization tips'
+  hseblog.com:
+    domain: 'education'
+    subdomain: 'health & safety'
+  hsestudyguide.com:
+    domain: 'education'
+    subdomain: 'study guides'
+  hunaskin.com:
+    domain: 'beauty'
+    subdomain: 'skincare'
+  hungryinthailand.com:
+    domain: 'food'
+    subdomain: 'thai recipes'
+  idlehandsawake.com:
+    domain: 'crafts'
+    subdomain: 'diy & crafts'
+  igeeksblog.com:
+    domain: 'technology'
+    subdomain: 'apple tips & reviews'
+  iguides.org:
+    domain: 'technology'
+    subdomain: 'tech guides'
+  iheartcraftythings.com:
+    domain: 'crafts'
+    subdomain: 'kids crafts'
+  illuminatebeauty.co:
+    domain: 'beauty'
+    subdomain: 'makeup & skincare'
+  iloveit.net:
+    domain: 'entertainment'
+    subdomain: 'fun lists & pop culture'
+  imademycake.com:
+    domain: 'food'
+    subdomain: 'baking & cakes'
+  imbusybeingawesome.com:
+    domain: 'self improvement'
+    subdomain: 'productivity & lifestyle'
+  imerikamarie.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  immaculateclean.com:
+    domain: 'services'
+    subdomain: 'cleaning services'
+  imperfectidealist.com:
+    domain: 'lifestyle'
+    subdomain: 'sustainable living'
+  importantenough.com:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  impruver.com:
+    domain: 'business'
+    subdomain: 'continuous improvement'
+  incpak.com:
+    domain: 'news'
+    subdomain: 'pakistan news'
+  increaseyourspace.com:
+    domain: 'home'
+    subdomain: 'organization & storage'
+  indianambrosia.com:
+    domain: 'food'
+    subdomain: 'indian recipes'
+  indiefaq.com:
+    domain: 'gaming'
+    subdomain: 'indie game guides'
+  indoorplantcare.org:
+    domain: 'gardening'
+    subdomain: 'indoor plant care'
+  indoorvegetablegrower.com:
+    domain: 'gardening'
+    subdomain: 'indoor vegetable gardening'
+  infinite-craft.net:
+    domain: 'gaming'
+    subdomain: 'crafting game guides'
+  infographicsite.com:
+    domain: 'education'
+    subdomain: 'infographics'
+  inhouseathome.com:
+    domain: 'home'
+    subdomain: 'home & lifestyle'
+  insights.workwave.com:
+    domain: 'business'
+    subdomain: 'business insights'
+  insightweeds.com:
+    domain: 'gardening'
+    subdomain: 'weed control'
+  inspectrum.com:
+    domain: 'business'
+    subdomain: 'inspection services'
+  inspire52.com:
+    domain: 'lifestyle'
+    subdomain: 'inspirational stories'
+  inspiremystyle.com:
+    domain: 'lifestyle'
+    subdomain: 'fashion & style'
+  installitdirect.com:
+    domain: 'home'
+    subdomain: 'landscaping & installation'
+  instantpoteats.com:
+    domain: 'food'
+    subdomain: 'instant pot recipes'
+  instantpotme.com:
+    domain: 'food'
+    subdomain: 'instant pot cooking'
+  intimatehygine.com:
+    domain: 'health'
+    subdomain: 'personal hygiene'
+  intoindiegames.com:
+    domain: 'gaming'
+    subdomain: 'indie game reviews'
+  inventariostotal.com:
+    domain: 'business'
+    subdomain: 'inventory management'
+  iscreamforbuttercream.com:
+    domain: 'food'
+    subdomain: 'cake decorating & baking'
+  ispyfabulous.com:
+    domain: 'lifestyle'
+    subdomain: 'beauty & lifestyle tips'
+  it-maniacs.com:
+    domain: 'technology'
+    subdomain: 'tech news & tutorials'
+  itsallyouboo.com:
+    domain: 'self improvement'
+    subdomain: 'goal setting & productivity'
+  itsblossom.com:
+    domain: 'lifestyle'
+    subdomain: 'diy & crafts'
+  japan-insider.com:
+    domain: 'news'
+    subdomain: 'japan news & culture'
+  japanswitch.com:
+    domain: 'education'
+    subdomain: 'japanese language learning'
+  jasperandwillow.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  jaywaytravel.com:
+    domain: 'travel'
+    subdomain: 'europe travel guides'
+  jcvpm.com:
+    domain: 'business'
+    subdomain: 'project management'
+  jefmenguin.com:
+    domain: 'self improvement'
+    subdomain: 'leadership & coaching'
+  jennakateathome.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  jennifermaker.com:
+    domain: 'crafts'
+    subdomain: 'diy & crafting tutorials'
+  jesselebeau.com:
+    domain: 'self improvement'
+    subdomain: 'motivational speaking'
+  jharkhandreporter.com:
+    domain: 'news'
+    subdomain: 'regional news (India)'
+  jkmoving.com:
+    domain: 'services'
+    subdomain: 'moving services'
+  joannabel.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  johnstalkerinstitute.org:
+    domain: 'education'
+    subdomain: 'nutrition & health education'
+  josephbulfamanteandson.com:
+    domain: 'services'
+    subdomain: 'construction & masonry'
+  journalinghabit.com:
+    domain: 'self improvement'
+    subdomain: 'journaling & mindfulness'
+  joybileefarm.com:
+    domain: 'gardening'
+    subdomain: 'herbal gardening & homesteading'
+  joyfulthroughitall.com:
+    domain: 'self improvement'
+    subdomain: 'faith & positivity'
+  joynights.org:
+    domain: 'entertainment'
+    subdomain: 'nightlife & events'
+  joypetproducts.com:
+    domain: 'pets'
+    subdomain: 'pet care products'
+  joytothefood.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  joyusgarden.com:
+    domain: 'gardening'
+    subdomain: 'indoor & outdoor plants'
+  junipercares.com:
+    domain: 'health'
+    subdomain: 'senior care'
+  jupiterhadley.com:
+    domain: 'gaming'
+    subdomain: 'indie game reviews'
+  justagirlandherblog.com:
+    domain: 'home'
+    subdomain: 'organization & blogging'
+  justlovecooking.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  justseeds.org:
+    domain: 'art'
+    subdomain: 'artist cooperative'
+  katyperry.com:
+    domain: 'entertainment'
+    subdomain: 'music artist'
+  kawalingpinoy.com:
+    domain: 'food'
+    subdomain: 'filipino recipes'
+  keanelandscaping.com:
+    domain: 'home'
+    subdomain: 'landscaping services'
+  keeperscleanusa.com:
+    domain: 'services'
+    subdomain: 'cleaning services'
+  kellogggarden.com:
+    domain: 'gardening'
+    subdomain: 'garden products'
+  kenh14.com:
+    domain: 'news'
+    subdomain: 'vietnamese entertainment news'
+  keviniscooking.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  keystoneclosing.com:
+    domain: 'finance'
+    subdomain: 'real estate closing services'
+  kiddsservices.com:
+    domain: 'services'
+    subdomain: 'hvac & plumbing'
+  kidsactivitiesblog.com:
+    domain: 'education'
+    subdomain: 'kids activities & crafts'
+  kidsbeautyexpert.com:
+    domain: 'beauty'
+    subdomain: 'kids beauty tips'
+  kindness-compassion-and-coaching.com:
+    domain: 'self improvement'
+    subdomain: 'life coaching'
+  kinetikwellbeing.com:
+    domain: 'health'
+    subdomain: 'health monitoring devices'
+  kitchenambition.com:
+    domain: 'food'
+    subdomain: 'kitchen product reviews'
+  kitchenheed.com:
+    domain: 'food'
+    subdomain: 'cooking tips'
+  kitchenpearls.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  kosgames.com:
+    domain: 'gaming'
+    subdomain: 'game guides'
+  kuellife.com:
+    domain: 'lifestyle'
+    subdomain: 'midlife women lifestyle'
+  lacademie.com:
+    domain: 'food'
+    subdomain: 'cooking guides'
+  lambertslately.com:
+    domain: 'lifestyle'
+    subdomain: 'family & home'
+  landscaping.com.sg:
+    domain: 'home'
+    subdomain: 'landscaping services'
+  landscapingduty.com:
+    domain: 'home'
+    subdomain: 'landscaping tips'
+  lapuentehome.org:
+    domain: 'nonprofit'
+    subdomain: 'homeless shelter'
+  latinoliteracy.com:
+    domain: 'education'
+    subdomain: 'latino literacy resources'
+  laughlore.com:
+    domain: 'entertainment'
+    subdomain: 'jokes & humor'
+  laundrytowear.com:
+    domain: 'services'
+    subdomain: 'laundry services'
+  lauraconteuse.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  laurelberninteriors.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  lean.org:
+    domain: 'business'
+    subdomain: 'lean management'
+  learningmole.com:
+    domain: 'education'
+    subdomain: 'kids learning resources'
+  learntogrowgardens.com:
+    domain: 'gardening'
+    subdomain: 'gardening education'
+  leecompany.com:
+    domain: 'services'
+    subdomain: 'hvac & plumbing'
+  leftbraincraftbrain.com:
+    domain: 'crafts'
+    subdomain: 'kids crafts & stem'
+  legacy.com:
+    domain: 'news'
+    subdomain: 'obituaries'
+  legalsupportworld.com:
+    domain: 'business'
+    subdomain: 'legal outsourcing'
+  legendarycasual.com:
+    domain: 'gaming'
+    subdomain: 'gaming news'
+  letscleanthatup.com:
+    domain: 'home'
+    subdomain: 'cleaning tips'
+  letsgogreen.com:
+    domain: 'environment'
+    subdomain: 'eco-friendly living'
+  levelwinner.com:
+    domain: 'gaming'
+    subdomain: 'mobile game guides'
+  lianaskitchen.co.uk:
+    domain: 'food'
+    subdomain: 'recipes'
+  lifecoachhub.com:
+    domain: 'self improvement'
+    subdomain: 'life coaching'
+  lifegoalsmag.com:
+    domain: 'self improvement'
+    subdomain: 'goal setting & lifestyle'
+  lifehack-solution.com:
+    domain: 'self improvement'
+    subdomain: 'life hacks'
+  lifehacks.io:
+    domain: 'self improvement'
+    subdomain: 'productivity hacks'
+  lifeunflaked.com:
+    domain: 'self improvement'
+    subdomain: 'organization & productivity'
+  lightingcraze.com:
+    domain: 'home'
+    subdomain: 'lighting products'
+  limebricks.com:
+    domain: 'real estate'
+    subdomain: 'property listings'
+  littlehouseliving.com:
+    domain: 'lifestyle'
+    subdomain: 'homesteading & frugal living'
+  livewellsouthwest.co.uk:
+    domain: 'health'
+    subdomain: 'healthcare services'
+  livinator.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  livingandeducation.com:
+    domain: 'education'
+    subdomain: 'lifestyle & learning'
+  livingminimalism.com:
+    domain: 'lifestyle'
+    subdomain: 'minimalism'
+  livingonthecheap.com:
+    domain: 'finance'
+    subdomain: 'frugal living'
+  livingrichlyonabudget.com:
+    domain: 'finance'
+    subdomain: 'budgeting tips'
+  livingwell.org.au:
+    domain: 'health'
+    subdomain: 'men’s health resources'
+  loaids.com:
+    domain: 'health'
+    subdomain: 'disability aids'
+  localdentalsa.com:
+    domain: 'health'
+    subdomain: 'dentistry'
+  lookgoodfeelbetter.org:
+    domain: 'nonprofit'
+    subdomain: 'cancer support'
+  lorabloomquist.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  lostlife.blog:
+    domain: 'gaming'
+    subdomain: 'mobile game guides'
+  loveourreallife.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  lowincomerelief.com:
+    domain: 'finance'
+    subdomain: 'low income resources'
+  luminli.com:
+    domain: 'lifestyle'
+    subdomain: 'personal growth'
+  lunchsense.com:
+    domain: 'food'
+    subdomain: 'lunch solutions'
+  luxuryindiatours.com:
+    domain: 'travel'
+    subdomain: 'india luxury tours'
+  maangchi.com:
+    domain: 'food'
+    subdomain: 'korean recipes'
+  mabababycare.com:
+    domain: 'health'
+    subdomain: 'baby care'
+  madetosustain.com:
+    domain: 'environment'
+    subdomain: 'sustainable living'
+  magicguides.com:
+    domain: 'travel'
+    subdomain: 'disney guides'
+  maidsailors.com:
+    domain: 'services'
+    subdomain: 'cleaning services'
+  maisacademy.com:
+    domain: 'education'
+    subdomain: 'online learning'
+  makeitright.ca:
+    domain: 'home'
+    subdomain: 'home improvement'
+  makersgonnalearn.com:
+    domain: 'crafts'
+    subdomain: 'cricut & diy tutorials'
+  makeupandbeautyguides.com:
+    domain: 'beauty'
+    subdomain: 'makeup tips'
+  makingmanzanita.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  makingthishome.com:
+    domain: 'home'
+    subdomain: 'sustainable living'
+  mamagoesbeyond.com:
+    domain: 'lifestyle'
+    subdomain: 'travel & family'
+  mamagourmand.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  marchingnorth.com:
+    domain: 'crafts'
+    subdomain: 'macrame & fiber arts'
+  mariocastilloelectric.com:
+    domain: 'services'
+    subdomain: 'electrical services'
+  marketbusinessnews.com:
+    domain: 'business'
+    subdomain: 'business news'
+  marysnest.com:
+    domain: 'food'
+    subdomain: 'traditional cooking'
+  mastergardenersd.org:
+    domain: 'gardening'
+    subdomain: 'gardening education'
+  mealmastermind.com:
+    domain: 'food'
+    subdomain: 'meal planning'
+  meatcheftools.com:
+    domain: 'food'
+    subdomain: 'meat cooking tools'
+  mens-talk.online:
+    domain: 'health'
+    subdomain: 'men’s lifestyle'
+  mensfitness.co.uk:
+    domain: 'health'
+    subdomain: 'fitness & exercise'
+  mentalhealthathome.org:
+    domain: 'health'
+    subdomain: 'mental health resources'
+  merricksart.com:
+    domain: 'fashion'
+    subdomain: 'style & sewing'
+  mexicanplease.com:
+    domain: 'food'
+    subdomain: 'mexican recipes'
+  mhacf.org:
+    domain: 'health'
+    subdomain: 'mental health advocacy'
+  michelelian.com:
+    domain: 'health'
+    subdomain: 'nutrition & wellness'
+  michellejdesigns.com:
+    domain: 'crafts'
+    subdomain: 'diy & decor'
+  middleclassdadmoney.com:
+    domain: 'finance'
+    subdomain: 'personal finance'
+  mightygoodness.com:
+    domain: 'health'
+    subdomain: 'wellness & lifestyle'
+  mikesbackyardnursery.com:
+    domain: 'gardening'
+    subdomain: 'plant nursery'
+  milestonepa.org:
+    domain: 'health'
+    subdomain: 'behavioral health services'
+  milkandpop.com:
+    domain: 'food'
+    subdomain: 'recipes & drinks'
+  millennialboss.com:
+    domain: 'finance'
+    subdomain: 'career & side hustles'
+  mindfulbnb.com:
+    domain: 'business'
+    subdomain: 'airbnb hosting tips'
+  mindfullhive.com:
+    domain: 'self improvement'
+    subdomain: 'mindfulness'
+  mindxmaster.com:
+    domain: 'technology'
+    subdomain: 'tech & business insights'
+  naturalremedyideas.com:
+    domain: 'health'
+    subdomain: 'natural remedies'
+  nchh.org:
+    domain: 'health'
+    subdomain: 'healthy housing'
+  neilkelly.com:
+    domain: 'home'
+    subdomain: 'remodeling services'
+  nepaleveresttrekking.com:
+    domain: 'travel'
+    subdomain: 'trekking in Nepal'
+  netcurtains.org:
+    domain: 'home'
+    subdomain: 'window treatments'
+  neuraleffects.com:
+    domain: 'health'
+    subdomain: 'neurological rehabilitation'
+  neurotree.io:
+    domain: 'education'
+    subdomain: 'academic genealogy'
+  ngb.org:
+    domain: 'gardening'
+    subdomain: 'national gardening bureau'
+  ninahendrick.com:
+    domain: 'home'
+    subdomain: 'interior design & lifestyle'
+  ninjafoodtech.com:
+    domain: 'food'
+    subdomain: 'food technology'
+  njfamily.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  nme.com:
+    domain: 'entertainment'
+    subdomain: 'music news'
+  northerngardener.org:
+    domain: 'gardening'
+    subdomain: 'northern gardening'
+  northernservicestoday.com:
+    domain: 'news'
+    subdomain: 'local services news'
+  northumberlandparkmedicalgroup.nhs.uk:
+    domain: 'health'
+    subdomain: 'medical practice'
+  notesbythalia.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  notesfromtheporch.com:
+    domain: 'lifestyle'
+    subdomain: 'home & family'
+  novascotiaspca.ca:
+    domain: 'nonprofit'
+    subdomain: 'animal welfare'
+  nowcookthis.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  nubiapage.com:
+    domain: 'entertainment'
+    subdomain: 'african culture & news'
+  number8cooking.com:
+    domain: 'food'
+    subdomain: 'cooking & recipes'
+  nutfreewok.com:
+    domain: 'food'
+    subdomain: 'allergy-friendly recipes'
+  nutrareviews.org:
+    domain: 'health'
+    subdomain: 'nutrition reviews'
+  nutritionconsabor.com:
+    domain: 'food'
+    subdomain: 'latin nutrition & recipes'
+  nutritionfacts.org:
+    domain: 'health'
+    subdomain: 'nutrition science'
+  nytstrands.com:
+    domain: 'entertainment'
+    subdomain: 'word games'
+  nyworkerslaw.com:
+    domain: 'legal'
+    subdomain: 'workers compensation law'
+  oakloghome.com:
+    domain: 'home'
+    subdomain: 'log home building'
+  observationhobbies.com:
+    domain: 'lifestyle'
+    subdomain: 'hobbies & interests'
+  oceanconservancy.org:
+    domain: 'environment'
+    subdomain: 'ocean conservation'
+  odahcenter.com:
+    domain: 'health'
+    subdomain: 'addiction recovery'
+  offgridblog.com:
+    domain: 'lifestyle'
+    subdomain: 'off-grid living'
+  offgridhub.com:
+    domain: 'lifestyle'
+    subdomain: 'sustainable living'
+  ofhousesandtrees.com:
+    domain: 'home'
+    subdomain: 'eco-friendly living'
+  ohgardener.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  ohse.ca:
+    domain: 'education'
+    subdomain: 'occupational health & safety'
+  olivetomato.com:
+    domain: 'food'
+    subdomain: 'mediterranean diet'
+  olympicclosets.com:
+    domain: 'home'
+    subdomain: 'closet design'
+  onehundreddollarsamonth.com:
+    domain: 'finance'
+    subdomain: 'frugal living'
+  onelifejourneys.com:
+    domain: 'travel'
+    subdomain: 'personal travel blog'
+  oneprojectcloser.com:
+    domain: 'home'
+    subdomain: 'diy & home improvement'
+  online.jwu.edu:
+    domain: 'education'
+    subdomain: 'online university'
+  onsuttonplace.com:
+    domain: 'home'
+    subdomain: 'decor & lifestyle'
+  ontrackfishing.com:
+    domain: 'outdoors'
+    subdomain: 'fishing guides'
+  opplehouse.com:
+    domain: 'home'
+    subdomain: 'real estate'
+  optilingo.com:
+    domain: 'education'
+    subdomain: 'language learning'
+  ordinaryandhappy.com:
+    domain: 'lifestyle'
+    subdomain: 'simple living'
+  organicfacts.net:
+    domain: 'health'
+    subdomain: 'nutrition & wellness'
+  organisemyhouse.com:
+    domain: 'home'
+    subdomain: 'organization'
+  organized-home.com:
+    domain: 'home'
+    subdomain: 'home organization'
+  osrsguide.com:
+    domain: 'gaming'
+    subdomain: 'old school runescape guides'
+  osrsmoneymaking.guide:
+    domain: 'gaming'
+    subdomain: 'osrs money making'
+  ottawacitizen.com:
+    domain: 'news'
+    subdomain: 'canadian news'
+  ourcraftymom.com:
+    domain: 'crafts'
+    subdomain: 'diy & crafts'
+  ourfamilylifestyle.com:
+    domain: 'lifestyle'
+    subdomain: 'family & parenting'
+  oursimplehomestead.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  outdoorgoodness.com:
+    domain: 'outdoors'
+    subdomain: 'gardening & outdoors'
+  outdoorhappens.com:
+    domain: 'outdoors'
+    subdomain: 'homesteading & gardening'
+  outdoorlife.com:
+    domain: 'outdoors'
+    subdomain: 'hunting & fishing'
+  outfitformulas.com:
+    domain: 'fashion'
+    subdomain: 'style guides'
+  owlovertheworld.com:
+    domain: 'travel'
+    subdomain: 'travel blog'
+  ownyardlife.com:
+    domain: 'home'
+    subdomain: 'yard & gardening'
+  panflavor.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  paperheartfamily.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  pathtopro.com:
+    domain: 'career'
+    subdomain: 'career development'
+  pauladeen.com:
+    domain: 'food'
+    subdomain: 'southern recipes'
+  pawleaks.com:
+    domain: 'pets'
+    subdomain: 'dog training & care'
+  pbfingers.com:
+    domain: 'lifestyle'
+    subdomain: 'fitness & food'
+  pbo.co.uk:
+    domain: 'outdoors'
+    subdomain: 'boating & sailing'
+  peaklinehealth.com:
+    domain: 'health'
+    subdomain: 'healthcare services'
+  pegasusseniorliving.com:
+    domain: 'health'
+    subdomain: 'senior living'
+  personalexcellence.co:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  personalityunleashed.com:
+    domain: 'self improvement'
+    subdomain: 'personality development'
+  personaltrainerauthority.com:
+    domain: 'health'
+    subdomain: 'fitness training'
+  petapixel.com:
+    domain: 'photography'
+    subdomain: 'photography news'
+  petittigardencenter.com:
+    domain: 'gardening'
+    subdomain: 'garden center'
+  philosophyofyum.com:
+    domain: 'food'
+    subdomain: 'baking & recipes'
+  phoneia.com:
+    domain: 'technology'
+    subdomain: 'tech news'
+  pinchofyum.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  pindersnursery.com:
+    domain: 'gardening'
+    subdomain: 'plant nursery'
+  pizzapizza.ca:
+    domain: 'food'
+    subdomain: 'pizza restaurant'
+  planetnatural.com:
+    domain: 'gardening'
+    subdomain: 'organic gardening'
+  plantedwell.com:
+    domain: 'gardening'
+    subdomain: 'plant care & wellness'
+  plantglossary.com:
+    domain: 'gardening'
+    subdomain: 'plant glossary'
+  plantiexcel.com:
+    domain: 'education'
+    subdomain: 'excel training'
+  plantillasexcelgratis.com:
+    domain: 'education'
+    subdomain: 'excel templates'
+  plantoorganize.com:
+    domain: 'home'
+    subdomain: 'organization'
+  plantyou.com:
+    domain: 'food'
+    subdomain: 'plant-based recipes'
+  playpartyplan.com:
+    domain: 'lifestyle'
+    subdomain: 'party planning'
+  plus39.com.au:
+    domain: 'food'
+    subdomain: 'italian restaurant'
+  plusmood.com:
+    domain: 'design'
+    subdomain: 'architecture & design'
+  pokecardhq.com:
+    domain: 'gaming'
+    subdomain: 'pokemon cards'
+  poki.ac:
+    domain: 'gaming'
+    subdomain: 'online games'
+  poki.co.com:
+    domain: 'gaming'
+    subdomain: 'online games'
+  pooltipsusa.com:
+    domain: 'home'
+    subdomain: 'pool maintenance'
+  portage.extension.wisc.edu:
+    domain: 'education'
+    subdomain: 'university extension'
+  positivelysustainable.com:
+    domain: 'environment'
+    subdomain: 'sustainable living'
+  positiveparentingsolutions.com:
+    domain: 'self improvement'
+    subdomain: 'parenting'
+  positivephil.com:
+    domain: 'business'
+    subdomain: 'entrepreneurship podcast'
+  positivityblog.com:
+    domain: 'self improvement'
+    subdomain: 'positivity & growth'
+  positivitysparkles.com:
+    domain: 'lifestyle'
+    subdomain: 'inspirational quotes'
+  postcardsfromtheridge.com:
+    domain: 'home'
+    subdomain: 'decor & lifestyle'
+  practical-sailor.com:
+    domain: 'outdoors'
+    subdomain: 'sailing reviews'
+  practicallyhomemade.com:
+    domain: 'food'
+    subdomain: 'homemade recipes'
+  practicalmachinist.com:
+    domain: 'technology'
+    subdomain: 'machining forum'
+  practicalpropertyimprovements.com:
+    domain: 'home'
+    subdomain: 'property improvement'
+  pragativadi.com:
+    domain: 'news'
+    subdomain: 'indian news'
+  prathaminstitute.org:
+    domain: 'education'
+    subdomain: 'public health education'
+  prepandrally.com:
+    domain: 'food'
+    subdomain: 'meal prep'
+  presmada.com:
+    domain: 'business'
+    subdomain: 'corporate services'
+  pressurecookrecipes.com:
+    domain: 'food'
+    subdomain: 'pressure cooker recipes'
+  prestoncrafts.com:
+    domain: 'outdoors'
+    subdomain: 'fishing boats'
+  prettyhandygirl.com:
+    domain: 'home'
+    subdomain: 'diy & crafts'
+  prettypurpledoor.com:
+    domain: 'home'
+    subdomain: 'gardening & decor'
+  primalsurvivor.net:
+    domain: 'outdoors'
+    subdomain: 'survival guides'
+  primestorage.com:
+    domain: 'services'
+    subdomain: 'self storage'
+  printablesforlife.com:
+    domain: 'education'
+    subdomain: 'printable resources'
+  printabulls.com:
+    domain: 'education'
+    subdomain: 'free printables'
+  progameguides.com:
+    domain: 'gaming'
+    subdomain: 'game guides'
+  projectorsewing.com:
+    domain: 'crafts'
     subdomain: 'sewing patterns'
-  sleep.ai:
-      domain: 'health'
-      subdomain: 'sleep technology'
-  sewing.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  wellfacets.com:
-      domain: 'health'
-      subdomain: 'wellness'
-  acrylgiessen.com:
-      domain: 'art'
-      subdomain: 'acrylic pouring'
-  menubly.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  ecologyskincare.com:
-      domain: 'beauty'
-      subdomain: 'skincare'
-  themamahandbook.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  seebykelly.com:
-      domain: 'fashion'
-      subdomain: 'style blog'
-  themakinglife.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  allthenoodles.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  stateofwatourism.com:
-      domain: 'travel'
-      subdomain: 'Western Australia'
-  readerhaven.com:
-      domain: 'culture'
-      subdomain: 'books'
-  wellspringprevention.org:
-      domain: 'non-profit'
-      subdomain: 'substance abuse prevention'
-  theprettyplaneteer.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  us.moodmedia.com:
-      domain: 'business guides'
-      subdomain: 'sensory marketing'
-  rabbit.org:
-      domain: 'pets'
-      subdomain: 'rabbits'
-  thelazydish.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  portugalist.com:
-      domain: 'travel'
-      subdomain: 'Portugal'
-  view-hobby.com:
-      domain: 'hobbies'
-      subdomain: 'general'
-  talltimbersonline.com:
-      domain: 'shopping'
-      subdomain: 'home goods'
-  mindfulnessinschools.org:
-      domain: 'non-profit'
-      subdomain: 'education'
-  becomingtraditional.com:
-      domain: 'lifestyle'
-      subdomain: 'traditional living'
-  therainbowplanner.com:
-      domain: 'lifestyle'
-      subdomain: 'planners'
-  yeswriting.com:
-      domain: 'career'
-      subdomain: 'writing'
-  amwomenmag.com:
-      domain: 'culture'
-      subdomain: 'magazine'
-  myburntorange.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  thedailysew.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  towards-sustainability.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  thinkingsustainably.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  thesavvydreamer.com:
-      domain: 'self-improvement'
-      subdomain: 'personal development'
-  littera24.com:
-      domain: 'business guides'
-      subdomain: 'translation services'
-  greatlakescountry.com:
-      domain: 'travel'
-      subdomain: 'Great Lakes'
-  youhavestyle.com:
-      domain: 'fashion'
-      subdomain: 'style'
-  thriveinthailand.com:
-      domain: 'travel'
-      subdomain: 'Thailand'
-  thedailydiy.net:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  theadventuresabound.com:
-      domain: 'travel'
-      subdomain: 'blog'
-  joyberrystudios.com:
-      domain: 'art'
-      subdomain: 'design'
-  dug.org:
-      domain: 'gardening'
-      subdomain: 'community gardens'
-  artofimprovement.co.uk:
-      domain: 'self-improvement'
-      subdomain: 'personal development'
-  zipzapdiy.com:
-      domain: 'DIY'
-      subdomain: 'crafts'
-  syndicode.com:
-      domain: 'technology'
-      subdomain: 'software development'
-  taskbeat.com:
-      domain: 'technology'
-      subdomain: 'project management'
-  griddlesizzle.com:
-      domain: 'food'
-      subdomain: 'griddle recipes'
-  woodworkboss.com:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  smartparentguides.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  therestfulhome.com:
-      domain: 'home'
-      subdomain: 'decor'
-  ymcasouthflorida.org:
-      domain: 'non-profit'
-      subdomain: 'community'
-  structuraliving.com:
-      domain: 'home'
-      subdomain: 'organization'
-  storage-solutions.org:
-      domain: 'home'
-      subdomain: 'organization'
-  thestyledabode.com:
-      domain: 'home'
-      subdomain: 'interior design'
-  thesustainablelivingguide.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  treefrogmarketing.com:
-      domain: 'business guides'
-      subdomain: 'marketing'
-  psychologyoftravel.com:
-      domain: 'travel'
-      subdomain: 'psychology'
-  insidedecors.com:
-      domain: 'home'
-      subdomain: 'interior design'
-  weljii.com:
-      domain: 'education'
-      subdomain: 'health coaching'
-  sproutsschools.com:
-      domain: 'education'
-      subdomain: 'preschool'
-  opportunitymarketing.co.uk:
-      domain: 'business guides'
-      subdomain: 'marketing'
-  zerowastehomestead.com:
-      domain: 'lifestyle'
-      subdomain: 'zero waste'
-  sleepfit101.com:
-      domain: 'health'
-      subdomain: 'sleep'
-  theroundup.org:
-      domain: 'lifestyle'
-      subdomain: 'sustainable products'
-  turbomode.ai:
-      domain: 'technology'
-      subdomain: 'AI'
-  startupjungle.com:
-      domain: 'business guides'
-      subdomain: 'startups'
-  thebestofculinary.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  daretobeawildflower.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  blog.canvaslot.com:
-      domain: 'art'
-      subdomain: 'printing'
-  sustainable-usa.org:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  simple-life.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
-  meadowsfarms.com:
-      domain: 'gardening'
-      subdomain: 'nursery'
-  thedayzofdavid.com:
-      domain: 'lifestyle'
-      subdomain: 'blog'
-  thechilddevelopment.com:
-      domain: 'family'
-      subdomain: 'child development'
-  skillschool.co.in:
-      domain: 'education'
-      subdomain: 'skill development'
-  calisthenics.com:
-      domain: 'fitness'
-      subdomain: 'calisthenics'
-  thestreetblogger.com:
-      domain: 'fashion'
-      subdomain: 'blog'
-  tilt.colostate.edu:
-      domain: 'education'
-      subdomain: 'university'
-  auto-repair-help.com:
-      domain: 'automotive'
-      subdomain: 'auto repair'
-  thinkimpact.com:
-      domain: 'business guides'
-      subdomain: 'social entrepreneurship'
-  thewholepack.com:
-      domain: 'pets'
-      subdomain: 'dogs'
-  topcleaningfl.com:
-      domain: 'home services'
-      subdomain: 'cleaning'
-  exploreandindulge.org:
-      domain: 'travel'
-      subdomain: 'blog'
-  appetitejourney.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  blog.experientialtools.com:
-      domain: 'education'
-      subdomain: 'learning tools'
-  thefamilypartnership.org:
-      domain: 'non-profit'
-      subdomain: 'family services'
-  susanburkholder.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  outdoorsdiy.com:
-      domain: 'DIY'
-      subdomain: 'outdoor projects'
-  simplediyhomestead.com:
-      domain: 'lifestyle'
-      subdomain: 'homesteading'
-  sagapens.com:
-      domain: 'shopping'
-      subdomain: 'pens'
-  naturalskincare.com:
-      domain: 'beauty'
-      subdomain: 'skincare'
-  shannonssewandsew.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  createfashionbrand.com:
-      domain: 'business guides'
-      subdomain: 'fashion'
-  rolleatusa.com:
-      domain: 'shopping'
-      subdomain: 'reusable products'
-  welinku.com:
-      domain: 'technology'
-      subdomain: 'software'
-  awcbehavioralhealth.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  alfreyandpruittcounseling.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  menshealthnetwork.org:
-      domain: 'health'
-      subdomain: "men's health"
-  sleephealthnetwork.com:
-      domain: 'health'
-      subdomain: 'sleep'
-  sleepinginstitute.org:
-      domain: 'health'
-      subdomain: 'sleep'
-  deepaliohri.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  allaboardstorage.com:
-      domain: 'home services'
-      subdomain: 'self-storage'
-  stmarysmaine.com:
-      domain: 'health'
-      subdomain: 'medical center'
-  talesrecipes.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  prettyfrugal.com:
-      domain: 'finance'
-      subdomain: 'frugal living'
-  delishbymich.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  yarnellschool.com:
-      domain: 'art'
-      subdomain: 'painting'
-  simpleintentional.com:
-      domain: 'lifestyle'
-      subdomain: 'minimalism'
-  stylespot.com:
-      domain: 'fashion'
-      subdomain: 'style'
-  travelcroop.com:
-      domain: 'travel'
-      subdomain: 'blog'
-  yardutopia.com:
-      domain: 'gardening'
-      subdomain: 'landscaping'
-  infobooks.org:
-      domain: 'culture'
-      subdomain: 'free books'
-  sewingcrafters.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  libtitle.com:
-      domain: 'unclassified'
-      subdomain: 'general'
-  newagainpatiofurniture.com:
-      domain: 'home services'
-      subdomain: 'furniture repair'
-  drswetech.com:
-      domain: 'technology'
-      subdomain: 'blog'
-  woodadvisor.net:
-      domain: 'DIY'
-      subdomain: 'woodworking'
-  servicealliancegroup.com:
-      domain: 'business guides'
-      subdomain: 'consulting'
-  slowmotionmama.com:
-      domain: 'family'
-      subdomain: 'parenting'
-  growmyybusiness.com:
-      domain: 'business guides'
-      subdomain: 'marketing'
-  singingdogvanilla.com:
-      domain: 'food'
-      subdomain: 'vanilla'
-  rfsadermatology.com:
-      domain: 'health'
-      subdomain: 'dermatology'
-  wanderlyworld.com:
-      domain: 'travel'
-      subdomain: 'blog'
-  thecraftofcopywriting.com:
-      domain: 'business guides'
-      subdomain: 'copywriting'
-  coryschneiderpsychotherapy.com:
-      domain: 'health'
-      subdomain: 'mental health'
-  speedyprep.com:
-      domain: 'education'
-      subdomain: 'test prep'
-  theyashgoyal.com:
-      domain: 'technology'
-      subdomain: 'blog'
-  sunriselandscape.com:
-      domain: 'home services'
-      subdomain: 'landscaping'
-  thewiredhomeschool.com:
-      domain: 'education'
-      subdomain: 'homeschooling'
-  ecostarters.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  thetastefulkitchen.com:
-      domain: 'food'
-      subdomain: 'recipes'
-  siegeuniversity.com:
-      domain: 'gaming'
-      subdomain: 'Rainbow Six Siege'
-  somarawellness.com:
-      domain: 'health'
-      subdomain: 'wellness'
-  stevethompsoncoaching.com:
-      domain: 'business guides'
-      subdomain: 'coaching'
-  tricorehealth.com:
-      domain: 'health'
-      subdomain: 'wellness'
-  tradebe.com:
-      domain: 'business guides'
-      subdomain: 'environmental services'
-  visitkc.com:
-      domain: 'travel'
-      subdomain: 'Kansas City'
-  tailorscouture.com:
-      domain: 'fashion'
-      subdomain: 'tailoring'
-  whats4eats.com:
-      domain: 'food'
-      subdomain: 'global recipes'
-  teachstone.com:
-      domain: 'education'
-      subdomain: 'teacher training'
-  sleepaction.org.uk:
-      domain: 'health'
-      subdomain: 'sleep'
-  mindfulnessworks.com:
-      domain: 'health'
-      subdomain: 'mindfulness'
-  trulyboho.com:
-      domain: 'fashion'
-      subdomain: 'boho style'
-  seymourlawnmaint.com:
-      domain: 'home services'
-      subdomain: 'lawn care'
-  premeditatedleftovers.com:
-      domain: 'food'
-      subdomain: 'frugal recipes'
-  wellhaven.com:
-      domain: 'health'
-      subdomain: 'wellness'
-  techyshub.com:
-      domain: 'technology'
-      subdomain: 'tech news'
-  ecofriendlyguy.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  phyts-usa.com:
-      domain: 'beauty'
-      subdomain: 'skincare'
-  stitchnsew.com:
-      domain: 'DIY'
-      subdomain: 'sewing'
-  aiellolandscape.com:
-      domain: 'home services'
-      subdomain: 'landscaping'
-  sustainableecolife.com:
-      domain: 'lifestyle'
-      subdomain: 'sustainability'
-  sweetlyclean.com:
-      domain: 'home services'
-      subdomain: 'cleaning'
-  thefurniturerepaircenter.com:
-      domain: 'home services'
-      subdomain: 'furniture repair'
-  hardwaretree.com:
-      domain: 'shopping'
-      subdomain: 'hardware'
-  topcarelandscapes.com:
-      domain: 'home services'
-      subdomain: 'landscaping'
-  strangeideascomics.ca:
-      domain: 'culture'
-      subdomain: 'comics'
-  westernliving.ca:
-      domain: 'home'
-      subdomain: 'interior design'
-  courses.lumenlearning.com:
-      domain: 'education'
-      subdomain: 'online courses'
-  mealplans.dontwastethecrumbs.com:
-      domain: 'food'
-      subdomain: 'frugal meal plans'
+  psdf.org.pk:
+    domain: 'education'
+    subdomain: 'skills development'
+  psychology.tips:
+    domain: 'education'
+    subdomain: 'psychology tips'
+  psychowellnesscenter.com:
+    domain: 'health'
+    subdomain: 'mental health services'
+  pubity.com:
+    domain: 'entertainment'
+    subdomain: 'viral media'
+  purplecraftdiva.com:
+    domain: 'crafts'
+    subdomain: 'diy crafts'
+  qdpowerful.com:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  qoutescafe.com:
+    domain: 'lifestyle'
+    subdomain: 'quotes & inspiration'
+  quadrawellness.com:
+    domain: 'health'
+    subdomain: 'wellness'
+  queenofclean.blog:
+    domain: 'home'
+    subdomain: 'cleaning tips'
+  quels-sont.fr:
+    domain: 'education'
+    subdomain: 'informational guides'
+  quiltingdaily.com:
+    domain: 'crafts'
+    subdomain: 'quilting'
+  rachelcooks.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  rainbootsandapronstrings.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  ramber.com:
+    domain: 'business'
+    subdomain: 'corporate services'
+  raynor.com:
+    domain: 'home'
+    subdomain: 'garage doors'
+  readabilitytutor.com:
+    domain: 'education'
+    subdomain: 'reading tutor'
+  readysetfeast.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  realsimplegood.com:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  recipchef.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  recipecard.io:
+    domain: 'food'
+    subdomain: 'recipe templates'
+  recipesforhome.com:
+    domain: 'food'
+    subdomain: 'home recipes'
+  redbooth.com:
+    domain: 'business'
+    subdomain: 'project management'
+  redtedart.com:
+    domain: 'crafts'
+    subdomain: 'kids crafts & diy'
+  reflipper.net:
+    domain: 'business'
+    subdomain: 'real estate flipping'
+  regendus.com:
+    domain: 'news'
+    subdomain: 'german news & media'
+  remodelaholic.com:
+    domain: 'home'
+    subdomain: 'diy & remodeling'
+  remodelista.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  removeandreplace.com:
+    domain: 'home'
+    subdomain: 'appliance & repair guides'
+  rennersupply.com:
+    domain: 'home'
+    subdomain: 'garage doors'
+  renuityhome.com:
+    domain: 'home'
+    subdomain: 'home remodeling'
+  resourcecenter.lennar.com:
+    domain: 'real estate'
+    subdomain: 'home buying resources'
+  restopros.com:
+    domain: 'services'
+    subdomain: 'restoration services'
+  retailshout.com:
+    domain: 'business'
+    subdomain: 'retail news'
+  reviewroller.com:
+    domain: 'technology'
+    subdomain: 'product reviews'
+  reviews.com:
+    domain: 'technology'
+    subdomain: 'product & service reviews'
+  ricearray.org:
+    domain: 'education'
+    subdomain: 'scientific research'
+  ricelawmd.com:
+    domain: 'legal'
+    subdomain: 'law firm'
+  riseandbakewithjulie.com:
+    domain: 'food'
+    subdomain: 'baking recipes'
+  riverslawns.com:
+    domain: 'home'
+    subdomain: 'lawn care services'
+  robertshomerepairs.com:
+    domain: 'home'
+    subdomain: 'home repair services'
+  rogersenpai.com:
+    domain: 'entertainment'
+    subdomain: 'anime & gaming blog'
+  ronvil.com:
+    domain: 'business'
+    subdomain: 'corporate services'
+  roofmasterconstruction.com:
+    domain: 'home'
+    subdomain: 'roofing services'
+  roscoeleather.com:
+    domain: 'fashion'
+    subdomain: 'leather goods'
+  rosenberryrooms.com:
+    domain: 'home'
+    subdomain: 'kids furniture & decor'
+  rosenthalinjurylaw.com:
+    domain: 'legal'
+    subdomain: 'injury law firm'
+  rosettamentalhealth.com:
+    domain: 'health'
+    subdomain: 'mental health services'
+  royalbambino.com:
+    domain: 'home'
+    subdomain: 'baby furniture & decor'
+  ryanzofay.com:
+    domain: 'self improvement'
+    subdomain: 'motivational speaking'
+  safewise.com:
+    domain: 'technology'
+    subdomain: 'home security reviews'
+  sagefamily.com:
+    domain: 'lifestyle'
+    subdomain: 'homeschooling & parenting'
+  sajeevdev.com:
+    domain: 'self improvement'
+    subdomain: 'personal development'
+  salimaskitchen.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  saliwell.com:
+    domain: 'health'
+    subdomain: 'dental technology'
+  sallysbakingaddiction.com:
+    domain: 'food'
+    subdomain: 'baking recipes'
+  sammibrondo.com:
+    domain: 'health'
+    subdomain: 'nutrition & wellness'
+  sandersfamilydental.com:
+    domain: 'health'
+    subdomain: 'dentistry'
+  sandinmysuitcase.com:
+    domain: 'travel'
+    subdomain: 'travel blog'
+  sarfatycomms.com:
+    domain: 'business'
+    subdomain: 'communications consulting'
+  sarkarilist.in:
+    domain: 'news'
+    subdomain: 'government schemes & lists'
+  sarsas.org.uk:
+    domain: 'nonprofit'
+    subdomain: 'sexual assault support'
+  satyamevajayate.co.in:
+    domain: 'news'
+    subdomain: 'indian news & culture'
+  savingk.com:
+    domain: 'finance'
+    subdomain: 'money saving tips'
+  schmalzlandscaping.com:
+    domain: 'home'
+    subdomain: 'landscaping services'
+  scienceofmind.org:
+    domain: 'religion'
+    subdomain: 'spiritual teachings'
+  scientificallysweet.com:
+    domain: 'food'
+    subdomain: 'baking & desserts'
+  scottsdalerecovery.com:
+    domain: 'health'
+    subdomain: 'addiction recovery'
+  scrubnbubbles.com:
+    domain: 'services'
+    subdomain: 'cleaning services'
+  scrummylane.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  secretlifeofhomesteaders.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  seeafricatoday.com:
+    domain: 'travel'
+    subdomain: 'africa travel'
+  seekingthyme.com:
+    domain: 'food'
+    subdomain: 'herbal recipes'
+  segmentnext.com:
+    domain: 'gaming'
+    subdomain: 'gaming news & guides'
+  selfhelp.education:
+    domain: 'education'
+    subdomain: 'self help resources'
+  selfpublishing.com:
+    domain: 'education'
+    subdomain: 'self publishing'
+  seniorsafetyadvice.com:
+    domain: 'health'
+    subdomain: 'senior safety'
+  sensityapp.com:
+    domain: 'technology'
+    subdomain: 'mobile app'
+  serenarecipes.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  serendipityandspice.com:
+    domain: 'lifestyle'
+    subdomain: 'family & recipes'
+  serenityloghomes.com:
+    domain: 'home'
+    subdomain: 'log home building'
+  servicemasterbyzaba.com:
+    domain: 'services'
+    subdomain: 'restoration & cleaning'
+  settingforfour.com:
+    domain: 'home'
+    subdomain: 'decor & lifestyle'
+  shilpaahuja.com:
+    domain: 'fashion'
+    subdomain: 'fashion & lifestyle'
+  shiplapandshells.com:
+    domain: 'home'
+    subdomain: 'cottage decor & gardening'
+  siempreexcel.com:
+    domain: 'education'
+    subdomain: 'excel tutorials'
+  simple.money:
+    domain: 'finance'
+    subdomain: 'personal finance'
+  simpleandsavory.com:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  simpleandsoulful.blog:
+    domain: 'lifestyle'
+    subdomain: 'mindful living'
+  simplehomelife.com.au:
+    domain: 'home'
+    subdomain: 'home organization'
+  simpleliving.com:
+    domain: 'lifestyle'
+    subdomain: 'simple living'
+  simplelivingcountrygal.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  simplelivingdaily.com:
+    domain: 'lifestyle'
+    subdomain: 'minimalism & simple living'
+  simplelivingmama.com:
+    domain: 'lifestyle'
+    subdomain: 'homeschooling & family'
+  simpleneathome.com:
+    domain: 'home'
+    subdomain: 'organization & cleaning'
+  simplifylivelove.com:
+    domain: 'lifestyle'
+    subdomain: 'simple living'
+  simplifyplants.com:
+    domain: 'gardening'
+    subdomain: 'houseplant care'
+  simplilearn.com:
+    domain: 'education'
+    subdomain: 'online learning'
+  simplisticallyliving.com:
+    domain: 'lifestyle'
+    subdomain: 'frugal living'
+  simplyclearly.com:
+    domain: 'lifestyle'
+    subdomain: 'minimalism'
+  simplyfiercely.com:
+    domain: 'self improvement'
+    subdomain: 'intentional living'
+  simplymarla.com:
+    domain: 'lifestyle'
+    subdomain: 'personal blog'
+  sims4life.gg:
+    domain: 'gaming'
+    subdomain: 'sims 4 guides'
+  sinfullyspicy.com:
+    domain: 'food'
+    subdomain: 'indian recipes'
+  sixdollarfamily.com:
+    domain: 'finance'
+    subdomain: 'frugal living'
+  sixstoreys.com:
+    domain: 'lifestyle'
+    subdomain: 'culture & design'
+  skellyskills.com:
+    domain: 'education'
+    subdomain: 'online courses'
+  skillsetmag.com:
+    domain: 'lifestyle'
+    subdomain: 'tactical skills & survival'
+  skinsense.sg:
+    domain: 'beauty'
+    subdomain: 'skincare'
+  skiptomylou.org:
+    domain: 'crafts'
+    subdomain: 'kids crafts & diy'
+  sleepeducation.org:
+    domain: 'health'
+    subdomain: 'sleep education'
+  sleepopolis.com:
+    domain: 'health'
+    subdomain: 'sleep product reviews'
+  smallspacesgreatlife.com:
+    domain: 'home'
+    subdomain: 'small space living'
+  smartcentsforlife.com:
+    domain: 'finance'
+    subdomain: 'personal finance'
+  smarter.com:
+    domain: 'education'
+    subdomain: 'knowledge sharing'
+  smartertravel.com:
+    domain: 'travel'
+    subdomain: 'travel guides'
+  smartgardenhome.com:
+    domain: 'gardening'
+    subdomain: 'smart gardening'
+  smarthealthclubs.com:
+    domain: 'health'
+    subdomain: 'fitness technology'
+  smokedbbqsource.com:
+    domain: 'food'
+    subdomain: 'bbq recipes & guides'
+  snootysims.com:
+    domain: 'gaming'
+    subdomain: 'sims guides'
+  sobereastbourne.co.uk:
+    domain: 'health'
+    subdomain: 'addiction recovery'
+  sochgreen.com:
+    domain: 'environment'
+    subdomain: 'sustainable living'
+  socialworkerstoolbox.com:
+    domain: 'education'
+    subdomain: 'social work resources'
+  sofy.in:
+    domain: 'health'
+    subdomain: 'feminine hygiene'
+  sogoodly.com:
+    domain: 'entertainment'
+    subdomain: 'viral content'
+  solitude.net:
+    domain: 'lifestyle'
+    subdomain: 'mindfulness & solitude'
+  sologuides.com:
+    domain: 'travel'
+    subdomain: 'solo travel guides'
+  soreyfitness.com:
+    domain: 'health'
+    subdomain: 'fitness & wellness'
+  sous-vide.cooking:
+    domain: 'food'
+    subdomain: 'sous vide cooking'
+  southernfoodjunkie.com:
+    domain: 'food'
+    subdomain: 'southern recipes'
+  southridingpediatrics.com:
+    domain: 'health'
+    subdomain: 'pediatrics'
+  sowsmallgarden.com:
+    domain: 'gardening'
+    subdomain: 'small garden tips'
+  sparkleandshine.today:
+    domain: 'lifestyle'
+    subdomain: 'inspiration & positivity'
+  spearhead-training.com:
+    domain: 'education'
+    subdomain: 'corporate training'
+  spiceitupp.com:
+    domain: 'food'
+    subdomain: 'indian recipes'
+  spicestoryteller.com:
+    domain: 'food'
+    subdomain: 'culinary storytelling'
+  spotlightfeature.com:
+    domain: 'entertainment'
+    subdomain: 'celebrity & lifestyle'
+  springfieldrenaissanceschool.com:
+    domain: 'education'
+    subdomain: 'school website'
+  springtimeinmysoul.com:
+    domain: 'lifestyle'
+    subdomain: 'faith & inspiration'
+  start-a-garden.com:
+    domain: 'gardening'
+    subdomain: 'beginner gardening'
+  startsat60.com:
+    domain: 'lifestyle'
+    subdomain: 'senior living'
+  staygreengarden.com:
+    domain: 'gardening'
+    subdomain: 'eco gardening'
+  steakschool.com:
+    domain: 'food'
+    subdomain: 'meat & steak guides'
+  steamsolo.com:
+    domain: 'technology'
+    subdomain: 'steam gaming'
+  stellanspice.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  stevepavlina.com:
+    domain: 'self improvement'
+    subdomain: 'personal development'
+  stockingmypantry.com:
+    domain: 'food'
+    subdomain: 'food storage & prepping'
+  stonegableblog.com:
+    domain: 'home'
+    subdomain: 'decor & lifestyle'
+  storagesolutionsplus.com:
+    domain: 'home'
+    subdomain: 'storage solutions'
+  storamericastorage.com:
+    domain: 'services'
+    subdomain: 'self storage'
+  stuarttan.com:
+    domain: 'self improvement'
+    subdomain: 'coaching & leadership'
+  studie.jp:
+    domain: 'automotive'
+    subdomain: 'bmw tuning'
+  studioloot.com:
+    domain: 'gaming'
+    subdomain: 'game guides'
+  stylebyemilyhenderson.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  successlearned.com:
+    domain: 'self improvement'
+    subdomain: 'success tips'
+  sunset.com:
+    domain: 'lifestyle'
+    subdomain: 'western living'
+  surfandsunshine.com:
+    domain: 'lifestyle'
+    subdomain: 'travel & family'
+  survivallife.com:
+    domain: 'outdoors'
+    subdomain: 'survival guides'
+  survivalskillzone.com:
+    domain: 'outdoors'
+    subdomain: 'survival skills'
+  survivalsullivan.com:
+    domain: 'outdoors'
+    subdomain: 'survival prepping'
+  survivorsnetwork.org.uk:
+    domain: 'nonprofit'
+    subdomain: 'sexual violence support'
+  sustainablegardeningnews.com:
+    domain: 'gardening'
+    subdomain: 'sustainable gardening'
+  sustainableninja.com:
+    domain: 'environment'
+    subdomain: 'sustainability tips'
+  sweatguy.com:
+    domain: 'health'
+    subdomain: 'fitness & workouts'
+  swimuniversity.com:
+    domain: 'home'
+    subdomain: 'pool & spa care'
+  tarkettsportsindoor.com:
+    domain: 'sports'
+    subdomain: 'indoor sports flooring'
+  tastesfood.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  teachmehowtobake.com:
+    domain: 'food'
+    subdomain: 'baking tutorials'
+  teamassurance.com:
+    domain: 'business'
+    subdomain: 'team management software'
+  techcommuters.com:
+    domain: 'technology'
+    subdomain: 'tech news & guides'
+  techround.co.uk:
+    domain: 'business'
+    subdomain: 'startup news'
+  techtec.com.br:
+    domain: 'technology'
+    subdomain: 'tech news (Brazil)'
+  techwiser.com:
+    domain: 'technology'
+    subdomain: 'tech tutorials & reviews'
+  techyorker.com:
+    domain: 'technology'
+    subdomain: 'tech news & reviews'
+  tecnobits.com:
+    domain: 'technology'
+    subdomain: 'tech news'
+  tedswoodworkingsplans.com:
+    domain: 'crafts'
+    subdomain: 'woodworking plans'
+  telescopeguides.com:
+    domain: 'science'
+    subdomain: 'astronomy & telescope guides'
+  templafy.com:
+    domain: 'business'
+    subdomain: 'document management software'
+  tennisworldlive.com:
+    domain: 'sports'
+    subdomain: 'tennis news'
+  texasview.org:
+    domain: 'news'
+    subdomain: 'texas news & lifestyle'
+  textmei.com:
+    domain: 'technology'
+    subdomain: 'messaging app'
+  tfninternational.com:
+    domain: 'news'
+    subdomain: 'international news'
+  tgguide.com:
+    domain: 'lifestyle'
+    subdomain: 'transgender resources'
+  thankyourgarden.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  theattitudeadvantage.com:
+    domain: 'self improvement'
+    subdomain: 'youth empowerment'
+  theawesomedaily.com:
+    domain: 'entertainment'
+    subdomain: 'viral content'
+  thebackyardbaron.com:
+    domain: 'home'
+    subdomain: 'outdoor & backyard projects'
+  thebalancedlife.com:
+    domain: 'health'
+    subdomain: 'pilates & wellness'
+  theballeronabudget.com:
+    domain: 'lifestyle'
+    subdomain: 'budget lifestyle'
+  thebeautyholic.com:
+    domain: 'beauty'
+    subdomain: 'beauty tips & reviews'
+  thebeautyinstitute.edu:
+    domain: 'education'
+    subdomain: 'beauty school'
+  thebehavioralscientist.com:
+    domain: 'education'
+    subdomain: 'behavioral science'
+  thebetterfish.com:
+    domain: 'food'
+    subdomain: 'seafood products'
+  thebloomup.com:
+    domain: 'lifestyle'
+    subdomain: 'plant care & wellness'
+  thebrowngirlbeautyguide.com:
+    domain: 'beauty'
+    subdomain: 'beauty tips'
+  thebudgetdecorator.com:
+    domain: 'home'
+    subdomain: 'budget decorating'
+  thecharmingdancer.com:
+    domain: 'lifestyle'
+    subdomain: 'dance & lifestyle'
+  thecoconutmama.com:
+    domain: 'food'
+    subdomain: 'coconut recipes'
+  thecomputerbasics.com:
+    domain: 'technology'
+    subdomain: 'computer tutorials'
+  thecoolist.com:
+    domain: 'design'
+    subdomain: 'modern design & lifestyle'
+  thecraftcorner.ca:
+    domain: 'crafts'
+    subdomain: 'craft tutorials'
+  thecraftingnook.com:
+    domain: 'crafts'
+    subdomain: 'diy & crafts'
+  thecrafttrain.com:
+    domain: 'crafts'
+    subdomain: 'kids crafts'
+  thecreativemuggle.com:
+    domain: 'education'
+    subdomain: 'study tips'
+  thedetanglednest.com:
+    domain: 'home'
+    subdomain: 'organization & decor'
+  thefarmgirlgabs.com:
+    domain: 'food'
+    subdomain: 'recipes & lifestyle'
+  thefashionfest.com:
+    domain: 'fashion'
+    subdomain: 'fashion trends'
+  thefedupfoodie.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  thefemmena.com:
+    domain: 'lifestyle'
+    subdomain: 'women lifestyle'
+  thefrugalgirl.com:
+    domain: 'finance'
+    subdomain: 'frugal living'
+  thefullheartedhome.com:
+    domain: 'home'
+    subdomain: 'homemaking & faith'
+  thefuturisticminds.com:
+    domain: 'self improvement'
+    subdomain: 'career & growth'
+  thegameslayer.com:
+    domain: 'gaming'
+    subdomain: 'game reviews'
+  thegardenglove.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  thegardening.org:
+    domain: 'gardening'
+    subdomain: 'gardening resources'
+  thegardeningdad.com:
+    domain: 'gardening'
+    subdomain: 'gardening blog'
+  thegardeningtips.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  thegardenmagazine.com:
+    domain: 'gardening'
+    subdomain: 'gardening magazine'
+  thegardenstyle.com:
+    domain: 'gardening'
+    subdomain: 'garden design'
+  thegirlwithashovel.com:
+    domain: 'gardening'
+    subdomain: 'gardening blog'
+  theglowmemo.com:
+    domain: 'lifestyle'
+    subdomain: 'wellness & beauty'
+  thegoodhuman.com:
+    domain: 'environment'
+    subdomain: 'sustainable living'
+  thegoodnesswell.com:
+    domain: 'health'
+    subdomain: 'wellness'
+  thegourmetrecipes.com:
+    domain: 'food'
+    subdomain: 'gourmet recipes'
+  thegreenthumbler.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  thegrio.com:
+    domain: 'news'
+    subdomain: 'african american news'
+  thehappierhomemaker.com:
+    domain: 'home'
+    subdomain: 'diy & decor'
+  thehappychickencoop.com:
+    domain: 'gardening'
+    subdomain: 'chicken keeping'
+  thehealthyeatingguide.com:
+    domain: 'health'
+    subdomain: 'nutrition'
+  thehealthymaven.com:
+    domain: 'health'
+    subdomain: 'wellness & recipes'
+  theheartfulparent.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting'
+  theherbexchange.com:
+    domain: 'gardening'
+    subdomain: 'herbs & plants'
+  thehikingadventure.com:
+    domain: 'outdoors'
+    subdomain: 'hiking guides'
+  thehobbywife.com:
+    domain: 'lifestyle'
+    subdomain: 'family & crafts'
+  thehome.blog:
+    domain: 'home'
+    subdomain: 'home improvement'
+  thehomesteadinghippy.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  thehouseplantguru.com:
+    domain: 'gardening'
+    subdomain: 'houseplant care'
+  thehowtohome.com:
+    domain: 'home'
+    subdomain: 'diy & homemaking'
+  theinspirationboard.com:
+    domain: 'lifestyle'
+    subdomain: 'creative inspiration'
+  theinspiredhome.com:
+    domain: 'home'
+    subdomain: 'home lifestyle & products'
+  theinspiredroom.net:
+    domain: 'home'
+    subdomain: 'interior design'
+  thekidsguide.com:
+    domain: 'education'
+    subdomain: 'kids learning resources'
+  thekitchenpursuits.com:
+    domain: 'food'
+    subdomain: 'cooking & recipes'
+  thekitchensaid.com:
+    domain: 'food'
+    subdomain: 'kitchen product reviews'
+  thekitchensnob.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking tips'
+  thekittchen.com:
+    domain: 'food'
+    subdomain: 'recipes & travel'
+  thekonsulthub.com:
+    domain: 'business'
+    subdomain: 'guides & resources'
+  themaintenanceexpertschicago.com:
+    domain: 'services'
+    subdomain: 'maintenance services'
+  themaintenanceexpertshuntsville.com:
+    domain: 'services'
+    subdomain: 'maintenance services'
+  themaintenanceexpertslasvegas.com:
+    domain: 'services'
+    subdomain: 'maintenance services'
+  themaintenanceexpertslosangeles.com:
+    domain: 'services'
+    subdomain: 'maintenance services'
+  themaintenanceexpertsmilwaukee.com:
+    domain: 'services'
+    subdomain: 'maintenance services'
+  themaintenanceexpertsvirginiabeach.com:
+    domain: 'services'
+    subdomain: 'maintenance services'
+  themamapirate.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & blogging'
+  themandagies.com:
+    domain: 'travel'
+    subdomain: 'adventure travel'
+  themediterraneandish.com:
+    domain: 'food'
+    subdomain: 'mediterranean recipes'
+  themerrymomma.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & faith'
+  themindfool.com:
+    domain: 'self improvement'
+    subdomain: 'mindfulness & growth'
+  themindfulword.org:
+    domain: 'self improvement'
+    subdomain: 'mindfulness resources'
+  themodernwomanly.com:
+    domain: 'lifestyle'
+    subdomain: 'women lifestyle'
+  themom100.com:
+    domain: 'food'
+    subdomain: 'family recipes'
+  themost10.com:
+    domain: 'entertainment'
+    subdomain: 'top 10 lists'
+  thenavagepatch.com:
+    domain: 'home'
+    subdomain: 'diy & crafts'
+  theofflinekid.com:
+    domain: 'lifestyle'
+    subdomain: 'digital detox'
+  theorganisedmum.com:
+    domain: 'home'
+    subdomain: 'organization & cleaning'
+  thepondsfarmhouse.com:
+    domain: 'home'
+    subdomain: 'farmhouse decor'
+  thepurposefulpantry.com:
+    domain: 'food'
+    subdomain: 'pantry organization & storage'
+  thequotehive.com:
+    domain: 'lifestyle'
+    subdomain: 'quotes & inspiration'
+  therealfoodrds.com:
+    domain: 'food'
+    subdomain: 'healthy recipes'
+  thereluctantfoodie.com:
+    domain: 'food'
+    subdomain: 'recipes & food blog'
+  therootedfarmhouse.com:
+    domain: 'home'
+    subdomain: 'farmhouse lifestyle'
+  therovingfoodie.com:
+    domain: 'food'
+    subdomain: 'travel & food blog'
+  thescoutguide.com:
+    domain: 'business'
+    subdomain: 'local business guides'
+  thesefourwallsblog.com:
+    domain: 'home'
+    subdomain: 'interior design'
+  theselfstoragecompany.co:
+    domain: 'services'
+    subdomain: 'self storage'
+  thesimpledad.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & fatherhood'
+  thesimpleliferevival.com:
+    domain: 'lifestyle'
+    subdomain: 'simple living'
+  thesimpleparadise.com:
+    domain: 'lifestyle'
+    subdomain: 'minimalism & wellness'
+  thesleepsavvy.com:
+    domain: 'health'
+    subdomain: 'sleep wellness'
+  thesmartlocal.jp:
+    domain: 'news'
+    subdomain: 'local lifestyle (Japan)'
+  thesmileacademy.com:
+    domain: 'health'
+    subdomain: 'dental care'
+  thesoulfoodpot.com:
+    domain: 'food'
+    subdomain: 'soul food recipes'
+  thesouthernladycooks.com:
+    domain: 'food'
+    subdomain: 'southern recipes'
+  thestatesmanindia.com:
+    domain: 'news'
+    subdomain: 'indian news'
+  thestreetfoodguy.com:
+    domain: 'food'
+    subdomain: 'street food blog'
+  thestrive.co:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  thestrugglingwarrior.com:
+    domain: 'self improvement'
+    subdomain: 'mental health & resilience'
+  thesummeryumbrella.com:
+    domain: 'home'
+    subdomain: 'diy & crafts'
+  thesurvivalsummit.com:
+    domain: 'outdoors'
+    subdomain: 'survival training'
+  thetoolcupboard.com:
+    domain: 'home'
+    subdomain: 'tools & diy'
+  theunlikelyhostess.com:
+    domain: 'lifestyle'
+    subdomain: 'party planning'
+  thevacationer.com:
+    domain: 'travel'
+    subdomain: 'travel guides'
+  thewalkingmermaid.com:
+    domain: 'lifestyle'
+    subdomain: 'outdoor & travel'
+  thewellbeingdiary.com:
+    domain: 'health'
+    subdomain: 'wellbeing & lifestyle'
+  thewellnesssociety.org:
+    domain: 'health'
+    subdomain: 'mental health resources'
+  thewoodwhisperer.com:
+    domain: 'crafts'
+    subdomain: 'woodworking'
+  thezerowastelife.com:
+    domain: 'environment'
+    subdomain: 'zero waste living'
+  thinkstewartville.com:
+    domain: 'news'
+    subdomain: 'local community news'
+  thisismygarden.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  thismakesthat.com:
+    domain: 'crafts'
+    subdomain: 'diy projects'
+  thissimplebalance.com:
+    domain: 'lifestyle'
+    subdomain: 'minimalism & homeschooling'
+  thiswaytoitaly.com:
+    domain: 'travel'
+    subdomain: 'italy travel guides'
+  thoughtcatalog.com:
+    domain: 'lifestyle'
+    subdomain: 'essays & culture'
+  thrivemyway.com:
+    domain: 'business'
+    subdomain: 'entrepreneurship & growth'
+  thrivethemes.com:
+    domain: 'business'
+    subdomain: 'website building tools'
+  thriveyard.com:
+    domain: 'gardening'
+    subdomain: 'lawn & garden care'
+  thrivinghomeblog.com:
+    domain: 'food'
+    subdomain: 'family recipes & lifestyle'
+  throughthephases.com:
+    domain: 'self improvement'
+    subdomain: 'spirituality & wellness'
+  thsc.org:
+    domain: 'education'
+    subdomain: 'homeschooling resources'
+  tidbitsofexperience.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  tidymom.net:
+    domain: 'home'
+    subdomain: 'cleaning & recipes'
+  tim.blog:
+    domain: 'self improvement'
+    subdomain: 'entrepreneurship & lifestyle'
+  tinygardenhabit.com:
+    domain: 'gardening'
+    subdomain: 'small space gardening'
+  tipnut.com:
+    domain: 'home'
+    subdomain: 'tips & diy'
+  tipstohomesteading.com:
+    domain: 'home'
+    subdomain: 'homesteading'
+  tobyamidornutrition.com:
+    domain: 'health'
+    subdomain: 'nutrition & diet'
+  tooltrip.com:
+    domain: 'tools'
+    subdomain: 'tool reviews'
+  toolzview.com:
+    domain: 'tools'
+    subdomain: 'product reviews'
+  topdogtips.com:
+    domain: 'pets'
+    subdomain: 'dog care'
+  topteny.com:
+    domain: 'entertainment'
+    subdomain: 'top 10 lists'
+  torbayandsouthdevon.nhs.uk:
+    domain: 'health'
+    subdomain: 'nhs healthcare services'
+  totkay.com:
+    domain: 'lifestyle'
+    subdomain: 'tips & remedies'
+  traditionalgardening.com:
+    domain: 'gardening'
+    subdomain: 'traditional gardening'
+  transaware.net:
+    domain: 'nonprofit'
+    subdomain: 'transgender awareness'
+  transvitae.com:
+    domain: 'health'
+    subdomain: 'addiction recovery'
+  traumainformedny.org:
+    domain: 'health'
+    subdomain: 'trauma-informed care'
+  treeier.com:
+    domain: 'gardening'
+    subdomain: 'tree care'
+  trembom.com:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  trilliummontessori.org:
+    domain: 'education'
+    subdomain: 'montessori resources'
+  trinityhealth.org:
+    domain: 'health'
+    subdomain: 'healthcare services'
+  trishulhomecare.com:
+    domain: 'health'
+    subdomain: 'home healthcare'
+  trustedhouseplantguide.com:
+    domain: 'gardening'
+    subdomain: 'houseplant care'
+  twinfinite.net:
+    domain: 'gaming'
+    subdomain: 'gaming news & guides'
+  twistedsifter.com:
+    domain: 'entertainment'
+    subdomain: 'art & photography'
+  twocoatsofpaint.com:
+    domain: 'art'
+    subdomain: 'painting blog'
+  twoverbs.com:
+    domain: 'news'
+    subdomain: 'culture & lifestyle'
+  txmg.org:
+    domain: 'gardening'
+    subdomain: 'texas master gardeners'
+  typicallytopical.com:
+    domain: 'news'
+    subdomain: 'trending topics'
+  u.osu.edu:
+    domain: 'education'
+    subdomain: 'ohio state university blogs'
+  ugreen.io:
+    domain: 'technology'
+    subdomain: 'electronics & accessories'
+  ultimatesimsguides.com:
+    domain: 'gaming'
+    subdomain: 'sims guides'
+  umami.site:
+    domain: 'food'
+    subdomain: 'recipes & cooking'
+  uncovercounseling.com:
+    domain: 'health'
+    subdomain: 'counseling services'
+  unfinishedsuccess.com:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  uniquelawn.com:
+    domain: 'home'
+    subdomain: 'landscaping'
+  unlock.com:
+    domain: 'technology'
+    subdomain: 'blockchain & access control'
+  unlockedpotentials.com:
+    domain: 'self improvement'
+    subdomain: 'coaching & growth'
+  unstoppablerise.com:
+    domain: 'self improvement'
+    subdomain: 'personal development'
+  urbakibeauty.com:
+    domain: 'beauty'
+    subdomain: 'skincare & cosmetics'
+  urbangardeningideas.com:
+    domain: 'gardening'
+    subdomain: 'urban gardening'
+  urbangardeningspace.com:
+    domain: 'gardening'
+    subdomain: 'urban gardening'
+  usagardeningguide.com:
+    domain: 'gardening'
+    subdomain: 'gardening guides'
+  usinsider.com:
+    domain: 'news'
+    subdomain: 'us news & lifestyle'
+  valuepenguin.com:
+    domain: 'finance'
+    subdomain: 'financial advice'
+  vanillapapers.net:
+    domain: 'lifestyle'
+    subdomain: 'expat life & culture'
+  veganeatsmap.com:
+    domain: 'food'
+    subdomain: 'vegan restaurants'
+  veganonboard.com:
+    domain: 'food'
+    subdomain: 'vegan recipes'
+  vetexplainspets.com:
+    domain: 'pets'
+    subdomain: 'veterinary advice'
+  vijayshanthibuilders.com:
+    domain: 'real estate'
+    subdomain: 'construction & builders'
+  vintageclothingguides.com:
+    domain: 'fashion'
+    subdomain: 'vintage clothing'
+  visitfranceguide.com:
+    domain: 'travel'
+    subdomain: 'france travel guides'
+  vmh.org:
+    domain: 'health'
+    subdomain: 'healthcare services'
+  voguetidings.com:
+    domain: 'fashion'
+    subdomain: 'fashion news'
+  voyagenic.com:
+    domain: 'travel'
+    subdomain: 'travel blog'
+  vtgardens.org:
+    domain: 'gardening'
+    subdomain: 'vermont gardening'
+  vulkk.com:
+    domain: 'gaming'
+    subdomain: 'gaming guides'
+  waddleandcluck.com:
+    domain: 'lifestyle'
+    subdomain: 'backyard chickens'
+  waggingright.com:
+    domain: 'pets'
+    subdomain: 'dog training'
+  wandabrunstetter.com:
+    domain: 'entertainment'
+    subdomain: 'author website'
+  wasteremovalusa.com:
+    domain: 'services'
+    subdomain: 'waste removal'
+  webcookingclasses.com:
+    domain: 'food'
+    subdomain: 'online cooking classes'
+  weddingforward.com:
+    domain: 'lifestyle'
+    subdomain: 'wedding planning'
+  weirdunsocializedhomeschoolers.com:
+    domain: 'education'
+    subdomain: 'homeschooling blog'
+  weiss-johnson.com:
+    domain: 'services'
+    subdomain: 'hvac services'
+  welbehealth.com:
+    domain: 'health'
+    subdomain: 'senior healthcare'
+  welcome-to-greece.com:
+    domain: 'travel'
+    subdomain: 'greece travel guides'
+  wellbeinginfo.org:
+    domain: 'health'
+    subdomain: 'mental health resources'
+  wellfitinsider.com:
+    domain: 'health'
+    subdomain: 'fitness & wellness'
+  wellnessgaps.com:
+    domain: 'health'
+    subdomain: 'wellness & lifestyle'
+  wellnessgaze.com:
+    domain: 'health'
+    subdomain: 'wellness insights'
+  weramblers.com:
+    domain: 'outdoors'
+    subdomain: 'walking & hiking'
+  wethreeshanes.com:
+    domain: 'lifestyle'
+    subdomain: 'diy & homemaking'
+  wewillfixit.com:
+    domain: 'services'
+    subdomain: 'home maintenance'
+  wfmnyc.com:
+    domain: 'food'
+    subdomain: 'farmers market (NYC)'
+  whatkatysaid.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  whatsgoodonline.co.uk:
+    domain: 'news'
+    subdomain: 'online trends'
+  whatthefab.com:
+    domain: 'lifestyle'
+    subdomain: 'fashion & travel'
+  whatyourbossthinks.com:
+    domain: 'career'
+    subdomain: 'workplace advice'
+  whiskbakesmile.com:
+    domain: 'food'
+    subdomain: 'baking recipes'
+  whiteoutpress.com:
+    domain: 'news'
+    subdomain: 'independent news'
+  whitneybond.com:
+    domain: 'food'
+    subdomain: 'recipes'
+  whole-dog-journal.com:
+    domain: 'pets'
+    subdomain: 'dog care'
+  wholeandhappyliving.com:
+    domain: 'health'
+    subdomain: 'holistic living'
+  wholesomefarmhouserecipes.com:
+    domain: 'food'
+    subdomain: 'farmhouse recipes'
+  whytile.com:
+    domain: 'home'
+    subdomain: 'tile resources'
+  wideopencountry.com:
+    domain: 'entertainment'
+    subdomain: 'country lifestyle'
+  wildsimplejoy.com:
+    domain: 'self improvement'
+    subdomain: 'mindfulness & joy'
+  willtiptop.com:
+    domain: 'lifestyle'
+    subdomain: 'tips & guides'
+  wisdomquotes.com:
+    domain: 'education'
+    subdomain: 'quotes & wisdom'
+  wisewaystostudy.com:
+    domain: 'education'
+    subdomain: 'study tips'
+  womensjournal.com:
+    domain: 'lifestyle'
+    subdomain: 'women lifestyle'
+  wonderfulengineering.com:
+    domain: 'technology'
+    subdomain: 'engineering news'
+  wondermomwannabe.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & homemaking'
+  woodworkcentral.org:
+    domain: 'crafts'
+    subdomain: 'woodworking community'
+  woodworkingplansman.com:
+    domain: 'crafts'
+    subdomain: 'woodworking plans'
+  woodworknation.com:
+    domain: 'crafts'
+    subdomain: 'woodworking resources'
+  woohome.com:
+    domain: 'home'
+    subdomain: 'home decor & diy'
+  workingtheflame.com:
+    domain: 'lifestyle'
+    subdomain: 'fire performance & art'
+  world-ratings.com:
+    domain: 'entertainment'
+    subdomain: 'rankings & reviews'
+  worldtravelconnector.com:
+    domain: 'travel'
+    subdomain: 'travel guides'
+  wp.nyu.edu:
+    domain: 'education'
+    subdomain: 'new york university blogs'
+  writingforward.com:
+    domain: 'education'
+    subdomain: 'writing tips'
+  yougrowgirl.com:
+    domain: 'gardening'
+    subdomain: 'gardening blog'
+  younglionsyouth.org:
+    domain: 'nonprofit'
+    subdomain: 'youth development'
+  yourguitarbrain.com:
+    domain: 'education'
+    subdomain: 'guitar learning'
+  yourlittleasia.com:
+    domain: 'travel'
+    subdomain: 'asia travel guides'
+  yourmodernfamily.com:
+    domain: 'lifestyle'
+    subdomain: 'parenting & family'
+  yourorganizedlife.org:
+    domain: 'self improvement'
+    subdomain: 'organization & productivity'
+  youshouldgrow.com:
+    domain: 'gardening'
+    subdomain: 'gardening tips'
+  yupitsvegan.com:
+    domain: 'food'
+    subdomain: 'vegan recipes'
+  zaided.com:
+    domain: 'self improvement'
+    subdomain: 'personal growth'
+  zdschemical.com:
+    domain: 'business'
+    subdomain: 'chemical manufacturing'
+  zenzify.com:
+    domain: 'self improvement'
+    subdomain: 'mindfulness & wellness'
+  zerotoskill.com:
+    domain: 'self improvement'
+    subdomain: 'skill development'
+  zone7gardener.com:
+    domain: 'gardening'
+    subdomain: 'zone 7 gardening'
+
 
 # ============================================================================
 # SITE MAPPING - Site-specific configurations
