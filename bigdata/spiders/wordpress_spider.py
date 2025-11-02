@@ -39,8 +39,7 @@ class WordpressSpider(scrapy.Spider):
         'CONCURRENT_REQUESTS_PER_DOMAIN' : 8,
         'DOWNLOAD_DELAY': 1,
         # 'AUTOTHROTTLE_ENABLED': True,
-        'MAX_RETRY_FAILED': 5,
-        'RETRY_TIMES': 5
+        'RETRY_TIMES': 3
     }
 
     def _parse_bool(self, v) -> bool:

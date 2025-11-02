@@ -53,7 +53,6 @@ DUPEFILTER_CLASS = "scrapy.dupefilters.RFPDupeFilter"
 DEPTH_LIMIT = 0
 SCHEDULER_PERSIST = True
 SCHEDULER_FLUSH_ON_START = False
-MAX_RETRY_FAILED = 3
 
 # Redis Connection URL
 # REDIS_URL = 'redis://100.109.89.55:6379'
@@ -68,7 +67,7 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 5
+RETRY_TIMES = 3
 RETRY_HTTP_CODES = [403, 406, 429, 500, 502, 503, 504, 520, 522, 524, 408, 599, 400]
 RETRY_PRIORITY_ADJUST = -5
 
