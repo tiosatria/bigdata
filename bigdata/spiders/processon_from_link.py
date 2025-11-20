@@ -91,6 +91,7 @@ class ProcessonFromLink(scrapy.Spider):
                  engine_concurrency: int = 20,  # HARD LIMIT on simultaneous tabs (The "Sweet Spot")
                  engine_headless: bool = True,
                  engine_retries: int = 2,
+                 save_html=False,
                  *args, **kwargs):
         super(ProcessonFromLink, self).__init__(*args, **kwargs)
 
@@ -105,7 +106,7 @@ class ProcessonFromLink(scrapy.Spider):
         self.engine_concurrency: int = int(engine_concurrency or 48)
         self.engine_headless: bool = bool(engine_headless)
         self.engine_retries: int = max(0, int(engine_retries or 2))
-
+        self.save_html = save_html
         self.session_name: str = (session or 'default').strip() or 'default'
         self.feed_output_path: str = f"output/flowcharts_raw_data_{self.session_name}.jsonl"
 
@@ -318,8 +319,6 @@ class ProcessonFromLink(scrapy.Spider):
             title = await page.title() or 'untitled'
             title_clean = self.sanitize_filename(title)
             url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
-
-            # 2. Find Iframe (Robust)
             iframe_el = None
             try:
                 await page.wait_for_selector('iframe', state='attached', timeout=20000)
@@ -337,7 +336,7 @@ class ProcessonFromLink(scrapy.Spider):
                 self._record_failure(url, 'iframe_locked')
                 return None
 
-            # 3. CRITICAL FIX: Wait for CONTENT, not just the container
+            # 3. Wait for CONTENT, not just the container
             # We wait until #designer_canvas exists AND has at least one child element (shapes/lines)
             try:
                 await iframe.wait_for_function(
@@ -345,12 +344,33 @@ class ProcessonFromLink(scrapy.Spider):
                     timeout=30000
                 )
             except Exception:
+                # fallback to svg, assuming it's xmind chart
+                await iframe.wait_for_function(
+                    "document.querySelector('#mind_con') && document.querySelector('#mind_con').children.length > 0",
+                    # little timeout cause we already wait before this, so the element should already been attached by now
+                    timeout=3000
+                )
+                svg_str = await iframe.evaluate('''
+                ()=>{
+                const svg = document.querySelector("svg");
+                return svg ? svg.outerHTML : null;
+                }
+                ''')
+                if svg_str:
+                    self.log_collect(type='svg')
+                    return {
+                        'url': url,
+                        'url_hash': url_hash,
+                        'title': title,
+                        'canvas_html': None,
+                        'full_html': None,
+                        'html_file': None,
+                        'svg': svg_str
+                    }
                 # If it times out here, the chart might be genuinely empty or failed to render
                 self._record_failure(url, 'empty_chart_timeout')
                 return None
 
-            # 4. Extract Data (With Freeze Logic Restored for Safety)
-            # I restored the canvas->img logic just in case. It's safer for rendering.
             canvas_data = await iframe.evaluate('''() => {
                 const container = document.querySelector('#designer_canvas');
                 if (!container) return null;
@@ -380,13 +400,12 @@ class ProcessonFromLink(scrapy.Spider):
                 return None
 
             # Save file
-            html_filename = f"raw_html/{title_clean}_{url_hash}.html"
-            with open(f'output/{html_filename}', 'w', encoding='utf-8') as f:
-                f.write(canvas_data['fullHTML'])
+            if self.save_html:
+                html_filename = f"raw_html/{title_clean}_{url_hash}.html"
+                with open(f'output/{html_filename}', 'w', encoding='utf-8') as f:
+                    f.write(canvas_data['fullHTML'])
 
-            self.collected_count += 1
-            if self.collected_count % 10 == 0:
-                self.logger.info(f"pw-direct progress: {self.collected_count} collected")
+            self.log_collect()
 
             return {
                 'url': url,
@@ -394,13 +413,19 @@ class ProcessonFromLink(scrapy.Spider):
                 'title': title,
                 'canvas_html': canvas_data['canvasHTML'],
                 'full_html': canvas_data['fullHTML'],
-                'html_file': html_filename,
+                'html_file': html_filename if self.save_html else None,
+                'svg': svg
             }
 
         except Exception as e:
             raise e
         finally:
             await page.close()
+
+    def log_collect(self, type:str='canvas'):
+        self.collected_count += 1
+        # if self.collected_count % 10 == 0:
+        self.logger.info(f"progress: {self.collected_count} collected {type}")
 
     def parse_item(self, response):
         # Keep existing logic for fallback

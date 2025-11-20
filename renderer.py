@@ -1,7 +1,6 @@
 """
 Phase 2: Batch Renderer
 Renders collected data to high-quality images
-Resolved: Fixes cropping issues by using absolute positioning offsets instead of transforms.
 """
 
 import asyncio
@@ -12,9 +11,6 @@ import sys
 from tqdm import tqdm
 
 class FlowchartRenderer:
-    """
-    Renders flowchart data to high-quality images
-    """
 
     def __init__(self,
                  input_file='output/flowcharts_raw_data.jsonl',
@@ -60,20 +56,16 @@ class FlowchartRenderer:
                 filename = f"{chart_id}.png"
                 filepath = self.output_dir / filename
             except:
-                # expected no guid found, use original filename instead
                 pass
 
             if filepath.exists():
                 self.skipped_count += 1
                 return {'status': 'skipped', 'filename': filename}
 
-            # Build complete HTML page
             html_content = self.build_html(item)
             await page.set_content(html_content, wait_until='networkidle')
             await page.wait_for_timeout(1000)
 
-            # --- CORE FIX: ROBUST DOM MANIPULATION ---
-            # Instead of transforming, we strip layout and reposition absolutely
             metrics = await page.evaluate('''(opts) => {
                 const { marginPx } = opts;
                 const result = { status: 'ok' };
@@ -176,6 +168,13 @@ class FlowchartRenderer:
         width = item.get('width', '1050px').replace('px', '')
         height = item.get('height', '1500px').replace('px', '')
 
+        # Check for SVG first, otherwise fall back to existing methods
+        if item.get('svg'):
+            # Wrap the raw SVG in the container expected by the metric calculation script
+            body_content = f'<div id="designer_canvas" style="position: absolute; top: 0; left: 0;">{item["svg"]}</div>'
+        else:
+            body_content = item.get('full_html', item.get('canvas_html', ''))
+
         html = f"""
 <!DOCTYPE html>
 <html>
@@ -202,7 +201,7 @@ class FlowchartRenderer:
     </style>
 </head>
 <body>
-    {item.get('full_html', item.get('canvas_html', ''))}
+    {body_content}
 </body>
 </html>
 """
