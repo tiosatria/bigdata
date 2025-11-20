@@ -84,6 +84,7 @@ class ProcessonFromLink(scrapy.Spider):
                  limit=None,
                  skip: int = 0,
                  session: Optional[str] = None,
+                 disable_proxy=False,
                  engine: str = 'playwright',
                  # OPTIMIZATION: Reduced defaults for stability
                  engine_contexts: int = 4,  # How many isolated browser contexts (proxies/cookies)
@@ -98,7 +99,7 @@ class ProcessonFromLink(scrapy.Spider):
             self.engine = 'pw-direct'
         else:
             self.engine = 'playwright'
-
+        self.disable_proxy = disable_proxy
         self.engine_contexts: int = int(engine_contexts or 8)
         # This is the most important setting: limits active tabs regardless of input size
         self.engine_concurrency: int = int(engine_concurrency or 48)
@@ -231,7 +232,7 @@ class ProcessonFromLink(scrapy.Spider):
                     viewport={'width': 1920, 'height': 2000},
                     ignore_https_errors=True,
                     java_script_enabled=True,
-                    proxy=default_proxy,
+                    proxy=None if self.disable_proxy else default_proxy,
                     user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 )
                 # Strict blocking to save bandwidth

@@ -1,4 +1,4 @@
-from typing import AsyncIterator, Any
+from typing import AsyncIterator, Any, Optional
 
 import scrapy
 from scrapy.http import Response
@@ -23,13 +23,26 @@ class ProcessonLinkSpider(scrapy.spiders.Spider):
     name = "processon_link"
     allowed_domains = ["processon.com"]
 
-    start_urls = ['https://www.processon.com/template/search/%E7%A8%8B%E5%BA%8F%E6%B5%81%E7%A8%8B%E5%9B%BE_free']
+    # AVAILABLE:
 
-    max_page_count = 851
+    # start_urls=[
+    #     # "https://www.processon.com/template/search/flowchart_free", # 38
+    #     # "https://www.processon.com/template/search/%E7%A8%8B%E5%BA%8F%E4%B8%BB%E7%A8%8B%E5%BA%8F%E6%B5%81%E7%A8%8B%E5%9B%BE_free" #851,
+    #     # "https://www.processon.com/template/search/%E7%A8%8B%E5%BA%8F%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE_free" #893,
+    #     "https://www.processon.com/template/search/%E7%A8%8B%E5%BA%8F%E6%A1%86%E5%9B%BE_free" #63,
+    #     # "https://www.processon.com/template/search/%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE_free" #836,
+    # "https://www.processon.com/template/search/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%B5%81%E7%A8%8B%E5%9B%BE_free" #1021
+    # ]
+
+    start_urls = [
+        "https://www.processon.com/template/search/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%B5%81%E7%A8%8B%E5%9B%BE_free",
+    ]
+
+    max_page_count = 1021
 
     custom_settings = {
         'FEEDS': {
-            'output/flowcharts_links_data.jsonl': {
+            'output/flowcharts_links_data_1021.jsonl': {
                 'format': 'jsonlines',
                 'encoding': 'utf8',
                 'overwrite': False,
@@ -43,9 +56,23 @@ class ProcessonLinkSpider(scrapy.spiders.Spider):
 
     async def start(self) :
         yield scrapy.Request(url=self.start_urls[0], callback=self.parse, meta={
-            'current_page': 1,
-            'use_proxy': True
-        })
+                'current_page': 1,
+                'use_proxy': True
+            })
+        # for url in self.start_urls:
+        #     yield scrapy.Request(url=url, callback=self.parse, meta={
+        #         'current_page': 1,
+        #         'use_proxy': True
+        #     })
+
+    def __init__(self, seed_urls:Optional[str]=None, *args, **kwargs):
+        super(ProcessonLinkSpider, self).__init__(*args,**kwargs)
+        urls = []
+        if seed_urls:
+            for url in seed_urls.split(','):
+                urls.append(url.strip())
+        if urls:
+            self.start_urls=urls
 
     def parse(self, response: Response, **kwargs: Any) -> Any:
         items = response.xpath("//a[@class='item-title-a']")
@@ -62,7 +89,7 @@ class ProcessonLinkSpider(scrapy.spiders.Spider):
         if current_page < self.max_page_count:
             self.logger.info(f'Navigating to next page: {current_page}')
             next_page = current_page + 1
-            yield scrapy.Request(url=f'https://www.processon.com/template/search/%E7%A8%8B%E5%BA%8F%E6%B5%81%E7%A8%8B%E5%9B%BE_free_page{next_page}',
+            yield scrapy.Request(url=f'{self.start_urls[0]}_page{next_page}',
                                  meta={
                                      'current_page': next_page,
                                      'use_proxy': True
