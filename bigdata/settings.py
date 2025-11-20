@@ -67,9 +67,9 @@ ROBOTSTXT_OBEY = False
 # ============================================================================
 
 RETRY_ENABLED = True
-RETRY_TIMES = 3
+RETRY_TIMES = 2
 RETRY_HTTP_CODES = [403, 406, 429, 500, 502, 503, 504, 520, 521, 522, 524, 408, 599, 400]
-RETRY_PRIORITY_ADJUST = -5
+RETRY_PRIORITY_ADJUST = -10
 
 ITEM_PIPELINES = {
     # CleanHtmlFragmentPipeline: 1,
@@ -81,20 +81,19 @@ ITEM_PIPELINES = {
 # ============================================================================
 # CONCURRENT REQUESTS & THROTTLING
 # ============================================================================
-# CONCURRENT_REQUESTS = 1536
-CONCURRENT_REQUESTS = 256
-CONCURRENT_REQUESTS_PER_DOMAIN = 24
-CONCURRENT_ITEMS = 1024
+CONCURRENT_REQUESTS = 2048
+CONCURRENT_REQUESTS_PER_DOMAIN = 128
+CONCURRENT_ITEMS = 10000
 DOWNLOAD_DELAY = 0
-RANDOMIZE_DOWNLOAD_DELAY = False
 
-# Disable cookies to reduce memory usage (enable if needed)
+SCRAPER_SLOT_MAX_ACTIVE_SIZE = 2000 * 1024 * 1024
+
 COOKIES_ENABLED = True
 
 # ============================================================================
 # MEMORY TUNING
 # ============================================================================
-# MEMUSAGE_ENABLED = True
+MEMUSAGE_ENABLED = False
 # MEMUSAGE_LIMIT_MB = 0  # Disable memory limit (0 = unlimited)
 # MEMUSAGE_WARNING_MB = 0  # Disable memory w
 
@@ -138,7 +137,22 @@ DOWNLOAD_HANDLERS = {
 }
 
 PLAYWRIGHT_BROWSER_TYPE = "chromium"
-PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 60000
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 30000
+
+PLAYWRIGHT_CONTEXTS = {
+    'default': {
+        'viewport': {'width': 1920, 'height': 2000},
+        'ignore_https_errors': True,
+        'java_script_enabled': True,
+        'bypass_csp': True,
+        # Use existing rotating proxy at the context level for all Playwright pages
+        'proxy': {
+            'server': 'http://p.webshare.io:80',
+            'username': 'icpjabta-JP-SG-rotate',
+            'password': 'v3cylfcqz2p5',
+        },
+    }
+}
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,  # Set to True for production
@@ -152,6 +166,7 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
         "--disable-images",
         "--disable-plugins",
         "--disable-extensions",
+        "--disable-gpu",
         "--blink-settings=imagesEnabled=false",
         "--no-first-run",
         "--disable-default-apps",
@@ -160,14 +175,14 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 }
 
 # Playwright contexts for parallel processing
-PLAYWRIGHT_MAX_CONTEXTS = 2048
-# PLAYWRIGHT_MAX_CONTEXTS = 4
+PLAYWRIGHT_MAX_CONTEXTS = 80
+
+PLAYWRIGHT_MAX_PAGES_PER_CONTEXT = 4
 
 # Playwright abort unnecessary requests
-PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "stylesheet", "font", "media"]
+PLAYWRIGHT_ABORT_REQUEST = lambda request: request.resource_type in ["image", "media"]
 
-
-REACTOR_THREADPOOL_MAXSIZE = 256
+REACTOR_THREADPOOL_MAXSIZE = 512
 
 HTTP2_ENABLED = True
 
@@ -197,11 +212,10 @@ LOG_ENCODING = 'utf-8'
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 
-
 HTTPCACHE_ENABLED = False
 DNSCACHE_ENABLED = True
-DOWNLOAD_TIMEOUT = 120
-DNS_TIMEOUT = 60
+DOWNLOAD_TIMEOUT = 45
+DNS_TIMEOUT = 30
 
 TELNETCONSOLE_USERNAME = 'gringo'
 TELNETCONSOLE_PASSWORD = "gringo"
@@ -216,10 +230,9 @@ EXTENSIONS = {
     'scrapy.extensions.logstats.LogStats': 200,
 }
 
-# Log stats every 60 seconds
-LOGSTATS_INTERVAL = 30
+LOGSTATS_INTERVAL = 15
 
-PIPELINE_BUFFER_SIZE = 10000
+PIPELINE_BUFFER_SIZE = 5000
 PIPELINE_FLUSH_INTERVAL = 60
 
 COMPRESSION_ENABLED = True

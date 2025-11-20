@@ -1,0 +1,23 @@
+2025-11-05 22:48:22,886 - INFO - Starting cleaner with 20 workers
+2025-11-05 22:48:22,886 - INFO - Available RAM: 35.0 GB
+2025-11-05 22:48:22,886 - INFO - Found 1 file(s) to process
+2025-11-05 22:48:22,886 - INFO - Processing eathealthy365_com.jsonl
+2025-11-05 22:48:22,886 - INFO - Loading file...
+2025-11-05 22:49:11,467 - INFO - Loaded 517267 records
+2025-11-05 22:49:11,498 - INFO - Processing records...
+2025-11-05 23:09:36,705 - INFO - Starting cleaner with 20 workers
+2025-11-05 23:09:36,706 - INFO - Available RAM: 40.0 GB
+2025-11-05 23:09:36,706 - INFO - Found 1 file(s) to process
+2025-11-05 23:09:36,706 - INFO - Processing eathealthy365_com.jsonl
+2025-11-05 23:09:36,707 - INFO - Counting records...
+2025-11-05 23:10:09,633 - INFO - Processing 517267 records with 20 workers
+2025-11-05 23:10:10,281 - INFO - Counting records...
+2025-11-05 23:10:43,746 - INFO - Found 517267 records to process
+2025-11-05 23:13:53,437 - INFO - Starting cleaner with 20 workers
+2025-11-05 23:13:53,438 - INFO - Available RAM: 39.1 GB
+2025-11-05 23:13:53,438 - INFO - Found 1 file(s) to process
+2025-11-05 23:13:53,438 - INFO - Processing eathealthy365_com.jsonl
+2025-11-05 23:13:53,438 - INFO - Counting records...
+2025-11-05 23:14:26,751 - INFO - Processing 517267 records with 20 workers
+2025-11-05 23:16:01,052 - INFO - Complete! Processed 173438 records
+2025-11-05 23:16:01,052 - INFO - Output: ..\output\test\eathealthy365_com_cleaned_v1.jsonl

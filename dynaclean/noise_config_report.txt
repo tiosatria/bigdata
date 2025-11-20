@@ -1,0 +1,27 @@
+======================================================================
+NOISE ANALYSIS REPORT
+======================================================================
+
+GLOBAL PATTERNS (appears in multiple sites):
+----------------------------------------------------------------------
+
+
+======================================================================
+SITE: eathealthy365_com
+======================================================================
+
+Articles analyzed: 5000
+Noise patterns found: 1
+
+
+--- Pattern #1 (Noise Score: 61.9) ---
+Frequency: 3984 articles (79.7%)
+XPath: //h2[contains(text(), 'Conclusion')]
+Sample text: conclusion
+Sample URLs:
+  - https://eathealthy365.com/making-penne-rosa-your-30-minute-timeline-to-a-perfect-dish/
+  - https://eathealthy365.com/how-to-make-party-punch-ahead-a-stress-free-host-s-secret/
+  - https://eathealthy365.com/what-s-the-difference-recipe-format-vs-ingredient-list/
+  - https://eathealthy365.com/venison-health-benefits-a-deep-dive-into-the-leanest-red-meat/
+  - https://eathealthy365.com/what-is-the-best-sauce-for-fried-chicken-wings-we-ranked-them/
+

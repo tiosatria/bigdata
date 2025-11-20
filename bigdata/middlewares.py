@@ -27,14 +27,21 @@ class ProxyMiddleware:
                 request.meta['proxy'] = 'http://changeme:changeme@127.0.0.1:1234'
         elif request.meta.get('playwright', False):
             if request.meta.get('use_proxy', False):
-                request.meta['playwright_context_kwargs'] = {'proxy':
-                                                                 {'server': 'http://p.webshare.io:80',
-                                                                       'username': 'icpjabta-rotate',
-                                                                       'password': 'v3cylfcqz2p5'}
-                                                             }
+                kwargs = dict(request.meta.get('playwright_context_kwargs', {}) or {})
+                # Respect already assigned proxies (from spider round-robin). Only set default if none present.
+                if 'proxy' not in kwargs and not request.meta.get('proxy'):
+                    kwargs['proxy'] = {
+                        'server': 'http://p.webshare.io:80',
+                        'username': 'icpjabta-JP-SG-rotate',
+                        # 'username': 'icpjabta-rotate',
+                        'password': 'v3cylfcqz2p5'
+                    }
+                request.meta['playwright_context_kwargs'] = kwargs
         elif request.meta.get('use_proxy', False):
-            if host:
-                request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'
+            if host and not request.meta.get('proxy'):
+                request.meta['proxy'] = 'http://icpjabta-JP-SG-rotate:v3cylfcqz2p5@p.webshare.io:80'
+                # request.meta['proxy'] = 'http://icpjabta-rotate:v3cylfcqz2p5@p.webshare.io:80'
+                # request.meta['proxy'] = 'http://icpjabta-US-GB-rotate:v3cylfcqz2p5@p.webshare.io:80'
 
     """
     Scrapy Downloader Middleware for exporting failed requests to JSONL

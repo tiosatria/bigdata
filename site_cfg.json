@@ -1,0 +1,405 @@
+{
+  "group_domains": [],
+  "domains": [
+    {
+      "domain": "mayoclinic.org",
+      "content_domain": "health",
+      "content_subdomain": "prevention",
+      "active": false,
+      "xpath": {
+        "body": "//div[@class='article-body']|//*[@class='main-content']|//*[contains(@id, 'content)]",
+        "noises": []
+      },
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "allow": [
+              "(?:diseases-conditions|symptoms|tests-procedures|drugs-supplements|healthy-lifestyle)"
+            ],
+            "deny": [
+              "doctors-departments",
+              "\/es\/",
+              "\/ar\/",
+              "\/zh-hans\/"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://www.mayoclinic.org/diseases-conditions",
+          "meta": {
+            "content_subdomain": "disease & condition"
+          }
+        }
+      ],
+      "push_seed": false,
+      "test_run": false
+    },
+    {
+      "domain": "simplyhomedecorating.com",
+      "content_domain": "home",
+      "content_subdomain": "decorating",
+      "active": false,
+      "link_extractors": {
+        "articles": [
+          {
+            "restrict_xpaths": [
+              "//div[@data-elementor-type='loop-item']"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        "https://simplyhomedecorating.com/blog/page/1/",
+        "https://simplyhomedecorating.com/blog/page/2/",
+        "https://simplyhomedecorating.com/blog/page/3/",
+        "https://simplyhomedecorating.com/blog/page/4/",
+        "https://simplyhomedecorating.com/blog/page/5/",
+        "https://simplyhomedecorating.com/blog/page/6/"
+      ],
+      "test_run": false,
+      "push_seed": false
+    },
+    {
+      "domain": "mcpress.mayoclinic.org",
+      "active": false,
+      "use_playwright": true,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "deny": [
+              "doctors-departments",
+              "\/es\/",
+              "\/ar\/",
+              "\/zh-hans\/",
+              "\\/products?(-category)?(?:\\/.*)?$",
+              "\\/podcasts?(?:\\/.*)?$"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://mcpress.mayoclinic.org/",
+          "meta": {
+            "playwright": true
+          }
+        }
+      ],
+      "push_seed": true,
+      "test_run": true
+    },
+    {
+      "domain": "101cookbooks.com",
+      "active": false,
+      "bypass_cf": true,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "deny": [
+              ".*\\/membership-account\\/.*",
+              ".*\\/useraggreement\\/.*",
+              ".*\\/login.*"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://www.101cookbooks.com",
+          "meta": {
+            "bypass_cf": true
+          }
+        }
+      ],
+      "push_seed": true
+    },
+    {
+      "domain": "betterhealth.vic.gov.au",
+      "active": false,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "deny": [
+              "\/?(?:video|service-profiles|about|terms-of-use)(?:\/|$)?"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://www.betterhealth.vic.gov.au/"
+        }
+      ],
+      "push_seed": true
+    },
+    {
+      "domain": "mdanderson.org",
+      "active": false,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "allow": [
+              "\/cancerwise(?:\/.*)?$",
+              "\/prevention-screening(?:\/.*)?$"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://mdanderson.org/cancerwise/"
+        }
+      ],
+      "push_seed": true,
+      "test_run": true
+    },
+    {
+      "domain": "cookieandkate.com",
+      "active": false,
+      "use_playwright": true,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "deny": [
+              "\/videos(?:\/.*)?$",
+              "\/(?:love-real-food-cookbook|subscribe|nutrition-disclaimer|cookie-and-kates-photo-and-recipe-policy|accessibility-policy|comment)(?:\/.*)?$"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://cookieandkate.com/",
+          "meta": {
+            "playwright": true
+          }
+        }
+      ],
+      "push_seed": true,
+      "test_run": true
+    },
+    {
+      "domain": "minimalistbaker.com",
+      "active": false,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "deny": [
+              "\/(?:resources|everyday-cooking)(?:\/.*)?$"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://minimalistbaker.com/"
+        }
+      ],
+      "push_seed": true,
+      "test_run": true
+    },
+    {
+      "domain": "recipefairy.com",
+      "active": false,
+      "link_extractors": {
+        "follow_and_parse": [
+          {
+            "deny": [
+              "\/terms(?:\/.*)?$",
+              "\/contact\/",
+              "\/about\/"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://www.recipefairy.com/"
+        }
+      ],
+      "push_seed": true,
+      "test_run": true
+    },
+    {
+      "domain": "recipetineats.com",
+      "active": false,
+      "link_extractors": {
+        "articles": [
+          {
+            "restrict_xpaths": [
+              "//article[contains(@class,'post')]"
+            ],
+            "deny": [
+              "\/nagi-recipetin-eats\/",
+              "\/cookbooks(?:\/.*)?$",
+              "\/dozer-the-golden-retriever-dog\/",
+              "\/policy-use-of-recipes-images\/?"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        "https://www.recipetineats.com/recipes/",
+        "https://www.recipetineats.com/recipes/?fwp_paged=2",
+        "https://www.recipetineats.com/recipes/?fwp_paged=3",
+        "https://www.recipetineats.com/recipes/?fwp_paged=4",
+        "https://www.recipetineats.com/recipes/?fwp_paged=5",
+        "https://www.recipetineats.com/recipes/?fwp_paged=6",
+        "https://www.recipetineats.com/recipes/?fwp_paged=7",
+        "https://www.recipetineats.com/recipes/?fwp_paged=8",
+        "https://www.recipetineats.com/recipes/?fwp_paged=9",
+        "https://www.recipetineats.com/recipes/?fwp_paged=10",
+        "https://www.recipetineats.com/recipes/?fwp_paged=11",
+        "https://www.recipetineats.com/recipes/?fwp_paged=12",
+        "https://www.recipetineats.com/recipes/?fwp_paged=13",
+        "https://www.recipetineats.com/recipes/?fwp_paged=14",
+        "https://www.recipetineats.com/recipes/?fwp_paged=15",
+        "https://www.recipetineats.com/recipes/?fwp_paged=16",
+        "https://www.recipetineats.com/recipes/?fwp_paged=17",
+        "https://www.recipetineats.com/recipes/?fwp_paged=18",
+        "https://www.recipetineats.com/recipes/?fwp_paged=19",
+        "https://www.recipetineats.com/recipes/?fwp_paged=20",
+        "https://www.recipetineats.com/recipes/?fwp_paged=21",
+        "https://www.recipetineats.com/recipes/?fwp_paged=22",
+        "https://www.recipetineats.com/recipes/?fwp_paged=23",
+        "https://www.recipetineats.com/recipes/?fwp_paged=24",
+        "https://www.recipetineats.com/recipes/?fwp_paged=25",
+        "https://www.recipetineats.com/recipes/?fwp_paged=26",
+        "https://www.recipetineats.com/recipes/?fwp_paged=27",
+        "https://www.recipetineats.com/recipes/?fwp_paged=28",
+        "https://www.recipetineats.com/recipes/?fwp_paged=29",
+        "https://www.recipetineats.com/recipes/?fwp_paged=30",
+        "https://www.recipetineats.com/recipes/?fwp_paged=31",
+        "https://www.recipetineats.com/recipes/?fwp_paged=32",
+        "https://www.recipetineats.com/recipes/?fwp_paged=33",
+        "https://www.recipetineats.com/recipes/?fwp_paged=34",
+        "https://www.recipetineats.com/recipes/?fwp_paged=35",
+        "https://www.recipetineats.com/recipes/?fwp_paged=36",
+        "https://www.recipetineats.com/recipes/?fwp_paged=37",
+        "https://www.recipetineats.com/recipes/?fwp_paged=38",
+        "https://www.recipetineats.com/recipes/?fwp_paged=39",
+        "https://www.recipetineats.com/recipes/?fwp_paged=40",
+        "https://www.recipetineats.com/recipes/?fwp_paged=41",
+        "https://www.recipetineats.com/recipes/?fwp_paged=42",
+        "https://www.recipetineats.com/recipes/?fwp_paged=43",
+        "https://www.recipetineats.com/recipes/?fwp_paged=45",
+        "https://www.recipetineats.com/recipes/?fwp_paged=46",
+        "https://www.recipetineats.com/recipes/?fwp_paged=47",
+        "https://www.recipetineats.com/recipes/?fwp_paged=48",
+        "https://www.recipetineats.com/recipes/?fwp_paged=49",
+        "https://www.recipetineats.com/recipes/?fwp_paged=50",
+        "https://www.recipetineats.com/recipes/?fwp_paged=51",
+        "https://www.recipetineats.com/recipes/?fwp_paged=52",
+        "https://www.recipetineats.com/recipes/?fwp_paged=53",
+        "https://www.recipetineats.com/recipes/?fwp_paged=54",
+        "https://www.recipetineats.com/recipes/?fwp_paged=55",
+        "https://www.recipetineats.com/recipes/?fwp_paged=56",
+        "https://www.recipetineats.com/recipes/?fwp_paged=57",
+        "https://www.recipetineats.com/recipes/?fwp_paged=58",
+        "https://www.recipetineats.com/recipes/?fwp_paged=59",
+        "https://www.recipetineats.com/recipes/?fwp_paged=60",
+        "https://www.recipetineats.com/recipes/?fwp_paged=61",
+        "https://www.recipetineats.com/recipes/?fwp_paged=62",
+        "https://www.recipetineats.com/recipes/?fwp_paged=63",
+        "https://www.recipetineats.com/recipes/?fwp_paged=64",
+        "https://www.recipetineats.com/recipes/?fwp_paged=65",
+        "https://www.recipetineats.com/recipes/?fwp_paged=66",
+        "https://www.recipetineats.com/recipes/?fwp_paged=67",
+        "https://www.recipetineats.com/recipes/?fwp_paged=68",
+        "https://www.recipetineats.com/recipes/?fwp_paged=69",
+        "https://www.recipetineats.com/recipes/?fwp_paged=70",
+        "https://www.recipetineats.com/recipes/?fwp_paged=71",
+        "https://www.recipetineats.com/recipes/?fwp_paged=72",
+        "https://www.recipetineats.com/recipes/?fwp_paged=73",
+        "https://www.recipetineats.com/recipes/?fwp_paged=74",
+        "https://www.recipetineats.com/recipes/?fwp_paged=75",
+        "https://www.recipetineats.com/recipes/?fwp_paged=76",
+        "https://www.recipetineats.com/recipes/?fwp_paged=77",
+        "https://www.recipetineats.com/recipes/?fwp_paged=78",
+        "https://www.recipetineats.com/recipes/?fwp_paged=79",
+        "https://www.recipetineats.com/recipes/?fwp_paged=80",
+        "https://www.recipetineats.com/recipes/?fwp_paged=81",
+        "https://www.recipetineats.com/recipes/?fwp_paged=82"
+      ],
+      "push_seed": true,
+      "test_run": true
+    },
+    {
+      "domain": "fooddrinktalk.com",
+      "push_seed": false,
+      "active": false,
+      "seeds": [
+        "https://fooddrinktalk.com/"
+      ],
+      "link_extractors": {
+        "navs": [
+          {
+            "restrict_xpaths": [
+              "//a[@class='next page-numbers']"
+            ]
+          }
+        ],
+        "articles": [
+          {
+            "restrict_xpaths": [
+              "//h2[@class='entry-title']"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "domain": "blogcritics.org",
+      "active": false,
+      "push_seed": false,
+      "link_extractors": {
+        "articles": [
+          {
+            "restrict_xpaths": [
+              "//article[@class='item-list']"
+            ]
+          }
+        ],
+        "navs": [
+          {
+            "restrict_xpaths": [
+              "//div[@class='pagination']"
+            ]
+          }
+        ]
+      },
+      "seeds": [
+        {
+          "url": "https://blogcritics.org/culture/food-and-drink/",
+          "meta": {
+            "content_subdomain": "food & drink",
+            "content_domain": "food"
+          }
+        },
+        {
+          "url": "https://blogcritics.org/culture/health-and-fitness/",
+          "meta": {
+            "content_subdomain": "fitnes",
+            "content_domain": "health"
+          }
+        },
+        {
+          "url": "https://blogcritics.org/culture/personalfinance/",
+          "meta": {
+            "content_subdomain": "personal finance",
+            "content_domain": "finance"
+          }
+        },
+        {
+          "url": "https://blogcritics.org/culture/tips-and-advice/",
+          "meta": {
+            "content_subdomain": "tips & advice",
+            "content_domain": "life"
+          }
+        }
+      ]
+    }
+  ]
+}

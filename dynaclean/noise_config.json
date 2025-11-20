@@ -1,0 +1,64 @@
+{
+  "global_xpaths": [],
+  "flattened_xpaths": [
+    {
+      "xpath": "//h2[contains(text(), 'Conclusion')]"
+    }
+  ],
+  "site_specific": {
+    "eathealthy365_com": {
+      "repetitive_blocks": [
+        {
+          "text": "conclusion",
+          "full_text": "conclusion",
+          "frequency": 3984,
+          "frequency_percent": 79.67999999999999,
+          "noise_score": 61.872,
+          "xpath": "//h2[contains(text(), 'Conclusion')]",
+          "position_avg": 0.9762616876251364,
+          "sample_urls": [
+            "https://eathealthy365.com/making-penne-rosa-your-30-minute-timeline-to-a-perfect-dish/",
+            "https://eathealthy365.com/how-to-make-party-punch-ahead-a-stress-free-host-s-secret/",
+            "https://eathealthy365.com/what-s-the-difference-recipe-format-vs-ingredient-list/",
+            "https://eathealthy365.com/venison-health-benefits-a-deep-dive-into-the-leanest-red-meat/",
+            "https://eathealthy365.com/what-is-the-best-sauce-for-fried-chicken-wings-we-ranked-them/"
+          ],
+          "context": {
+            "tag": "h2",
+            "classes": [],
+            "id": "",
+            "has_links": false,
+            "has_images": false
+          }
+        }
+      ],
+      "suggested_xpaths": [
+        {
+          "xpath": "//h2[contains(text(), 'Conclusion')]",
+          "reason": "Appears in 3984 articles (79.7%)",
+          "sample_text": "conclusion",
+          "noise_score": 61.872,
+          "sample_urls": [
+            "https://eathealthy365.com/making-penne-rosa-your-30-minute-timeline-to-a-perfect-dish/",
+            "https://eathealthy365.com/how-to-make-party-punch-ahead-a-stress-free-host-s-secret/",
+            "https://eathealthy365.com/what-s-the-difference-recipe-format-vs-ingredient-list/",
+            "https://eathealthy365.com/venison-health-benefits-a-deep-dive-into-the-leanest-red-meat/",
+            "https://eathealthy365.com/what-is-the-best-sauce-for-fried-chicken-wings-we-ranked-them/"
+          ]
+        }
+      ],
+      "stats": {
+        "total_articles": 5000,
+        "total_blocks": 627291,
+        "repetitive_patterns": 1,
+        "suggested_xpaths": 1
+      }
+    }
+  },
+  "stats": {
+    "total_files": 1,
+    "total_articles_analyzed": 5000,
+    "total_noise_patterns": 1,
+    "global_patterns": 0
+  }
+}

@@ -12,10 +12,10 @@ class WPDiscoverSpider(scrapy.Spider):
     name = 'wp_discover'
 
     custom_settings = {
-        'CONCURRENT_REQUESTS': 1000,
+        'CONCURRENT_REQUESTS': 24,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 2,
-        'DOWNLOAD_DELAY': 1.0,
-        'RETRY_TIMES': 2,
+        'DOWNLOAD_DELAY': 0,
+        'RETRY_TIMES': 1,
         'COMPRESSION_ENABLED': False,
         'HTTP2_ENABLED': False,
         'CLOSESPIDER_TIMEOUT': 0,  # Disable timeout - run indefinitely
@@ -24,306 +24,8 @@ class WPDiscoverSpider(scrapy.Spider):
     }
 
     DEFAULT_TOPICS = [
-        # Home care, organization, and cleaning
-        'home cleaning tips',
-        'housekeeping and organization guides',
-        'decluttering and storage solutions',
-        'stain removal and laundry care',
-        'eco-friendly home cleaning methods',
-        'natural cleaning recipes',
-        'home maintenance checklist',
-        'mold prevention and odor removal',
-        'bathroom cleaning tips',
-        'home repair and maintenance advice',
-
-        # Cooking, food, and preservation
-        'cooking tutorials and techniques',
-        'food preservation and storage tips',
-        'traditional and modern recipes',
-        'kitchen hacks and meal prep ideas',
-        'healthy cooking guides',
-        'ingredient knowledge and cooking basics',
-        'budget meal preparation ideas',
-        'home cooking recipes collection',
-        'nutrition and food education',
-        'safe food handling tips',
-
-        # Health and personal care
-        'natural remedies and health guides',
-        'home treatment for common illness',
-        'skincare and beauty tips',
-        'hair care and hygiene routines',
-        'wellness and self care articles',
-        'home health improvement tips',
-        'holistic healing and body care',
-        'oral care and dental hygiene',
-        'stress management and relaxation tips',
-        'daily health habit improvement',
-
-        # DIY, crafts, and repair
-        'diy home improvement projects',
-        'furniture repair and restoration',
-        'upcycling and recycling guides',
-        'handcrafts and creative tutorials',
-        'do it yourself repair tips',
-        'home decor diy ideas',
-        'fix and maintenance guides',
-        'crafting and handmade items tutorials',
-        'repurposing household products',
-        'woodworking and small home repair',
-
-        # Environment, odor, and home comfort
-        'air quality and odor removal tips',
-        'home fragrance and freshness ideas',
-        'natural air fresheners and purifiers',
-        'indoor humidity and ventilation control',
-        'dust and allergen reduction methods',
-        'healthy living environment setup',
-        'home plants and air purification',
-        'home comfort optimization techniques',
-        'pet odor removal solutions',
-        'mold and moisture control tips',
-
-        # Drinks and allergy-safe substitutes
-        'healthy drink recipes',
-        'smoothie and juice preparation guides',
-        'herbal tea and natural beverage ideas',
-        'dairy free and gluten free drinks',
-        'allergy friendly drink substitutes',
-        'detox and hydration tips',
-        'natural energy drink recipes',
-        'immune boosting beverage ideas',
-        'low sugar drink recipes',
-        'homemade drink preparation tutorials',
-
-        # Broader household and lifestyle
-        'frugal living and saving guides',
-        'simple living lifestyle tips',
-        'sustainability and eco living ideas',
-        'self sufficiency and homesteading basics',
-        'practical life improvement articles',
-        'time saving home hacks',
-        'daily routine improvement guides',
-        'household budget and finance tips',
-        'family and household management tips',
-        'home productivity and lifestyle optimization',
+        "food recipes",
     ]
-
-    # DEFAULT_TOPICS = [
-    #     # Home care, cleaning, storage, stain removal
-    #     'home organization tips',
-    #     'decluttering and storage solutions',
-    #     'deep cleaning techniques',
-    #     'laundry care and stain removal',
-    #     'housekeeping routines and schedules',
-    #     'eco-friendly cleaning methods',
-    #     'natural cleaning products and recipes',
-    #     'efficient home cleaning tips',
-    #     'bathroom and kitchen cleaning guides',
-    #     'mold and odor prevention tips',
-    #
-    #     # Cooking tips, food knowledge, food preservation
-    #     'traditional and modern cooking methods',
-    #     'meal prep and planning guides',
-    #     'ingredient storage and preservation',
-    #     'kitchen hacks and cooking shortcuts',
-    #     'safe food storage techniques',
-    #     'nutrition and food knowledge',
-    #     'budget-friendly meal ideas',
-    #     'healthy home cooking',
-    #     'culinary techniques and tutorials',
-    #     'zero waste cooking and storage',
-    #
-    #     # Health and personal care (natural remedies, treatments)
-    #     'natural home remedies',
-    #     'first aid and self-care basics',
-    #     'skin and hair care at home',
-    #     'holistic health practices',
-    #     'common ailment treatments at home',
-    #     'wellness and hygiene routines',
-    #     'fitness and body maintenance tips',
-    #     'stress management and relaxation methods',
-    #     'oral care and dental hygiene guides',
-    #     'personal grooming and hygiene tips',
-    #
-    #     # DIY, handcrafts, repurposing, usage
-    #     'diy furniture restoration',
-    #     'home decor diy projects',
-    #     'upcycling and repurposing ideas',
-    #     'craft tutorials and handmade projects',
-    #     'repair and fix-it-yourself guides',
-    #     'basic carpentry and repair skills',
-    #     'creative home improvements',
-    #     'budget diy home upgrades',
-    #     'recycling and reuse ideas',
-    #     'do it yourself repair tutorials',
-    #
-    #     # Odor removal, home environment improvement
-    #     'indoor air improvement tips',
-    #     'home fragrance and odor removal',
-    #     'natural air fresheners and diffusers',
-    #     'ventilation and humidity control',
-    #     'dust and allergen reduction methods',
-    #     'healthy home environment maintenance',
-    #     'houseplant care and air purification',
-    #     'home comfort optimization tips',
-    #     'pet odor removal guides',
-    #     'eliminating musty smells naturally',
-    #
-    #     # Healthy drinks, allergy-safe substitutes
-    #     'healthy drink recipes',
-    #     'herbal tea and infusion guides',
-    #     'detox and hydration drinks',
-    #     'low sugar beverage recipes',
-    #     'smoothie and juice preparation tips',
-    #     'allergy-friendly recipes and substitutes',
-    #     'dairy-free and gluten-free alternatives',
-    #     'plant-based drink ideas',
-    #     'natural energy drink recipes',
-    #     'immune boosting drink ideas',
-    #
-    #     # Additional broad but relevant domains
-    #     'frugal living and saving tips',
-    #     'simple lifestyle improvement ideas',
-    #     'time-saving household hacks',
-    #     'basic survival and emergency prep',
-    #     'eco-living and sustainability guides',
-    #     'home budget management tips',
-    #     'family care and parenting tips',
-    #     'daily routine optimization',
-    #     'minimalist home lifestyle',
-    #     'self-sufficiency and homesteading basics',
-    # ]
-
-    # DEFAULT_TOPICS = [
-    #     # Home & Living
-    #     'home cleaning tips',
-    #     'stain removal hacks',
-    #     'home organization tips',
-    #     'home storage solutions',
-    #     'tips & tricks',
-    #     'decluttering tips',
-    #     'home decor ideas',
-    #     'practical life tips',
-    #     'daily life tips',
-    #     'DIY project',
-    #     'home diy project',
-    #     'gardening tips and tricks',
-    #     'landscaping tips',
-    #     'best landscaping tips',
-    #     'best plant care',
-    #     'home maintenance and repair'
-    # ]
-
-    # DEFAULT_TOPICS = [
-    #     'simple living tips',
-    #     'DIY guides',
-    #     'home repair tips',
-    #     'how to repair your home',
-    #     'habit improvement',
-    #     'complete food recipes',
-    #     'large collection of food recipes',
-    #     'diy home project',
-    #     'gardening guides',
-    #     'self help guides',
-    #     'hygiene tips & guides',
-    #     'beauty tips & guides',
-    #     'cleaning tips & guides',
-    #     'practical home maintenance tips',
-    #     'home maintenance guides',
-    #     'cooking techniques',
-    #     'cooking guides',
-    #     'money tips & guides',
-    #     'home cooking tips & guides',
-    # ]
-
-    # DEFAULT_TOPICS = [
-    #     'cooking recipes',
-    #     'baking tips',
-    #     'food preservation tips',
-    #     'healthy eating tips & guide',
-    #     'life tips & guide',
-    #     'best cuisine recipes',
-    #     'best cuisine',
-    #     'crafting tips',
-    #     'craft tips & guides',
-    #     'fashion trends guides',
-    #     'hygiene tips & guides',
-    #     'makeup tips & guide',
-    #     'simple living tips & guides',
-    #     'life hacks',
-    #     'how to & diy',
-    #     'gardening tips & guides',
-    #     'gardening guides',
-    #     'self improvement tips & guides'
-    # ]
-
-    # DEFAULT_TOPICS = [
-    #     'cooking recipes',
-    #     'baking tips',
-    #     'food preservation tips',
-    #     'healthy eating tips & guide',
-    #     'life tips & guide',
-    #     'best cuisine recipes',
-    #     'best cuisine',
-    #     'crafting tips',
-    #     'craft tips & guides',
-    #     'fashion trends guides',
-    #     'hygiene tips & guides',
-    #     'makeup tips & guide',
-    #     'simple living tips & guides',
-    #     'life hacks',
-    #     'how to & diy',
-    #     'gardening tips & guides',
-    #     'gardening guides',
-    #     'self improvement tips & guides'
-    # ]
-
-    # DEFAULT_TOPICS = [
-    #     'cooking recipes meal prep ideas',
-    #     'baking tips dessert recipes',
-    #     'food preservation canning freezing',
-    #     'kitchen hacks cooking techniques',
-    #     'healthy eating nutrition tips',
-    #     'budget meals frugal cooking',
-    #     'international cuisine ethnic recipes',
-    #     'vegan vegetarian plant-based recipes',
-    #     'natural remedies home treatments',
-    #     'fitness workout routines exercise',
-    #     'mental health self-care wellness',
-    #     'nutrition diet healthy lifestyle',
-    #     'beauty skincare natural products',
-    #     'sleep improvement relaxation techniques',
-    #     'stress management mindfulness meditation',
-    #     'handmade crafts DIY tutorials',
-    #     'woodworking projects plans',
-    #     'sewing patterns clothing alterations',
-    #     'upcycling repurposing creative reuse',
-    #     'jewelry making beading crafts',
-    #     'painting drawing art techniques',
-    #     'home improvement renovation DIY',
-    #     'parenting tips child development',
-    #     'pregnancy baby care newborn',
-    #     'pet care training animal health',
-    #     'personal finance budgeting saving',
-    #     'productivity time management hacks',
-    #     'relationship advice communication tips',
-    #     'travel tips destination guides',
-    #     'fashion trends style guides',
-    #     'wardrobe essentials outfit ideas',
-    #     'sustainable fashion ethical clothing',
-    #     'makeup tutorials beauty tips',
-    #     'study tips learning techniques',
-    #     'online courses skill development',
-    #     'language learning resources',
-    #     'book reviews reading recommendations',
-    #     'collectibles hobby ideas',
-    #     'small business marketing ideas',
-    #     'life hacks productivity tips',
-    #     'seasonal tips holiday ideas',
-    #     'sustainability living tips',
-    #     'minimalism simple living',
-    # ]
 
     def __init__(self,
                  search_words: str = None,
@@ -332,7 +34,7 @@ class WPDiscoverSpider(scrapy.Spider):
                  existing_path: str = None,
                  output_path: str = None,
                  continuous: bool = True,
-                 max_pages_per_query: int = 20,
+                 max_pages_per_query: int = 1000,
                  verify_backlog_threshold: int = 50,
                  verify_backlog_resume: int = None,
                  *args, **kwargs):
@@ -665,15 +367,15 @@ class WPDiscoverSpider(scrapy.Spider):
             for eng in self.engines:
                 self.stats['searches_initiated'] += 1
 
-                # if eng == 'duckduckgo':
-                #     url = f"https://html.duckduckgo.com/html/?q={quote_plus(kw)}&s=0"
-                #     meta = {
-                #         'kw': kw, 's': 0, 'engine': 'duckduckgo',
-                #         'bypass_cf': True, 'use_proxy': False
-                #     }
-                #     self.logger.info(f"[SEARCH START] DDG '{kw}' - page 1")
-                #     yield scrapy.Request(url, meta=meta, callback=self.parse_search_ddg,
-                #                          dont_filter=True, errback=self.errback_search)
+                if eng == 'duckduckgo':
+                    url = f"https://html.duckduckgo.com/html/?q={quote_plus(kw)}&s=0"
+                    meta = {
+                        'kw': kw, 's': 0, 'engine': 'duckduckgo',
+                        'bypass_cf': True, 'use_proxy': False
+                    }
+                    self.logger.info(f"[SEARCH START] DDG '{kw}' - page 1")
+                    yield scrapy.Request(url, meta=meta, callback=self.parse_search_ddg,
+                                         dont_filter=True, errback=self.errback_search)
 
                 if eng == 'bing':
                     start_offset = self._get_resume_value(kw, 'bing', 1)
